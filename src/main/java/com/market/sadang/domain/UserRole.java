@@ -1,5 +1,5 @@
 package com.market.sadang.domain;
 
 public enum UserRole {
-    ROLE_USER, ROLE_ADMIN
+    ROLE_NOT_PERMITTED, ROLE_USER, ROLE_ADMIN
 }

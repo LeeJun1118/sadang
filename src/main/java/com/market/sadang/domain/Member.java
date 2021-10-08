@@ -1,9 +1,12 @@
 package com.market.sadang.domain;
 
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import java.util.Date;
 
 //lombok 어노테이션
 //클래스 내 모든 필드의 Get 매소드를 자동 생성
@@ -26,7 +29,8 @@ import javax.validation.constraints.Email;
 //테이블과 연결될 클래스임을 나타냄
 //기본 값으로 클래스의 카멜케이스 이름을 언더스코어 네이밍(_)으로 테이블 이름을 매칭(ex: SalesManager.java -> sales_manager table)
 @Entity
-public class Users {
+@Table(name = "Members")
+public class Member {
     //해당 테이블의 PK 필드를 나타냄
     @Id
     //PK 의 생성 규칙을 나타냄 strategy = GenerationType.IDENTITY 로 자동 증가 됨
@@ -34,7 +38,10 @@ public class Users {
     private Long id;
 
     @Column(nullable = false)
-    private String name;
+    private String username;
+
+    @Column(nullable = false)
+    private String password;
 
     //테이블의 컬럼을 나타내면 굳이 선언하지 않아도 해당 클래스의 모든 필드는 모두 컬럼이 됨.
     //기본 값 외에 추가 변경 옵션이 있을 때 사용
@@ -44,8 +51,19 @@ public class Users {
     private String email;
 
     @Column(nullable = false)
-    private String password;
+    private String address;
 
+    //Enum 이름을 DB에 저장
     @Enumerated(EnumType.STRING)
     private UserRole role = UserRole.ROLE_USER;
+
+    //date + time 의 timestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    //insert 시 자동을 값을 채워줌
+    @CreationTimestamp
+    private Date createAt;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @UpdateTimestamp
+    private Date updateAt;
 }
