@@ -1,5 +1,6 @@
 package com.market.sadang.domain;
 
+import com.market.sadang.config.UserRole;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -38,7 +39,7 @@ import java.util.stream.Collectors;
 @Entity
 @Table(name = "Members")
 //Spring Security는 UserDetails 객체를 통해 권한 정보를 관리하기 때문에 User 클래스에 UserDetails 를 구현하고 추가 정보를 재정의 해야함
-public class Member implements UserDetails {
+public class Member{
     //해당 테이블의 PK 필드를 나타냄
     @Id
     //PK 의 생성 규칙을 나타냄 strategy = GenerationType.IDENTITY 로 자동 증가 됨
@@ -53,15 +54,16 @@ public class Member implements UserDetails {
 
     //테이블의 컬럼을 나타내면 굳이 선언하지 않아도 해당 클래스의 모든 필드는 모두 컬럼이 됨.
     //기본 값 외에 추가 변경 옵션이 있을 때 사용
-    @Column(nullable = false,unique = true)
+    @Column(nullable = false)
     private String email;
 
     @Column(nullable = false)
     private String address;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Builder.Default
-    private List<String> roles = new ArrayList<>();
+    @Column(name = "role")
+    @Enumerated(EnumType.STRING)
+    private UserRole role = UserRole.ROLE_NOT_PERMITTED;
+
 
     //date + time 의 timestamp
     @Temporal(TemporalType.TIMESTAMP)
@@ -74,35 +76,16 @@ public class Member implements UserDetails {
     private Date updateAt;
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.roles.stream()
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
-    }
-
-    //Spring Security 에서 사용하는 username을 가져감
-    @Override
-    public String getUsername(){
-        return email;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return false;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return false;
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", address='" + address + '\'' +
+                ", role=" + role +
+                ", createAt=" + createAt +
+                ", updateAt=" + updateAt +
+                '}';
     }
 }
