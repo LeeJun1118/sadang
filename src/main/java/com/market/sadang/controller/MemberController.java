@@ -37,7 +37,7 @@ public class MemberController {
     }
 
     @PostMapping("/signup")
-    public Response signUpUser(@Valid SignUpForm signUpForm){
+    public String signUpUser(@Valid SignUpForm signUpForm){
         Response response = new Response();
 
         try {
@@ -52,7 +52,7 @@ public class MemberController {
             System.out.println(e.getMessage());
 //            return new Response("error", "회원가입을 하는 도중 오류가 발생했습니다.", null);
         }
-        return response;
+        return "emailVerifyPage";
     }
 
     @PostMapping("/login")
@@ -79,16 +79,19 @@ public class MemberController {
     }
 
     @PostMapping("/verify")
-    public Response verify(@RequestBody RequestVerifyEmail requestVerifyEmail, HttpServletRequest req, HttpServletResponse res){
+    public String verify(@RequestParam(value = "email") String email, HttpServletRequest req, HttpServletResponse res){
         Response response;
         try{
-            Member member = authService.findByUsername(requestVerifyEmail.getUsername());
-            authService.sendVerificationMail(member);
+//            Member member = authService.findByUsername(requestVerifyEmail.getUsername());
+//            authService.sendVerificationMail(member);
+            authService.sendVerificationMail(email);
             response = new Response("success", "성공적으로 인증메일을 보냈습니다.",null);
+            System.out.println(response);
         } catch (Exception e) {
             response = new Response("error","인증메일을 보내는데 실패했습니다.",e);
+            System.out.println(response);
         }
-        return response;
+        return "index";
     }
 
     @GetMapping("/verify/{key}")

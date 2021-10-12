@@ -15,9 +15,6 @@ public class SignUpForm {
     @NotEmpty(message = "비밀번호를 입력해주세요")
     private String password;
 
-    @NotEmpty(message = "이메일을 입력해주세요")
-    private String email;
-
     @NotEmpty(message = "주소를 입력해주세요")
     private String address;
 }

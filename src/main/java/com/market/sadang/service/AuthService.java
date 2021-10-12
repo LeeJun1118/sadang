@@ -16,5 +16,5 @@ public interface AuthService {
 
     Member findByUsername(String username) throws NotFoundException;
 
-    void sendVerificationMail(Member member) throws NotFoundException;
+    void sendVerificationMail(String email) throws NotFoundException;
 }

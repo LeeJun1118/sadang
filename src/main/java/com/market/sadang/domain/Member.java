@@ -46,7 +46,6 @@ public class Member{
 
     //테이블의 컬럼을 나타내면 굳이 선언하지 않아도 해당 클래스의 모든 필드는 모두 컬럼이 됨.
     //기본 값 외에 추가 변경 옵션이 있을 때 사용
-    @Column(nullable = false)
     private String email;
 
     @Column(nullable = false)

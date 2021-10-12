@@ -33,9 +33,7 @@ public class AuthServiceImpl implements AuthService {
         member.setUsername(signUpForm.getUsername());
 
         member.setAddress(signUpForm.getAddress());
-        member.setEmail(signUpForm.getEmail());
-
-        System.out.println(signUpForm.getUsername());
+//        member.setEmail(signUpForm.getEmail());
 
         String password = signUpForm.getPassword();
         String salt = saltUtil.genSalt();
@@ -84,13 +82,13 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public void sendVerificationMail(Member member) throws NotFoundException {
+    public void sendVerificationMail(String email) throws NotFoundException {
         String VERIFICATION_LINK = "http://localhost:8080/verify/";
-        if (member == null)
+        if (email == null)
             throw new NotFoundException("사용자가 조회되지 않습니다.");
         UUID uuid = UUID.randomUUID();
-        redisUtil.setDataExpire(uuid.toString(),member.getUsername(), 60 * 30L);
-        emailService.sendMail(member.getEmail(), "SADANG 인증 메일입니다.",VERIFICATION_LINK + uuid.toString());
+        redisUtil.setDataExpire(uuid.toString(),email, 60 * 30L);
+        emailService.sendMail(email, "SADANG 인증 메일입니다.",VERIFICATION_LINK + uuid.toString());
 
     }
 
