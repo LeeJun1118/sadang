@@ -1,7 +1,5 @@
 package com.market.sadang.config;
 
-import com.market.sadang.jwt.JwtAuthenticationFilter;
-import com.market.sadang.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,7 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final JwtTokenProvider jwtTokenProvider;
+//    private final JwtTokenProvider jwtTokenProvider;
 
     //암호화에 필요한 PasswordEncoder를 Bean 등록함
     @Bean
@@ -45,10 +43,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // 아래 URL로 들어오는 요청에 대해 인증 요구
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/user/**").hasRole("USER")
-                .anyRequest().permitAll() //그 외 나머지 요청은 누구나 접근 가능
-                .and()
+                .anyRequest().permitAll(); //그 외 나머지 요청은 누구나 접근 가능
+//                .and()
                 //JwtAuthenticationFilter 를 UsernamePasswordAuthenticationFilter 전에 넣는다.
-                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
-                        UsernamePasswordAuthenticationFilter.class);
+//                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
+//                        UsernamePasswordAuthenticationFilter.class);
     }
 }
