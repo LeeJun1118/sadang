@@ -26,12 +26,12 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
         // 유효한 토큰인지 확인
         if (token != null && jwtTokenProvider.validateToken(token)){
             // 토큰이 유효하면 토큰으로부터 유저 정보를 받아옴
-            Authentication authentication = jwtTokenProvider.getAuthentication(token);
+            //Authentication authentication = jwtTokenProvider.getAuthentication(token);
 
             //SecurityContext에 Authentication 객체를 저장함
             //SecurityContextHolder 는 Authentication 를 담고 있는 Holder
             //Authentication 자체는 인증된 정보이기에 SecurityContextHolder 가 가지고 있는 값을 통해 인증이 되었는지 아닌지 확인 가능
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+            //SecurityContextHolder.getContext().setAuthentication(authentication);
         }
         chain.doFilter(request, response);
     }

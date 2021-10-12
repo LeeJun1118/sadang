@@ -4,17 +4,9 @@ import com.market.sadang.config.UserRole;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
 
 //lombok 어노테이션
 //클래스 내 모든 필드의 Get 매소드를 자동 생성
@@ -74,6 +66,10 @@ public class Member{
     @Temporal(TemporalType.TIMESTAMP)
     @UpdateTimestamp
     private Date updateAt;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "salt_id")
+    private Salt salt;
 
     @Override
     public String toString() {

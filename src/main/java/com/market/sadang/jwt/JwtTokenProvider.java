@@ -5,15 +5,10 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
-import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
@@ -26,8 +21,6 @@ public class JwtTokenProvider {
     // 토큰 유효시간 30분
     private long tokenValidTime = 30 * 60 * 1000L;
 
-    //Spring Security 에서 유저의 정보를 가져오는 인터페이스
-    private final UserDetailsService userDetailsService;
 
     //객체 초기화, secretKey를 Basse64로 인코딩
     @PostConstruct
@@ -50,12 +43,12 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    //JWT토큰에서 인증 정보 조회
+   /* //JWT토큰에서 인증 정보 조회
     public Authentication getAuthentication(String token){
         // UserDetails 는 Spring Security 에서 사용자 정보를 담는 인터페이스
         UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserPk(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "",userDetails.getAuthorities());
-    }
+    }*/
 
     //토큰에서 회원 정보 추출
     public String getUserPk(String token){
