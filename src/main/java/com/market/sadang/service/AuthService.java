@@ -4,4 +4,6 @@ import com.market.sadang.domain.Member;
 
 public interface AuthService {
     void signUpUser(Member member);
+
+    Member loginUser(String username, String password) throws Exception;
 }
