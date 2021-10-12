@@ -3,6 +3,7 @@ package com.market.sadang.service.impl;
 import com.market.sadang.config.UserRole;
 import com.market.sadang.domain.Member;
 import com.market.sadang.domain.Salt;
+import com.market.sadang.domain.SignUpForm;
 import com.market.sadang.repository.MemberRepository;
 import com.market.sadang.service.AuthService;
 import com.market.sadang.service.EmailService;
@@ -27,8 +28,16 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     @Transactional
-    public void signUpUser(Member member) {
-        String password = member.getPassword();
+    public void signUpUser(SignUpForm signUpForm) {
+        Member member = new Member();
+        member.setUsername(signUpForm.getUsername());
+
+        member.setAddress(signUpForm.getAddress());
+        member.setEmail(signUpForm.getEmail());
+
+        System.out.println(signUpForm.getUsername());
+
+        String password = signUpForm.getPassword();
         String salt = saltUtil.genSalt();
         member.setSalt(new Salt(salt));
         member.setPassword(saltUtil.encodePassword(salt,password));

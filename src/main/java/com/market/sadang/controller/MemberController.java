@@ -3,22 +3,26 @@ package com.market.sadang.controller;
 
 import com.market.sadang.domain.Member;
 import com.market.sadang.domain.Response;
+import com.market.sadang.domain.SignUpForm;
 import com.market.sadang.domain.request.RequestLoginUser;
 import com.market.sadang.domain.request.RequestVerifyEmail;
 import com.market.sadang.service.AuthService;
 import com.market.sadang.service.CookieUtil;
 import com.market.sadang.service.JwtUtil;
 import com.market.sadang.service.RedisUtil;
-import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 @RequiredArgsConstructor
-@RestController
+@Controller
 public class MemberController {
 
     private final AuthService authService;
@@ -26,18 +30,23 @@ public class MemberController {
     private final CookieUtil cookieUtil;
     private final RedisUtil redisUtil;
 
+    @GetMapping("/signup")
+    public String signUpUser(Model model){
+        model.addAttribute("signUpForm",new SignUpForm());
+        return "signUpPage";
+    }
+
     @PostMapping("/signup")
-    public Response signUpUser(@RequestBody Member member){
+    public Response signUpUser(@Valid SignUpForm signUpForm){
         Response response = new Response();
 
         try {
-            authService.signUpUser(member);
+            authService.signUpUser(signUpForm);
             response.setResponse("success");
             response.setMessage("회원가입 성공");
 //            return new Response("success", "회원가입을 성공적으로 완료했습니다.",null);
         }catch (Exception e){
             response.setResponse("failed");
-            response.setMessage(member.toString());
 
             response.setData(e.toString());
             System.out.println(e.getMessage());
