@@ -43,6 +43,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // 아래 URL로 들어오는 요청에 대해 인증 요구
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/user/**").hasRole("USER")
+                .antMatchers("/verify/**").permitAll()
                 .anyRequest().permitAll(); //그 외 나머지 요청은 누구나 접근 가능
 //                .and()
                 //JwtAuthenticationFilter 를 UsernamePasswordAuthenticationFilter 전에 넣는다.

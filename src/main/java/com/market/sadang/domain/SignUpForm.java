@@ -3,6 +3,7 @@ package com.market.sadang.domain;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
 @Getter
@@ -17,4 +18,8 @@ public class SignUpForm {
 
     @NotEmpty(message = "주소를 입력해주세요")
     private String address;
+
+    @NotEmpty(message = "메일 주소를 입력해주세요")
+    @Email
+    private String email;
 }

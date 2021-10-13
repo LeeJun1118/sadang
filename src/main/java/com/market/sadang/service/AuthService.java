@@ -6,7 +6,8 @@ import com.market.sadang.domain.SignUpForm;
 import javassist.NotFoundException;
 
 public interface AuthService {
-    void signUpUser(SignUpForm signUpForm);
+//    void signUpUser(SignUpForm signUpForm);
+    void signUpUser(Member member);
 
     Member loginUser(String username, String password) throws Exception;
 
@@ -16,5 +17,5 @@ public interface AuthService {
 
     Member findByUsername(String username) throws NotFoundException;
 
-    void sendVerificationMail(String email) throws NotFoundException;
+    void sendVerificationMail(Member member) throws NotFoundException;
 }

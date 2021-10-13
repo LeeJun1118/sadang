@@ -28,14 +28,15 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     @Transactional
-    public void signUpUser(SignUpForm signUpForm) {
-        Member member = new Member();
+    public void signUpUser(Member member) {
+        /*Member member = new Member();
         member.setUsername(signUpForm.getUsername());
 
         member.setAddress(signUpForm.getAddress());
 //        member.setEmail(signUpForm.getEmail());
-
-        String password = signUpForm.getPassword();
+*/
+//        String password = signUpForm.getPassword();
+        String password = member.getPassword();
         String salt = saltUtil.genSalt();
         member.setSalt(new Salt(salt));
         member.setPassword(saltUtil.encodePassword(salt,password));
@@ -60,6 +61,8 @@ public class AuthServiceImpl implements AuthService {
     public void verifyEmail(String key) throws NotFoundException {
         String memberId = redisUtil.getData(key);
         Member member = memberRepository.findByUsername(memberId);
+        System.out.println(member.getUsername());
+        System.out.println(member.getEmail());
         if (member == null)
             throw new NotFoundException("사용자가 조회되지 않습니다.");
         modifyUserRole(member, UserRole.ROLE_USER);
@@ -82,13 +85,13 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public void sendVerificationMail(String email) throws NotFoundException {
+    public void sendVerificationMail(Member member) throws NotFoundException {
         String VERIFICATION_LINK = "http://localhost:8080/verify/";
-        if (email == null)
+        if (member == null)
             throw new NotFoundException("사용자가 조회되지 않습니다.");
         UUID uuid = UUID.randomUUID();
-        redisUtil.setDataExpire(uuid.toString(),email, 60 * 30L);
-        emailService.sendMail(email, "SADANG 인증 메일입니다.",VERIFICATION_LINK + uuid.toString());
+        redisUtil.setDataExpire(uuid.toString(), member.getUsername(), 60 * 30L);
+        emailService.sendMail(member.getEmail(), "SADANG 인증 메일입니다.",VERIFICATION_LINK + uuid.toString());
 
     }
 
