@@ -27,15 +27,9 @@ public class AuthServiceImpl implements AuthService {
     private final EmailService emailService;
 
     @Override
-    @Transactional
+    @Transactional //begin,commit 자동수행, 예외 발생 시 rollback 자동 수행
     public void signUpUser(Member member) {
-        /*Member member = new Member();
-        member.setUsername(signUpForm.getUsername());
-
-        member.setAddress(signUpForm.getAddress());
-//        member.setEmail(signUpForm.getEmail());
-*/
-//        String password = signUpForm.getPassword();
+        //비밀 번호 암호화 후 사용자 저장
         String password = member.getPassword();
         String salt = saltUtil.genSalt();
         member.setSalt(new Salt(salt));
@@ -44,8 +38,9 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    @Transactional
+    @Transactional //begin,commit 자동수행, 예외 발생 시 rollback 자동 수행
     public Member loginUser(String id, String password) throws Exception {
+        //id 로 찾아서
         Member member = memberRepository.findByUsername(id);
         if(member == null)
             throw new Exception("사용자가 조회되지 않음");
@@ -59,18 +54,23 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public void verifyEmail(String key) throws NotFoundException {
+        //key 받아서 사용자 찾음
         String memberId = redisUtil.getData(key);
         Member member = memberRepository.findByUsername(memberId);
-        System.out.println(member.getUsername());
-        System.out.println(member.getEmail());
+
         if (member == null)
             throw new NotFoundException("사용자가 조회되지 않습니다.");
+
+        //해당 사용자 Role을 user로 변경
         modifyUserRole(member, UserRole.ROLE_USER);
+
+        //redis에 해당 키 삭제
         redisUtil.deleteData(key);
     }
 
     @Override
     public void modifyUserRole(Member member, UserRole userRole) {
+        //Role 변경
         member.setRole(userRole);
         memberRepository.save(member);
     }
@@ -89,8 +89,14 @@ public class AuthServiceImpl implements AuthService {
         String VERIFICATION_LINK = "http://localhost:8080/verify/";
         if (member == null)
             throw new NotFoundException("사용자가 조회되지 않습니다.");
+
+        //중복 없이 id 생성
         UUID uuid = UUID.randomUUID();
+
+        //uuid 만료시간
         redisUtil.setDataExpire(uuid.toString(), member.getUsername(), 60 * 30L);
+
+        //메일 보냄
         emailService.sendMail(member.getEmail(), "SADANG 인증 메일입니다.",VERIFICATION_LINK + uuid.toString());
 
     }
