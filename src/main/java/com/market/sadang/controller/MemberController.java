@@ -34,8 +34,8 @@ public class MemberController {
         return modelAndView;
     }
 
-    @PostMapping("/signup")
-    public Response signUpUser(@RequestBody Member member, ModelAndView modelAndView) {
+    @PostMapping(value = "/signup")
+    public ModelAndView signUpUser(Member member, ModelAndView modelAndView) {
         Response response = new Response();
 
         try {
@@ -43,18 +43,19 @@ public class MemberController {
             response.setResponse("success");
             response.setMessage("회원가입 성공");
 
-            modelAndView.setViewName("index");
+            modelAndView.addObject("username",member.getUsername());
+            modelAndView.setViewName("auth/mailVerify");
         } catch (Exception e) {
             response.setResponse("failed");
 
             response.setData(e.toString());
             System.out.println(e.getMessage());
         }
-        return response;
+        return modelAndView;
     }
 
     @PostMapping("/login")
-    public Response login(@RequestBody RequestLoginUser user,
+    public Response login(RequestLoginUser user,
                           HttpServletRequest req,
                           HttpServletResponse res) {
         try {
@@ -76,7 +77,7 @@ public class MemberController {
     }
 
     @PostMapping("/verify")
-    public Response verify(@RequestBody RequestVerifyEmail requestVerifyEmail,
+    public Response verify(RequestVerifyEmail requestVerifyEmail,
                            HttpServletRequest req, HttpServletResponse res) {
         Response response;
 
