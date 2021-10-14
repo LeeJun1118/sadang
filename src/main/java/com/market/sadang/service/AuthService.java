@@ -7,7 +7,7 @@ import javassist.NotFoundException;
 
 public interface AuthService {
 //    void signUpUser(SignUpForm signUpForm);
-    void signUpUser(Member member);
+    Member signUpUser(Member member);
 
     Member loginUser(String username, String password) throws Exception;
 

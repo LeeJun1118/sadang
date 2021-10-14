@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class RequestVerifyEmail {
+public class RequestVerifyUser {
     String username;
 //    String email;
 }

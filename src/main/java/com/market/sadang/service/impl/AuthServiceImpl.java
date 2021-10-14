@@ -28,13 +28,18 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     @Transactional //begin,commit 자동수행, 예외 발생 시 rollback 자동 수행
-    public void signUpUser(Member member) {
+    public Member signUpUser(Member member) {
         //비밀 번호 암호화 후 사용자 저장
+        /*Member member = new Member();
+        member.setUsername(signUpForm.getUsername());
+        member.setAddress(signUpForm.getAddress());
+        member.setPassword(signUpForm.getPassword());*/
+
         String password = member.getPassword();
         String salt = saltUtil.genSalt();
         member.setSalt(new Salt(salt));
         member.setPassword(saltUtil.encodePassword(salt,password));
-        memberRepository.save(member);
+        return memberRepository.save(member);
     }
 
     @Override
