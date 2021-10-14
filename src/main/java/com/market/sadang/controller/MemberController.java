@@ -16,13 +16,19 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+import org.thymeleaf.model.IModel;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
 
 @RequiredArgsConstructor
-@Controller
+@RestController
 public class MemberController {
 
     private final AuthService authService;
@@ -31,34 +37,24 @@ public class MemberController {
     private final RedisUtil redisUtil;
 
     @GetMapping("/signup")
-    public String signUpUser(Model model) {
-        model.addAttribute("signUpForm", new SignUpForm());
-//        model.setViewName("auth/signUpPage");
-        return "auth/signUpPage";
+//    public String signUpUser(Model model) {
+    public ModelAndView signUpUser(ModelAndView model) {
+//        model.addAttribute("signUpForm", new SignUpForm());
+        model.addObject("signUpForm", new SignUpForm());
+        model.setViewName("auth/signUpPage");
+        return model;
+//        return "auth/signUpPage";
     }
 
     @PostMapping(value = "/signup")
-    public String signUpUser(SignUpForm signUpForm, Model model) {
-        model.addAttribute("member", signUpForm);
-       /* Response response = new Response();
+//    public String signUpUser(SignUpForm signUpForm, Model model) {
+    public ModelAndView signUpUser(SignUpForm signUpForm, ModelAndView model) {
+//        model.addAttribute("member", signUpForm);
+        model.addObject("member", signUpForm);
+        model.setViewName("auth/mailVerify");
 
-        try {
-            //Member member = authService.signUpUser(signUpForm);
-            Member member = new Member();
-            member.setUsername(signUpForm.getUsername());
-            member.setPassword(signUpForm.getPassword());
-            member.setAddress(signUpForm.getAddress());
-            model.addAttribute("member", signUpForm);
-            response.setResponse("success");
-            response.setMessage("회원가입 성공");
-
-        } catch (Exception e) {
-            response.setResponse("failed");
-
-            response.setData(e.toString());
-            System.out.println(e.getMessage());
-        }*/
-        return "auth/mailVerify";
+//        return "auth/mailVerify";
+        return model;
     }
 
     @PostMapping("/login")
@@ -84,9 +80,11 @@ public class MemberController {
     }
 
     @PostMapping("/verify")
-    public String verify(Member member,
-                         HttpServletRequest req, HttpServletResponse res,
-                         Model model) {
+//    public String verify(Member member,
+    public ModelAndView verify(Member member,
+                               HttpServletRequest req, HttpServletResponse res,
+//                         Model model) {
+                               ModelAndView model) {
         Response response;
 
         try {
@@ -98,38 +96,76 @@ public class MemberController {
 
             RequestVerifyUser verifyUser = new RequestVerifyUser();
             verifyUser.setUsername(member.getUsername());
-            model.addAttribute("verifyUser", verifyUser);
+//            model.addAttribute("verifyUser", verifyUser);
+            model.addObject("verifyUser", verifyUser);
 
             response = new Response("success", "성공적으로 인증메일을 보냈습니다.", null);
-            System.out.println(response);
+            System.out.println(response.getMessage());
         } catch (Exception e) {
             response = new Response("error", "인증메일을 보내는데 실패했습니다.", e);
-            System.out.println(response);
+            System.out.println(response.getMessage());
         }
-        return "auth/mailConfirm";
+
+        model.setViewName("auth/mailConfirm");
+        return model;
+//        return "auth/mailConfirm";
     }
 
     @GetMapping("/verify/{key}")
-    public String getVerify(@PathVariable String key) {
+//    public String getVerify(@PathVariable String key) {
+    public ModelAndView getVerify(@PathVariable String key, ModelAndView modelAndView) {
         Response response;
         try {
             authService.verifyEmail(key);
-            return "auth/verify";
+            modelAndView.setViewName("auth/verify");
+            return modelAndView;
         } catch (Exception e) {
-            return "auth/expired";
+            modelAndView.setViewName("auth/expired");
+            return modelAndView;
+//            return "auth/expired";
         }
     }
 
     @PostMapping("/confirm")
-    public String mailConfirm(RequestVerifyUser username) throws NotFoundException {
-        Member member = authService.findByUsername(username.getUsername());
-        System.out.println(username.getUsername());
-        System.out.println("member role : "+ member.getRole());
-        System.out.println(UserRole.ROLE_USER);
-        if (member.getRole() == UserRole.ROLE_USER)
-        return "auth/loginPage";
+    public Object mailConfirm(RequestVerifyUser username,
+//                                @RequestParam(name = "username") String name,
+                                HttpServletRequest req,
+                                HttpServletResponse res) throws NotFoundException, IOException {
 
-        else return "redirect:/";
+        Member member = authService.findByUsername(username.getUsername());
+//        System.out.println("##########  name : " + name);
+        System.out.println("##########  username : " + username.getUsername());
+        Map<String, Object> object = new HashMap<String, Object>();
+        if (member.getRole() == UserRole.ROLE_USER){
+            object.put("responseCode", "success");
+//            modelAndView.setViewName("auth/loginPage");
+/*            res.setContentType("text/html; charset=utf-8");
+            res.sendRedirect("/login");
+            PrintWriter out = res.getWriter();
+            out.println("<script>alert('회원가입 성공'); location.href='/login'</script>");
+//            res.sendRedirect("/login");
+            out.flush();
+            return new Response("success","회원가입 성공",username.getUsername());*/
+
+        }
+        else {
+           /* res.setContentType("text/html; charset=utf-8");
+            PrintWriter out = res.getWriter();
+            out.println("<script>alert('이메일 인증을 해주세요'); </script>");
+            out.flush();
+
+            return new Response("error","회원가입 실패",null);*/
+            object.put("responseCode", "error");
+        }
+        System.out.println(object.get("responseCode"));
+        return object;
     }
 
+
+    @GetMapping("/login")
+    public ModelAndView loginPage(ModelAndView modelAndView) {
+        modelAndView.setViewName("auth/loginPage");
+        return modelAndView;
+//        return "auth/loginPage";
+    }
 }
