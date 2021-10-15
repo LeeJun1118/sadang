@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/header :: header"></head>
+    <body>
+        <body id="grad1">
+            <!-- MultiStep Form -->
+            <div class="container-fluid">
+                <div class="row justify-content-center mt-0">
+                    <div class="col-11 col-sm-9 col-md-7 col-lg-8 text-center p-0 mt-5 mb-2">
+                        <div class="card px-0 pt-4 pb-0 mt-5 mb-3">
+                            <h2><strong>SADANG</strong></h2>
+                            <div class="row">
+                                <div class="col-md-12 mx-0">
+                                    <form id="msform" class="registerForm" action="/login" method="get">
+                                        <!-- progressbar -->
+                                        <ul id="progressbar">
+                                            <li class="active" id="account"><strong>회원가입</strong></li>
+                                            <li class="active" id="personal"><strong>본인 인증</strong></li>
+                                            <li class="active" id="payment"><strong>인증 확인</strong></li>
+                                            <li class="active" id="confirm"><strong>완료</strong></li>
+                                        </ul> <!-- fieldsets -->
+
+                                        <div class="form-card">
+                                            <h2 class="fs-title text-center">회원가입이 완료되었습니다.</h2> <br><br>
+                                            <div class="row justify-content-center">
+                                                <div class="col-3">
+                                                    <img src="https://img.icons8.com/color/96/000000/ok--v2.png"
+                                                         class="fit-image">
+                                                </div>
+                                            </div>
+                                            <br><br>
+                                        </div>
+                                        <input type="button" name="previous" class="previous action-button-previous"
+                                               value="이전" onclick="history.go(-1)"/>
+                                        <input id="loginPage" type="submit" name="make_payment" class="action-button"
+                                               value="완료"/>
+                                        <!--                                    </fieldset>-->
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </body>
+</html>

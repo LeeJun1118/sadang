@@ -28,7 +28,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RequiredArgsConstructor
+
+//ResponseBody 를 모든 메소드에 적용해줌
 @RestController
+//@Controller
 public class MemberController {
 
     private final AuthService authService;
@@ -97,7 +100,7 @@ public class MemberController {
             RequestVerifyUser verifyUser = new RequestVerifyUser();
             verifyUser.setUsername(member.getUsername());
 //            model.addAttribute("verifyUser", verifyUser);
-            model.addObject("verifyUser", verifyUser);
+            model.addObject("username", verifyUser.getUsername());
 
             response = new Response("success", "성공적으로 인증메일을 보냈습니다.", null);
             System.out.println(response.getMessage());
@@ -127,40 +130,29 @@ public class MemberController {
     }
 
     @PostMapping("/confirm")
-    public Object mailConfirm(RequestVerifyUser username,
-//                                @RequestParam(name = "username") String name,
-                                HttpServletRequest req,
-                                HttpServletResponse res) throws NotFoundException, IOException {
+    public Object mailConfirm(//@RequestBody RequestVerifyUser username
+                              @RequestParam(name = "username") String name) {
 
-        Member member = authService.findByUsername(username.getUsername());
-//        System.out.println("##########  name : " + name);
-        System.out.println("##########  username : " + username.getUsername());
+//        System.out.println("##########  username.getUsername : " + username.getUsername());
+        System.out.println("##########  username : " + name);
+
         Map<String, Object> object = new HashMap<String, Object>();
-        if (member.getRole() == UserRole.ROLE_USER){
-            object.put("responseCode", "success");
-//            modelAndView.setViewName("auth/loginPage");
-/*            res.setContentType("text/html; charset=utf-8");
-            res.sendRedirect("/login");
-            PrintWriter out = res.getWriter();
-            out.println("<script>alert('회원가입 성공'); location.href='/login'</script>");
-//            res.sendRedirect("/login");
-            out.flush();
-            return new Response("success","회원가입 성공",username.getUsername());*/
 
-        }
-        else {
-           /* res.setContentType("text/html; charset=utf-8");
-            PrintWriter out = res.getWriter();
-            out.println("<script>alert('이메일 인증을 해주세요'); </script>");
-            out.flush();
+        try {
+//            Member member = authService.findByUsername(username.getUsername());
+            Member member = authService.findByUsername(name);
 
-            return new Response("error","회원가입 실패",null);*/
+            if (member.getRole() == UserRole.ROLE_USER) {
+                object.put("responseCode", "success");
+            } else
+                throw new Exception();
+
+        } catch (Exception e) {
             object.put("responseCode", "error");
         }
         System.out.println(object.get("responseCode"));
         return object;
     }
-
 
     @GetMapping("/login")
     public ModelAndView loginPage(ModelAndView modelAndView) {
@@ -169,3 +161,4 @@ public class MemberController {
 //        return "auth/loginPage";
     }
 }
+

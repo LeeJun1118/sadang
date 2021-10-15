@@ -65,6 +65,31 @@ $(document).ready(function () {
         return false;
     })
 
+
+    // $('.registerForm').on('submit', function (event) {
+        $('.registerForm').submit(function (event) {
+
+        var sendData = $('.registerForm').val();//serialize();
+        var param = {"username" : sendData};
+
+        console.log(sendData.attr("username"))
+
+        $.ajax({
+            type: "POST",
+            url: "/confirm",
+            data:  {"username" : sendData},//sendData,//.attr("username"),
+            contentType: "application/json; charset=UTF-8",
+            success: function (data) {
+                console.log("success data : "+data);
+                alert('Login Success!!');
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                alert("ERROR : " + textStatus + " : " + errorThrown);
+            }
+        });
+
+        event.preventDefault();
+    })
 });
 
 document.addEventListener('keydown', function (event) {
@@ -74,62 +99,27 @@ document.addEventListener('keydown', function (event) {
 }, true);
 
 
-/*$("#msform").on("submit", function () {
+$(document).ready(function () {
+    $('.registerForm').on('submit', function (event) {
 
-        // var sendData = $('form[name=registerForm]').serialize();
-        var sendData = $('#msform').serialize();
+        var sendData = $('.registerForm').val();
+        console.log(sendData)
 
-        console.log("$$$$$$$$$$$$$$$$$$" + sendData + "$$$$$$$$$$$$$$$$$$");
         $.ajax({
             type: "POST",
             url: "/confirm",
-            data: sendData,
-            contentType: false,
-            processData: false,
+            data:  {"username" : sendData},
+            contentType: "application/json; charset=UTF-8",
             success: function (data) {
-                alert('Login Success!!');
+                console.log("success data : "+data);
+                alert('회원 가입 완료');
             },
-            error: function (data) {
-                alert("Error !!! 잠시 후 시도해주세요.");
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log("ERROR : " + textStatus + " : " + errorThrown);
+                alert("ERROR : " + textStatus + " : " + errorThrown);
             }
-        })
-})*/
+        });
 
-$('.registerForm').on('submit',function() {
-
-    var sendData = $('.registerForm').serialize();
-
-    console.log("$$$$$$$$$$$$$$$$$$" + sendData + "$$$$$$$$$$$$$$$$$$");
-    $.ajax({
-        type: "POST",
-        url: "/confirm",
-        data: sendData,
-        contentType: false,
-        processData: false,
-        success: function (data) {
-            alert('Login Success!!');
-        },
-        error: function (data) {
-            alert("Error !!! 이메일을 인증해주세요");
-        }
+        event.preventDefault();
     })
-})
-
-function register() {
-    var sendData = $('.registerForm').serialize();
-
-    console.log("$$$$$$$$$$$$$$$$$$" + sendData + "$$$$$$$$$$$$$$$$$$");
-    $.ajax({
-        type: "POST",
-        url: "/confirm",
-        data: sendData,
-        contentType: false,
-        processData: false,
-        success: function (data) {
-            alert('Login Success!!');
-        },
-        error: function (data) {
-            alert("Error !!! 이메일을 인증해주세요");
-        }
-    })
-}
+});

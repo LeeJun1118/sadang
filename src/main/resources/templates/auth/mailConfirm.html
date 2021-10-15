@@ -10,7 +10,10 @@
                         <h2><strong>SADANG</strong></h2>
                         <div class="row">
                             <div class="col-md-12 mx-0">
-                                <form id="msform" class="registerForm" onclick="register()" action="/confirm" method="post" th:object="${verifyUser}">
+                                <!--                                onclick="register()"-->
+
+                                <form id="msform" class="registerForm" action="/confirm" method="post">
+<!--                                    th:object="${verifyUser}"-->
                                     <!-- progressbar -->
                                     <ul id="progressbar">
                                         <li class="active" id="account"><strong>회원가입</strong></li>
@@ -19,28 +22,28 @@
                                         <li id="confirm"><strong>완료</strong></li>
                                     </ul> <!-- fieldsets -->
 
-<!--                                    <fieldset>-->
-                                        <div class="form-card">
-                                            <h2 class="fs-title text-center">메일을 전송했습니다.</h2> <br><br>
-                                            <div class="row justify-content-center">
-                                                <div class="col-3">
-                                                    <img src="https://img.icons8.com/color/96/000000/ok--v2.png"
-                                                         class="fit-image">
-                                                </div>
-                                            </div>
-                                            <br><br>
-                                            <div class="row justify-content-center">
-                                                <div class="col-7 text-center">
-                                                    <input type="hidden" name="username" th:field="*{username}">
-                                                    <h5>메일 확인 후 완료 버튼을 눌러주세요.</h5>
-                                                </div>
+                                    <!--                                    <fieldset>-->
+                                    <div class="form-card">
+                                        <h2 class="fs-title text-center">메일을 전송했습니다.</h2> <br><br>
+                                        <div class="row justify-content-center">
+                                            <div class="col-3">
+                                                <img src="https://img.icons8.com/color/96/000000/ok--v2.png"
+                                                     class="fit-image">
                                             </div>
                                         </div>
-                                        <input type="button" name="previous" class="previous action-button-previous"
-                                               value="이전" onclick="history.go(-1)"/>
-                                        <input id="loginPage" type="submit" name="make_payment" class="action-button"
-                                               value="완료"/>
-<!--                                    </fieldset>-->
+                                        <br><br>
+                                        <div class="row justify-content-center">
+                                            <div class="col-7 text-center">
+                                                <input type="hidden" name="username" th:value="${username}">
+                                                <h5>메일 확인 후 완료 버튼을 눌러주세요.</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <input type="button" name="previous" class="previous action-button-previous"
+                                           value="이전" onclick="history.go(-1)"/>
+                                    <input id="loginPage" type="submit" name="make_payment" class="action-button"
+                                           value="완료"/>
+                                    <!--                                    </fieldset>-->
                                 </form>
                             </div>
                         </div>
