@@ -131,18 +131,21 @@ public class MemberController {
 
     @PostMapping("/confirm")
     public Object mailConfirm(//@RequestBody RequestVerifyUser username
-                              @RequestParam(name = "username") String name) {
+                              @RequestParam(name = "username") String name) throws NotFoundException {
 
 //        System.out.println("##########  username.getUsername : " + username.getUsername());
         System.out.println("##########  username : " + name);
 
         Map<String, Object> object = new HashMap<String, Object>();
+        Member member = authService.findByUsername(name);
 
         try {
 //            Member member = authService.findByUsername(username.getUsername());
-            Member member = authService.findByUsername(name);
+            //Member member = authService.findByUsername(name);
+            System.out.println(member.getUsername());
+            System.out.println(member.getRole());
 
-            if (member.getRole() == UserRole.ROLE_USER) {
+            if (member.getRole() == UserRole.ROLE_NOT_PERMITTED) {
                 object.put("responseCode", "success");
             } else
                 throw new Exception();

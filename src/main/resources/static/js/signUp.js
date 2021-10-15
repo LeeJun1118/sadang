@@ -109,6 +109,7 @@ $(document).ready(function () {
             type: "POST",
             url: "/confirm",
             data:  {"username" : sendData},
+            async: false,
             contentType: "application/json; charset=UTF-8",
             success: function (data) {
                 console.log("success data : "+data);
