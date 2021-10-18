@@ -44,6 +44,8 @@ public class MemberController {
 
     @PostMapping(value = "/signup")
     public ModelAndView signUpUser(SignUpForm signUpForm, ModelAndView model) {
+        signUpForm.setAddress(signUpForm.getAddress() + " " + signUpForm.getDetailAddress());
+
         model.addObject("member", signUpForm);
         model.setViewName("auth/mailSend");
         return model;
