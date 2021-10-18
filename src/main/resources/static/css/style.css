@@ -273,3 +273,7 @@ select.list-dt:focus {
     width: 100%;
     object-fit: cover
 }
+
+.text-black{
+    color: black;
+}

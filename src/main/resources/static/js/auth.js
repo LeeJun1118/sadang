@@ -114,7 +114,6 @@ $(document).ready(function () {
                 alert("이메일 형식을 확인해주세요")
                 return false;
             } else {
-                alert("이메일 ===" + mail)
                 return true;
             }
         }
