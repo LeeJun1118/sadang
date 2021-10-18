@@ -128,10 +128,10 @@ $(document).ready(function () {
     })
 
 
-    $('#username').on('blur', function (event) {
+    $('#userId').on('blur', function (event) {
 
-        var userId = $('#username').val();
-        var sendData = {"username" : userId};
+        var userId = $('#userId').val();
+        var sendData = {"userId" : userId};
         console.log(sendData)
         console.log(JSON.stringify(sendData))
 
@@ -155,7 +155,7 @@ $(document).ready(function () {
                     $("#id_check").css("color", "blue");
                     $("#id_check").css("margin-bottom", "15px");
                     $("#id_check").text("사용할 수 있는 아이디입니다.");
-                    $("#username").css("margin-bottom", "0px");
+                    $("#userId").css("margin-bottom", "0px");
                     $("#userId-btn").attr("disabled", false);
                 }
 

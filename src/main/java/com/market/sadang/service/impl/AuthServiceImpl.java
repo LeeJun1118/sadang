@@ -46,7 +46,7 @@ public class AuthServiceImpl implements AuthService {
     @Transactional //begin,commit 자동수행, 예외 발생 시 rollback 자동 수행
     public Member loginUser(String id, String password) throws Exception {
         //id 로 찾아서
-        Member member = memberRepository.findByUsername(id);
+        Member member = memberRepository.findByUserId(id);
         if(member == null)
             throw new Exception("사용자가 조회되지 않음");
         String salt = member.getSalt().getSalt();
@@ -61,7 +61,7 @@ public class AuthServiceImpl implements AuthService {
     public void verifyEmail(String key) throws NotFoundException {
         //key 받아서 사용자 찾음
         String memberId = redisUtil.getData(key);
-        Member member = memberRepository.findByUsername(memberId);
+        Member member = memberRepository.findByUserId(memberId);
 
         if (member == null)
             throw new NotFoundException("사용자가 조회되지 않습니다.");
@@ -81,8 +81,8 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public Member findByUsername(String username) throws NotFoundException {
-        Member member = memberRepository.findByUsername(username);
+    public Member findByUserId(String username) throws NotFoundException {
+        Member member = memberRepository.findByUserId(username);
         if (member == null)
             return null;
         return member;
@@ -98,7 +98,7 @@ public class AuthServiceImpl implements AuthService {
         UUID uuid = UUID.randomUUID();
 
         //uuid 만료시간
-        redisUtil.setDataExpire(uuid.toString(), member.getUsername(), 60 * 30L);
+        redisUtil.setDataExpire(uuid.toString(), member.getUserId(), 60 * 30L);
 
         //메일 보냄
         emailService.sendMail(member.getEmail(), "SADANG 인증 메일입니다.",VERIFICATION_LINK + uuid.toString());

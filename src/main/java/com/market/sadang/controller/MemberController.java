@@ -63,12 +63,12 @@ public class MemberController {
     }
 
     @PostMapping("/idCheck")
-    public int idCheck(@RequestBody RequestVerifyUser username){
+    public int idCheck(@RequestBody RequestVerifyUser userId){
         // ajax에서 username=testUsername 이런식으로 받아와짐
         Map<String, Object> object = new HashMap<String, Object>();
-        int countUser = memberRepository.countByUsername(username.getUsername());
+        int countUser = memberRepository.countByUserId(userId.getUserId());
 
-        System.out.println("username==" + username.getUsername());
+        System.out.println("username==" + userId.getUserId());
         System.out.println("countUser==" + countUser);
 
         return countUser;
@@ -112,9 +112,9 @@ public class MemberController {
             authService.sendVerificationMail(member);
 
             RequestVerifyUser verifyUser = new RequestVerifyUser();
-            verifyUser.setUsername(member.getUsername());
+            verifyUser.setUserId(member.getUserId());
 //            model.addAttribute("verifyUser", verifyUser);
-            model.addObject("username", verifyUser.getUsername());
+            model.addObject("userId", verifyUser.getUserId());
 
             response = new Response("success", "성공적으로 인증메일을 보냈습니다.", null);
             System.out.println(response.getMessage());
@@ -144,23 +144,23 @@ public class MemberController {
     }
 
     @PostMapping("/confirm")
-    public Object mailConfirm(@RequestBody RequestVerifyUser username) throws Exception {
+    public Object mailConfirm(@RequestBody RequestVerifyUser userId) throws Exception {
 
         // ajax에서 username=testUsername 이런식으로 받아와짐
-        String name = username.getUsername().split("=")[1];
+        String name = userId.getUserId().split("=")[1];
 
         Map<String, Object> object = new HashMap<String, Object>();
 
-        Member member = authService.findByUsername(name);
+        Member member = authService.findByUserId(name);
 
-        System.out.println(member.getUsername());
-        if (member.getUsername() != null && member.getRole() == UserRole.ROLE_USER) {
-            System.out.println("member.name()" + member.getUsername());
+        System.out.println(member.getUserId());
+        if (member.getUserId() != null && member.getRole() == UserRole.ROLE_USER) {
+            System.out.println("member.name()" + member.getUserId());
             System.out.println("member.getRole()=" + member.getRole());
             object.put("responseCode", "success");
         }
         else {
-            System.out.println("member.name()" + member.getUsername());
+            System.out.println("member.name()" + member.getUserId());
             System.out.println("member.getRole()=" + member.getRole());
             object.put("responseCode", "error");
             throw new Exception("메일 인증 안함");

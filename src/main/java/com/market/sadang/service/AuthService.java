@@ -15,7 +15,7 @@ public interface AuthService {
 
     void modifyUserRole(Member member, UserRole userRole);
 
-    Member findByUsername(String username) throws NotFoundException;
+    Member findByUserId(String username) throws NotFoundException;
 
     void sendVerificationMail(Member member) throws NotFoundException;
 }

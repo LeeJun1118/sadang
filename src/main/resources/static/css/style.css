@@ -89,7 +89,7 @@ html {
     letter-spacing: 1px
 }
 
-#msform #username {
+#msform #userId {
     padding: 0px 8px 4px 8px;
     border: none;
     border-bottom: 1px solid #ccc;

@@ -42,6 +42,9 @@ public class Member{
     private String username;
 
     @Column(nullable = false)
+    private String userId;
+
+    @Column(nullable = false)
     private String password;
 
     //테이블의 컬럼을 나타내면 굳이 선언하지 않아도 해당 클래스의 모든 필드는 모두 컬럼이 됨.
