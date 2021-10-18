@@ -65,31 +65,31 @@ $(document).ready(function () {
         return false;
     })
 
-/*
-    // $('.registerForm').on('submit', function (event) {
-    $('.registerForm').submit(function (event) {
+    /*
+        // $('.registerForm').on('submit', function (event) {
+        $('.registerForm').submit(function (event) {
 
-        var sendData = $('.registerForm').val();//serialize();
-        var param = {"username": sendData};
+            var sendData = $('.registerForm').val();//serialize();
+            var param = {"username": sendData};
 
-        console.log(sendData.attr("username"))
+            console.log(sendData.attr("username"))
 
-        $.ajax({
-            type: "POST",
-            url: "/confirm",
-            data: {"username": sendData},//sendData,//.attr("username"),
-            contentType: "application/json; charset=UTF-8",
-            success: function (data) {
-                console.log("success data : " + data);
-                alert('Login Success!!');
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                alert("ERROR : " + textStatus + " : " + errorThrown);
-            }
-        });
+            $.ajax({
+                type: "POST",
+                url: "/confirm",
+                data: {"username": sendData},//sendData,//.attr("username"),
+                contentType: "application/json; charset=UTF-8",
+                success: function (data) {
+                    console.log("success data : " + data);
+                    alert('Login Success!!');
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert("ERROR : " + textStatus + " : " + errorThrown);
+                }
+            });
 
-        event.preventDefault();
-    })*/
+            event.preventDefault();
+        })*/
 });
 
 document.addEventListener('keydown', function (event) {
@@ -100,24 +100,44 @@ document.addEventListener('keydown', function (event) {
 
 
 $(document).ready(function () {
+    $('#sendMail').click(function () {
+        var mail = $('#email').val();
+        console.log("이메일 ===" + mail)
+        var reg_email = /^([0-9a-zA-Z_\.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/;
+
+        if ($('#email').val().length == 0) {
+            alert("이메일을 입력해주세요")
+            $('#email').focus();
+            return false;
+        } else {
+            if (!reg_email.test(mail)) {
+                alert("이메일 형식을 확인해주세요")
+                return false;
+            } else {
+                alert("이메일 ===" + mail)
+                return true;
+            }
+        }
+    });
+
     $('#userId-btn').click(function () {
-        if ($('#username').val == ""){
+        if ($('#username').val().length == 0) {
             alert("이름을 입력해주세요")
             $('#username').focus();
             return false;
         }
 
-        if ($('#userId').val().length == 0){
+        if ($('#userId').val().length == 0) {
             alert("ID를 입력해주세요")
             $('#userId').focus();
             return false;
         }
-        if ($('#password').val().length == 0){
+        if ($('#password').val().length == 0) {
             alert("비밀번호를 입력해주세요")
             $('#password').focus();
             return false;
         }
-        if ($('#address').val().length == 0){
+        if ($('#address').val().length == 0) {
             alert("주소를 입력해주세요")
             $('#address').focus();
             return false;
@@ -142,8 +162,7 @@ $(document).ready(function () {
                 if (JSON.parse(data) == 1) {
                     alert('회원 가입 완료');
                     location.replace("/login")
-                }
-                else {
+                } else {
                     alert("메일 인증을 완료해주세요")
                 }
             },
@@ -161,7 +180,7 @@ $(document).ready(function () {
     $('#userId').on('blur', function (event) {
 
         var userId = $('#userId').val();
-        var sendData = {"userId" : userId};
+        var sendData = {"userId": userId};
         console.log(sendData)
         console.log(JSON.stringify(sendData))
 

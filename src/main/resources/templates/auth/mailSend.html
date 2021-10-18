@@ -10,7 +10,7 @@
                         <h2><strong>SADANG</strong></h2>
                         <div class="row">
                             <div class="col-md-12 mx-0">
-                                <form id="msform" action="/verify" th:object="${member}" method="post">
+                                <form id="msform" action="/sendMail" th:object="${member}" method="post">
                                     <!-- progressbar -->
                                     <ul id="progressbar">
                                         <li class="active" id="account"><strong>회원가입</strong></li>
@@ -31,7 +31,7 @@
                                         </div>
                                         <input type="button" name="previous" class="previous action-button-previous"
                                                value="이전" onclick="history.go(-1)"/>
-                                        <input type="submit" name="next" class="action-button" value="이메일 전송"/>
+                                        <input id="sendMail" type="submit" name="next" class="action-button" value="이메일 전송"/>
                                     </fieldset>
 
                                 </form>

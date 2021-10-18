@@ -45,7 +45,7 @@ public class MemberController {
     @PostMapping(value = "/signup")
     public ModelAndView signUpUser(SignUpForm signUpForm, ModelAndView model) {
         model.addObject("member", signUpForm);
-        model.setViewName("auth/mailVerify");
+        model.setViewName("auth/mailSend");
         return model;
     }
 
@@ -92,7 +92,7 @@ public class MemberController {
         return modelAndView;
     }
 
-    @PostMapping("/verify")
+    @PostMapping("/sendMail")
     public ModelAndView verify(Member member,ModelAndView model) {
         Response response;
 
