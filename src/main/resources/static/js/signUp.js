@@ -65,7 +65,7 @@ $(document).ready(function () {
         return false;
     })
 
-
+/*
     // $('.registerForm').on('submit', function (event) {
     $('.registerForm').submit(function (event) {
 
@@ -89,7 +89,7 @@ $(document).ready(function () {
         });
 
         event.preventDefault();
-    })
+    })*/
 });
 
 document.addEventListener('keydown', function (event) {
@@ -100,6 +100,31 @@ document.addEventListener('keydown', function (event) {
 
 
 $(document).ready(function () {
+    $('#userId-btn').click(function () {
+        if ($('#username').val == ""){
+            alert("이름을 입력해주세요")
+            $('#username').focus();
+            return false;
+        }
+
+        if ($('#userId').val().length == 0){
+            alert("ID를 입력해주세요")
+            $('#userId').focus();
+            return false;
+        }
+        if ($('#password').val().length == 0){
+            alert("비밀번호를 입력해주세요")
+            $('#password').focus();
+            return false;
+        }
+        if ($('#address').val().length == 0){
+            alert("주소를 입력해주세요")
+            $('#address').focus();
+            return false;
+        }
+
+    });
+
     $('.registerForm').on('click', function (event) {
 
         var sendData = $('.registerForm').serialize();
@@ -153,7 +178,7 @@ $(document).ready(function () {
                     $("#id_check").css("color", "red");
                     $("#id_check").css("margin-bottom", "15px");
                     $("#id_check").text("사용할 수 없는 아이디입니다.");
-                    $("#username").css("margin-bottom", "0px");
+                    $("#userId").css("margin-bottom", "0px");
                     $("#userId-btn").attr("disabled", true);
                 } else {
                     console.log(JSON.parse(data));

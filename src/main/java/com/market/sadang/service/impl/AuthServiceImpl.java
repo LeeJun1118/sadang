@@ -30,10 +30,6 @@ public class AuthServiceImpl implements AuthService {
     @Transactional //begin,commit 자동수행, 예외 발생 시 rollback 자동 수행
     public Member signUpUser(Member member) {
         //비밀 번호 암호화 후 사용자 저장
-        /*Member member = new Member();
-        member.setUsername(signUpForm.getUsername());
-        member.setAddress(signUpForm.getAddress());
-        member.setPassword(signUpForm.getPassword());*/
 
         String password = member.getPassword();
         String salt = saltUtil.genSalt();
@@ -44,9 +40,9 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     @Transactional //begin,commit 자동수행, 예외 발생 시 rollback 자동 수행
-    public Member loginUser(String id, String password) throws Exception {
+    public Member loginUser(String userId, String password) throws Exception {
         //id 로 찾아서
-        Member member = memberRepository.findByUserId(id);
+        Member member = memberRepository.findByUserId(userId);
         if(member == null)
             throw new Exception("사용자가 조회되지 않음");
         String salt = member.getSalt().getSalt();
@@ -81,8 +77,8 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public Member findByUserId(String username) throws NotFoundException {
-        Member member = memberRepository.findByUserId(username);
+    public Member findByUserId(String userId) throws NotFoundException {
+        Member member = memberRepository.findByUserId(userId);
         if (member == null)
             return null;
         return member;

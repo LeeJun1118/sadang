@@ -9,13 +9,13 @@ public interface AuthService {
 //    void signUpUser(SignUpForm signUpForm);
     Member signUpUser(Member member);
 
-    Member loginUser(String username, String password) throws Exception;
+    Member loginUser(String userId, String password) throws Exception;
 
     void verifyEmail(String key) throws NotFoundException;
 
     void modifyUserRole(Member member, UserRole userRole);
 
-    Member findByUserId(String username) throws NotFoundException;
+    Member findByUserId(String userId) throws NotFoundException;
 
     void sendVerificationMail(Member member) throws NotFoundException;
 }

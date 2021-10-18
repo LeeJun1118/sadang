@@ -78,6 +78,7 @@ public class Member{
         return "User{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
+                ", userId='" + userId + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", address='" + address + '\'' +

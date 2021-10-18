@@ -16,10 +16,10 @@ public class MyUserDetailService implements UserDetailsService {
 
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Member member = memberRepository.findByUserId(username);
+    public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
+        Member member = memberRepository.findByUserId(userId);
         if (member == null){
-            throw new UsernameNotFoundException(username + " : 사용자가 존재하지 않음");
+            throw new UsernameNotFoundException(userId + " : 사용자가 존재하지 않음");
         }
         return new SecurityMember(member);
     }

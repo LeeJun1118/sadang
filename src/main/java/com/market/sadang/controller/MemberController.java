@@ -51,36 +51,45 @@ public class MemberController {
 
     @PostMapping("/idCheck")
     public int idCheck(@RequestBody RequestVerifyUser userId){
-        // ajax에서 username=testUsername 이런식으로 받아와짐
+        // ajax에서 userId=testuserId 이런식으로 받아와짐
         Map<String, Object> object = new HashMap<String, Object>();
         int countUser = memberRepository.countByUserId(userId.getUserId());
 
-        System.out.println("username==" + userId.getUserId());
+        System.out.println("userId==" + userId.getUserId());
         System.out.println("countUser==" + countUser);
 
         return countUser;
     }
 
     @PostMapping("/login")
-    public Response login(RequestLoginUser user,
+    public ModelAndView login( RequestLoginUser userId,
+                          ModelAndView modelAndView,
                           HttpServletRequest req,
                           HttpServletResponse res) {
+        System.out.println("userId.getUserId()====="+userId.getUserId());
+        Response response;
+
         try {
-            final Member member = authService.loginUser(user.getUsername(), user.getPassword());
+            final Member member = authService.loginUser(userId.getUserId(), userId.getPassword());
             final String token = jwtUtil.generateToken(member);
             final String refreshJwt = jwtUtil.generateRefreshToken(member);
 
             Cookie accessToken = cookieUtil.createCookie(JwtUtil.ACCESS_TOKEN_NAME, token);
             Cookie refreshToken = cookieUtil.createCookie(JwtUtil.REFRESH_TOKEN_NAME, refreshJwt);
 
-            redisUtil.setDataExpire(refreshJwt, member.getUsername(), JwtUtil.REFRESH_TOKEN_VALIDATION_SECOND);
+            redisUtil.setDataExpire(refreshJwt, member.getUserId(), JwtUtil.REFRESH_TOKEN_VALIDATION_SECOND);
             res.addCookie(accessToken);
             res.addCookie(refreshToken);
 
-            return new Response("success", "로그인 성공", token);
+            modelAndView.setViewName("/index");
+            response = new Response("success", "로그인 성공", token);
+
         } catch (Exception e) {
-            return new Response("error", "로그인 실패", e.getMessage());
+            modelAndView.setViewName("auth/loginPage");
+            response = new Response("error", "로그인 실패", e.getMessage());
         }
+
+        return modelAndView;
     }
 
     @PostMapping("/verify")

@@ -3,6 +3,7 @@ package com.market.sadang.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.market.sadang.domain.Response;
 import com.market.sadang.domain.SecurityMember;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,6 +19,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Collection;
 
+@Slf4j
 @Component
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
     @Override
