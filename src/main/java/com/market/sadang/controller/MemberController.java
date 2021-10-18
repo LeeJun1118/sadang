@@ -12,19 +12,13 @@ import com.market.sadang.service.AuthService;
 import com.market.sadang.service.CookieUtil;
 import com.market.sadang.service.JwtUtil;
 import com.market.sadang.service.RedisUtil;
-import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.thymeleaf.model.IModel;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -108,7 +102,7 @@ public class MemberController {
             System.out.println(response.getMessage());
         } catch (Exception e) {
             response = new Response("error", "인증메일을 보내는데 실패했습니다.", e);
-            System.out.println(response.getMessage());
+//            System.out.println(response.getMessage());
         }
 
         model.setViewName("auth/mailConfirm");
@@ -129,12 +123,14 @@ public class MemberController {
     }
 
     @PostMapping("/confirm")
-    public Object mailConfirm(@RequestBody RequestVerifyUser userId) throws Exception {
+    public int mailConfirm(@RequestBody RequestVerifyUser userId) throws Exception {
 
-        // ajax에서 username=testUsername 이런식으로 받아와짐
+        // ajax에서 userId=testUserId 이런식으로 받아와짐
         String name = userId.getUserId().split("=")[1];
 
-        Map<String, Object> object = new HashMap<String, Object>();
+//        Map<String, Object> object = new HashMap<String, Object>();
+
+        int sendReq = 0;
 
         Member member = authService.findByUserId(name);
 
@@ -142,15 +138,16 @@ public class MemberController {
         if (member.getUserId() != null && member.getRole() == UserRole.ROLE_USER) {
             System.out.println("member.name()" + member.getUserId());
             System.out.println("member.getRole()=" + member.getRole());
-            object.put("responseCode", "success");
+            sendReq = 1;
+//            object.put("responseCode", "success");
         }
         else {
             System.out.println("member.name()" + member.getUserId());
             System.out.println("member.getRole()=" + member.getRole());
-            object.put("responseCode", "error");
-            throw new Exception("메일 인증 안함");
+//            object.put("responseCode", "error");
+            System.out.println("메일 인증 안함");
         }
-        return object;
+        return sendReq;
     }
 
     @GetMapping("/login")

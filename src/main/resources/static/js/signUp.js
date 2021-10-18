@@ -114,11 +114,16 @@ $(document).ready(function () {
             dataType: 'json',
             contentType: "application/json",
             success: function (data) {
-                alert('회원 가입 완료');
-                location.replace("/login")
+                if (JSON.parse(data) == 1) {
+                    alert('회원 가입 완료');
+                    location.replace("/login")
+                }
+                else {
+                    alert("메일 인증을 완료해주세요")
+                }
             },
             error: function (request, status, error, jqXHR, textStatus, errorThrown) {
-                alert("메일 인증을 완료해주세요")
+                alert("메일 확인 중 문제 발생!!")
                 //console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
                 console.log("ERROR : " + textStatus + " : " + errorThrown);
             }
