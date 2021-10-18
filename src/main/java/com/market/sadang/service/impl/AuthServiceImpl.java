@@ -83,9 +83,8 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public Member findByUsername(String username) throws NotFoundException {
         Member member = memberRepository.findByUsername(username);
-
         if (member == null)
-            throw new NotFoundException("사용자가 조회되지 않습니다.");
+            return null;
         return member;
     }
 

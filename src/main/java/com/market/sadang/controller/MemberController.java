@@ -130,30 +130,27 @@ public class MemberController {
     }
 
     @PostMapping("/confirm")
-    public Object mailConfirm(//@RequestBody RequestVerifyUser username
-                              @RequestParam(name = "username") String name) throws NotFoundException {
+    public Object mailConfirm(@RequestBody RequestVerifyUser username) throws Exception {
 
-//        System.out.println("##########  username.getUsername : " + username.getUsername());
-        System.out.println("##########  username : " + name);
+        // ajax에서 username=testUsername 이런식으로 받아와짐
+        String name = username.getUsername().split("=")[1];
 
         Map<String, Object> object = new HashMap<String, Object>();
+
         Member member = authService.findByUsername(name);
 
-        try {
-//            Member member = authService.findByUsername(username.getUsername());
-            //Member member = authService.findByUsername(name);
-            System.out.println(member.getUsername());
-            System.out.println(member.getRole());
-
-            if (member.getRole() == UserRole.ROLE_NOT_PERMITTED) {
-                object.put("responseCode", "success");
-            } else
-                throw new Exception();
-
-        } catch (Exception e) {
-            object.put("responseCode", "error");
+        System.out.println(member.getUsername());
+        if (member.getUsername() != null && member.getRole() == UserRole.ROLE_USER) {
+            System.out.println("member.name()" + member.getUsername());
+            System.out.println("member.getRole()=" + member.getRole());
+            object.put("responseCode", "success");
         }
-        System.out.println(object.get("responseCode"));
+        else {
+            System.out.println("member.name()" + member.getUsername());
+            System.out.println("member.getRole()=" + member.getRole());
+            object.put("responseCode", "error");
+            throw new Exception("메일 인증 안함");
+        }
         return object;
     }
 

@@ -67,23 +67,23 @@ $(document).ready(function () {
 
 
     // $('.registerForm').on('submit', function (event) {
-        $('.registerForm').submit(function (event) {
+    $('.registerForm').submit(function (event) {
 
         var sendData = $('.registerForm').val();//serialize();
-        var param = {"username" : sendData};
+        var param = {"username": sendData};
 
         console.log(sendData.attr("username"))
 
         $.ajax({
             type: "POST",
             url: "/confirm",
-            data:  {"username" : sendData},//sendData,//.attr("username"),
+            data: {"username": sendData},//sendData,//.attr("username"),
             contentType: "application/json; charset=UTF-8",
             success: function (data) {
-                console.log("success data : "+data);
+                console.log("success data : " + data);
                 alert('Login Success!!');
             },
-            error: function(jqXHR, textStatus, errorThrown) {
+            error: function (jqXHR, textStatus, errorThrown) {
                 alert("ERROR : " + textStatus + " : " + errorThrown);
             }
         });
@@ -100,24 +100,26 @@ document.addEventListener('keydown', function (event) {
 
 
 $(document).ready(function () {
-    $('.registerForm').on('submit', function (event) {
+    $('.registerForm').on('click', function (event) {
 
-        var sendData = $('.registerForm').val();
+        var sendData = $('.registerForm').serialize();
         console.log(sendData)
 
         $.ajax({
             type: "POST",
             url: "/confirm",
-            data:  {"username" : sendData},
+            data: JSON.stringify(sendData),
             async: false,
-            contentType: "application/json; charset=UTF-8",
+            dataType: 'json',
+            contentType: "application/json",
             success: function (data) {
-                console.log("success data : "+data);
                 alert('회원 가입 완료');
+                location.replace("/login")
             },
-            error: function(jqXHR, textStatus, errorThrown) {
+            error: function (request, status, error, jqXHR, textStatus, errorThrown) {
+                alert("메일 인증을 완료해주세요")
+                //console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
                 console.log("ERROR : " + textStatus + " : " + errorThrown);
-                alert("ERROR : " + textStatus + " : " + errorThrown);
             }
         });
 
