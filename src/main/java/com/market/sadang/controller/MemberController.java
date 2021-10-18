@@ -52,23 +52,27 @@ public class MemberController {
     }
 
     @PostMapping("/idCheck")
-    public int idCheck(@RequestBody RequestVerifyUser userId){
+    public int idCheck(@RequestBody RequestVerifyUser userId) {
         // ajax에서 userId=testuserId 이런식으로 받아와짐
         Map<String, Object> object = new HashMap<String, Object>();
-        int countUser = memberRepository.countByUserId(userId.getUserId());
+        int count = 0;
+        if (userId.getUserId() == "") {
+            count = 1;
+        } else
+            count = memberRepository.countByUserId(userId.getUserId());
 
         System.out.println("userId==" + userId.getUserId());
-        System.out.println("countUser==" + countUser);
+        System.out.println("countUser==" + count);
 
-        return countUser;
+        return count;
     }
 
     @PostMapping("/login")
-    public ModelAndView login( RequestLoginUser userId,
-                          ModelAndView modelAndView,
-                          HttpServletRequest req,
-                          HttpServletResponse res) {
-        System.out.println("userId.getUserId()====="+userId.getUserId());
+    public ModelAndView login(RequestLoginUser userId,
+                              ModelAndView modelAndView,
+                              HttpServletRequest req,
+                              HttpServletResponse res) {
+        System.out.println("userId.getUserId()=====" + userId.getUserId());
         Response response;
 
         try {
@@ -95,7 +99,7 @@ public class MemberController {
     }
 
     @PostMapping("/sendMail")
-    public ModelAndView verify(Member member,ModelAndView model) {
+    public ModelAndView verify(Member member, ModelAndView model) {
         Response response;
 
         try {
@@ -151,8 +155,7 @@ public class MemberController {
             System.out.println("member.getRole()=" + member.getRole());
             sendReq = 1;
 //            object.put("responseCode", "success");
-        }
-        else {
+        } else {
             System.out.println("member.name()" + member.getUserId());
             System.out.println("member.getRole()=" + member.getRole());
 //            object.put("responseCode", "error");
