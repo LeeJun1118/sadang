@@ -42,23 +42,16 @@ public class MemberController {
     private final RedisUtil redisUtil;
 
     @GetMapping("/signup")
-//    public String signUpUser(Model model) {
     public ModelAndView signUpUser(ModelAndView model) {
-//        model.addAttribute("signUpForm", new SignUpForm());
         model.addObject("signUpForm", new SignUpForm());
         model.setViewName("auth/signUpPage");
         return model;
-//        return "auth/signUpPage";
     }
 
     @PostMapping(value = "/signup")
-//    public String signUpUser(SignUpForm signUpForm, Model model) {
     public ModelAndView signUpUser(SignUpForm signUpForm, ModelAndView model) {
-//        model.addAttribute("member", signUpForm);
         model.addObject("member", signUpForm);
         model.setViewName("auth/mailVerify");
-
-//        return "auth/mailVerify";
         return model;
     }
 
@@ -97,11 +90,7 @@ public class MemberController {
     }
 
     @PostMapping("/verify")
-//    public String verify(Member member,
-    public ModelAndView verify(Member member,
-                               HttpServletRequest req, HttpServletResponse res,
-//                         Model model) {
-                               ModelAndView model) {
+    public ModelAndView verify(Member member,ModelAndView model) {
         Response response;
 
         try {
@@ -113,7 +102,6 @@ public class MemberController {
 
             RequestVerifyUser verifyUser = new RequestVerifyUser();
             verifyUser.setUserId(member.getUserId());
-//            model.addAttribute("verifyUser", verifyUser);
             model.addObject("userId", verifyUser.getUserId());
 
             response = new Response("success", "성공적으로 인증메일을 보냈습니다.", null);
@@ -125,11 +113,9 @@ public class MemberController {
 
         model.setViewName("auth/mailConfirm");
         return model;
-//        return "auth/mailConfirm";
     }
 
     @GetMapping("/verify/{key}")
-//    public String getVerify(@PathVariable String key) {
     public ModelAndView getVerify(@PathVariable String key, ModelAndView modelAndView) {
         Response response;
         try {
@@ -139,7 +125,6 @@ public class MemberController {
         } catch (Exception e) {
             modelAndView.setViewName("auth/expired");
             return modelAndView;
-//            return "auth/expired";
         }
     }
 
@@ -172,7 +157,6 @@ public class MemberController {
     public ModelAndView loginPage(ModelAndView modelAndView) {
         modelAndView.setViewName("auth/loginPage");
         return modelAndView;
-//        return "auth/loginPage";
     }
 }
 
