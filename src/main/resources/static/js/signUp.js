@@ -104,6 +104,7 @@ $(document).ready(function () {
 
         var sendData = $('.registerForm').serialize();
         console.log(sendData)
+        console.log(JSON.stringify(sendData))
 
         $.ajax({
             type: "POST",
@@ -120,6 +121,48 @@ $(document).ready(function () {
                 alert("메일 인증을 완료해주세요")
                 //console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
                 console.log("ERROR : " + textStatus + " : " + errorThrown);
+            }
+        });
+
+        event.preventDefault();
+    })
+
+
+    $('#username').on('blur', function (event) {
+
+        var userId = $('#username').val();
+        var sendData = {"username" : userId};
+        console.log(sendData)
+        console.log(JSON.stringify(sendData))
+
+        $.ajax({
+            type: "POST",
+            url: "/idCheck",
+            data: JSON.stringify(sendData),
+            async: false,
+            dataType: 'json',
+            contentType: "application/json",
+            success: function (data) {
+                if (JSON.parse(data) > 0) {
+                    console.log(JSON.parse(data));
+                    $("#id_check").css("color", "red");
+                    $("#id_check").css("margin-bottom", "15px");
+                    $("#id_check").text("사용할 수 없는 아이디입니다.");
+                    $("#username").css("margin-bottom", "0px");
+                    $("#userId-btn").attr("disabled", true);
+                } else {
+                    console.log(JSON.parse(data));
+                    $("#id_check").css("color", "blue");
+                    $("#id_check").css("margin-bottom", "15px");
+                    $("#id_check").text("사용할 수 있는 아이디입니다.");
+                    $("#username").css("margin-bottom", "0px");
+                    $("#userId-btn").attr("disabled", false);
+                }
+
+            },
+            error: function (request, status, error, jqXHR, textStatus, errorThrown) {
+                console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+                //console.log("ERROR : " + textStatus + " : " + errorThrown);
             }
         });
 

@@ -7,6 +7,7 @@ import com.market.sadang.domain.Response;
 import com.market.sadang.domain.SignUpForm;
 import com.market.sadang.domain.request.RequestLoginUser;
 import com.market.sadang.domain.request.RequestVerifyUser;
+import com.market.sadang.repository.MemberRepository;
 import com.market.sadang.service.AuthService;
 import com.market.sadang.service.CookieUtil;
 import com.market.sadang.service.JwtUtil;
@@ -35,6 +36,7 @@ import java.util.Map;
 public class MemberController {
 
     private final AuthService authService;
+    private final MemberRepository memberRepository;
     private final JwtUtil jwtUtil;
     private final CookieUtil cookieUtil;
     private final RedisUtil redisUtil;
@@ -58,6 +60,18 @@ public class MemberController {
 
 //        return "auth/mailVerify";
         return model;
+    }
+
+    @PostMapping("/idCheck")
+    public int idCheck(@RequestBody RequestVerifyUser username){
+        // ajax에서 username=testUsername 이런식으로 받아와짐
+        Map<String, Object> object = new HashMap<String, Object>();
+        int countUser = memberRepository.countByUsername(username.getUsername());
+
+        System.out.println("username==" + username.getUsername());
+        System.out.println("countUser==" + countUser);
+
+        return countUser;
     }
 
     @PostMapping("/login")

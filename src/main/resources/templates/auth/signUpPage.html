@@ -25,13 +25,14 @@
                                         <div class="form-card">
                                             <h3 class="fs-title">회원가입</h3>
                                             </br>
-                                            <input type="text" th:field="*{username}" placeholder="사용할 ID를 입력해주세요."/>
-                                            <input type="password" th:field="*{password}" placeholder="비밀번호를 입력해주세요"/>
-                                            <input type="text" th:field="*{address}" placeholder="주소를 입력해주세요"/>
+                                            <input id="username" type="text" th:field="*{username}" placeholder="사용할 ID를 입력해주세요."/>
+                                            <div id="id_check"></div>
+                                            <input type="password" class="input-form" th:field="*{password}" placeholder="비밀번호를 입력해주세요"/>
+                                            <input type="text" class="input-form" th:field="*{address}" placeholder="주소를 입력해주세요"/>
                                         </div>
                                     </fieldset>
                                     <!--class="next action-button"-->
-                                    <input type="submit" name="make_payment" class="action-button"
+                                    <input id="userId-btn" type="submit" name="make_payment" class="action-button"
                                            value="다음"/>
                                     </fieldset>
                                 </form>
