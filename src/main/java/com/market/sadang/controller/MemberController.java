@@ -12,7 +12,9 @@ import com.market.sadang.service.authUtil.AuthService;
 import com.market.sadang.service.authUtil.CookieUtil;
 import com.market.sadang.service.authUtil.JwtUtil;
 import com.market.sadang.service.authUtil.RedisUtil;
+import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -103,6 +105,76 @@ public class MemberController {
         return modelAndView;
     }
 
+
+
+
+
+  /*  @PostMapping("/login")
+    public ModelAndView login(RequestLoginUser user,
+                              ModelAndView modelAndView,
+                              HttpServletRequest req,
+                              HttpServletResponse res) {
+        System.out.println("userId.getUserId()=====" + user.getUserId());
+        Response response;
+
+        try {
+            final Member member = authService.loginUser(user.getUserId(), user.getPassword());
+            final String token = jwtUtil.generateToken(member);
+            final String refreshJwt = jwtUtil.generateRefreshToken(member);
+
+            Cookie accessToken = cookieUtil.createCookie(JwtUtil.ACCESS_TOKEN_NAME, token);
+            Cookie refreshToken = cookieUtil.createCookie(JwtUtil.REFRESH_TOKEN_NAME, refreshJwt);
+
+//            redisUtil.setDataExpire(refreshJwt, member.getUserId(), JwtUtil.REFRESH_TOKEN_VALIDATION_SECOND);
+            redisUtil.setDataExpire(refreshJwt, member, JwtUtil.REFRESH_TOKEN_VALIDATION_SECOND);
+            res.addCookie(accessToken);
+            res.addCookie(refreshToken);
+
+            modelAndView.setViewName("/index");
+            response = new Response("success", "로그인 성공", token);
+
+        } catch (Exception e) {
+            modelAndView.setViewName("auth/loginPage");
+            response = new Response("error", "로그인 실패", e.getMessage());
+        }
+
+        return modelAndView;
+    }
+
+
+
+
+    @PostMapping("/sendMail")
+    public ModelAndView verify(Member member, ModelAndView model) throws NotFoundException {
+        Response response;
+
+*//*        Member member = new Member();
+        member.setAddress(signUpForm.getAddress());
+        member.setUsername(signUpForm.getUsername());
+        member.setPassword(signUpForm.getPassword());
+        member.setEmail(signUpForm.getEmail());*//*
+
+
+            // 회원 가입
+//            authService.signUpUser(member);
+
+            //메일 보냄
+            authService.sendVerificationMail(member);
+
+            RequestVerifyUser verifyUser = new RequestVerifyUser();
+            verifyUser.setUserId(member.getUserId());
+            model.addObject("userId", verifyUser.getUserId());
+
+            response = new Response("success", "성공적으로 인증메일을 보냈습니다.", null);
+            System.out.println(response.getMessage());
+
+
+        model.setViewName("auth/mailConfirm");
+        return model;
+    }*/
+
+
+
     @PostMapping("/sendMail")
     public ModelAndView verify(Member member, ModelAndView model) {
         Response response;
@@ -183,7 +255,9 @@ public class MemberController {
 
         if (jwtToken != null) {
             userId = jwtUtil.getUserId(jwtToken.getValue());
+            String username = memberRepository.findByUserId(userId).getUsername();
             model.addObject("userId", userId);
+            model.addObject("username", username);
 
         } else {
             model.addObject("userId", "null");
