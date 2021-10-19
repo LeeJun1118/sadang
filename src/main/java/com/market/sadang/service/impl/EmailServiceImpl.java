@@ -1,6 +1,6 @@
 package com.market.sadang.service.impl;
 
-import com.market.sadang.service.EmailService;
+import com.market.sadang.service.authUtil.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;

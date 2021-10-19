@@ -1,6 +1,6 @@
 package com.market.sadang.config;
 
-import com.market.sadang.service.MyUserDetailService;
+import com.market.sadang.service.authUtil.MyUserDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;

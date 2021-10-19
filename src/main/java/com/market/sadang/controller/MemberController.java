@@ -8,10 +8,10 @@ import com.market.sadang.domain.SignUpForm;
 import com.market.sadang.domain.request.RequestLoginUser;
 import com.market.sadang.domain.request.RequestVerifyUser;
 import com.market.sadang.repository.MemberRepository;
-import com.market.sadang.service.AuthService;
-import com.market.sadang.service.CookieUtil;
-import com.market.sadang.service.JwtUtil;
-import com.market.sadang.service.RedisUtil;
+import com.market.sadang.service.authUtil.AuthService;
+import com.market.sadang.service.authUtil.CookieUtil;
+import com.market.sadang.service.authUtil.JwtUtil;
+import com.market.sadang.service.authUtil.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
+//final이 선언된 모든 필드를 인자값으로 하는 생성자를 대신 생성
 @RequiredArgsConstructor
 
 //ResponseBody 를 모든 메소드에 적용해줌

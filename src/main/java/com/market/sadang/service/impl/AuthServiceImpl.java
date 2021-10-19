@@ -3,17 +3,15 @@ package com.market.sadang.service.impl;
 import com.market.sadang.config.UserRole;
 import com.market.sadang.domain.Member;
 import com.market.sadang.domain.Salt;
-import com.market.sadang.domain.SignUpForm;
 import com.market.sadang.repository.MemberRepository;
-import com.market.sadang.service.AuthService;
-import com.market.sadang.service.EmailService;
-import com.market.sadang.service.RedisUtil;
-import com.market.sadang.service.SaltUtil;
+import com.market.sadang.service.authUtil.AuthService;
+import com.market.sadang.service.authUtil.EmailService;
+import com.market.sadang.service.authUtil.RedisUtil;
+import com.market.sadang.service.authUtil.SaltUtil;
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.swing.plaf.metal.MetalMenuBarUI;
 import javax.transaction.Transactional;
 import java.util.UUID;
 

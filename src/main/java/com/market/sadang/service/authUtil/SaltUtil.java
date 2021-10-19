@@ -1,4 +1,4 @@
-package com.market.sadang.service;
+package com.market.sadang.service.authUtil;
 
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;

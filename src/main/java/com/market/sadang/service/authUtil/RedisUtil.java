@@ -1,4 +1,4 @@
-package com.market.sadang.service;
+package com.market.sadang.service.authUtil;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;

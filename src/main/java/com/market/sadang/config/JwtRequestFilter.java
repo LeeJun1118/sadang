@@ -1,15 +1,14 @@
 package com.market.sadang.config;
 
 import com.market.sadang.domain.Member;
-import com.market.sadang.service.CookieUtil;
-import com.market.sadang.service.JwtUtil;
-import com.market.sadang.service.MyUserDetailService;
-import com.market.sadang.service.RedisUtil;
+import com.market.sadang.service.authUtil.CookieUtil;
+import com.market.sadang.service.authUtil.JwtUtil;
+import com.market.sadang.service.authUtil.MyUserDetailService;
+import com.market.sadang.service.authUtil.RedisUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;

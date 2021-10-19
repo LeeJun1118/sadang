@@ -1,9 +1,6 @@
 package com.market.sadang.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -18,6 +15,8 @@ import javax.persistence.*;
 
 //클래스에 존재하는 모든 필드에 대한 생성자 자동 생성
 @AllArgsConstructor
+
+@Builder
 public class Board {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
