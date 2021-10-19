@@ -1,7 +1,6 @@
 package com.market.sadang.controller;
 
 
-import com.market.sadang.config.JwtRequestFilter;
 import com.market.sadang.config.UserRole;
 import com.market.sadang.domain.Member;
 import com.market.sadang.domain.Response;
@@ -175,14 +174,24 @@ public class MemberController {
         return modelAndView;
     }
 
-    @GetMapping("/board/new")
-    public ModelAndView test(ModelAndView model,HttpServletRequest request){
-        String jwtToken = cookieUtil.getCookie(request,"accessToken").getValue();
-        String userId = jwtUtil.getUserId(jwtToken);
+    /*@GetMapping("/test/new")
+    public ModelAndView authTest(ModelAndView model, HttpServletRequest request) {
+        //쿠키에서 토큰 받아서 사용자 정보 확인
+        Cookie jwtToken = cookieUtil.getCookie(request, "accessToken");
+        String userId = null;
 
-        model.addObject("userId",userId);
-        model.setViewName("board/boardForm");
+        model.setViewName("testForm");
+
+        try {
+            userId = jwtUtil.getUserId(jwtToken.getValue());
+            model.addObject("userId", userId);
+
+        }catch (Exception e){
+            model.addObject("userId", "null");
+        }
+
+        model.setViewName("testForm");
         return model;
-    }
+    }*/
 }
 

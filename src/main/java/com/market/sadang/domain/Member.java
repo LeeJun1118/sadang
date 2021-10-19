@@ -6,7 +6,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 //lombok 어노테이션
 //클래스 내 모든 필드의 Get 매소드를 자동 생성
@@ -29,7 +31,6 @@ import java.util.Date;
 //테이블과 연결될 클래스임을 나타냄
 //기본 값으로 클래스의 카멜케이스 이름을 언더스코어 네이밍(_)으로 테이블 이름을 매칭(ex: SalesManager.java -> sales_manager table)
 @Entity
-@Table(name = "Members")
 //Spring Security는 UserDetails 객체를 통해 권한 정보를 관리하기 때문에 User 클래스에 UserDetails 를 구현하고 추가 정보를 재정의 해야함
 public class Member{
     //해당 테이블의 PK 필드를 나타냄
@@ -72,6 +73,9 @@ public class Member{
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "salt_id")
     private Salt salt;
+
+    @OneToMany(mappedBy = "member")
+    private List<Board> boards = new ArrayList<>();
 
     @Override
     public String toString() {

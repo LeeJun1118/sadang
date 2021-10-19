@@ -35,12 +35,13 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
         Collection<GrantedAuthority> authorities = member.getAuthorities();
 
         if (hasRole(authorities,UserRole.ROLE_NOT_PERMITTED.name())){
-            res.setMessage("사용자 인증메일을 받지 않았습니다.");
+//            res.setMessage("사용자 인증메일을 받지 않았습니다.");
+            response.sendRedirect("/signup");
         }
 
-        PrintWriter out = response.getWriter();
+        /*PrintWriter out = response.getWriter();
         String jsonResponse = objectMapper.writeValueAsString(res);
-        out.print(jsonResponse);
+        out.print(jsonResponse);*/
     }
 
     private boolean hasRole(Collection<GrantedAuthority> authorities, String role) {

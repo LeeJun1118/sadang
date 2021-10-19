@@ -21,9 +21,10 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
 
         response.setStatus(200);
         response.setContentType("application/json;charset=utf-8");
-        Response res = new Response("error","로그인이 되지 않은 사용자입니다.",null);
+        response.sendRedirect("/login");
+        /*Response res = new Response("error","로그인이 되지 않은 사용자입니다.",null);
         PrintWriter out = response.getWriter();
         String jsonResponse = objectMapper.writeValueAsString(response);
-        out.print(jsonResponse);
+        out.print(jsonResponse);*/
     }
 }
