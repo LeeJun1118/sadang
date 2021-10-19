@@ -19,6 +19,7 @@ import java.util.List;
 //public 클래스명(){} 와 같은 효과
 @NoArgsConstructor
 
+//클래스에 존재하는 모든 필드에 대한 생성자 자동 생성
 @AllArgsConstructor
 //@EqualsAndHashCode(of = "id")
 

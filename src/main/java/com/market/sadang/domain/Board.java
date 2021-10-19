@@ -7,10 +7,16 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
+//테이블과 연결될 클래스
 @Entity
+
 @Getter
 @Setter
+
+//기본 생성자 자동 생성
 @NoArgsConstructor
+
+//클래스에 존재하는 모든 필드에 대한 생성자 자동 생성
 @AllArgsConstructor
 public class Board {
     @Id

@@ -22,12 +22,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
+        http.csrf().disable()// rest api를 고려하여 기본 설정 해제
+                // 토큰 기반 인증이므로 세션 사용 안함
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .httpBasic()
+                //로그인 안한 사람이 접근시 설정
                 .authenticationEntryPoint(customAuthenticationEntryPoint)
                 .and()
+                //메일 인증을 안한 사람이 접근시 설정
                 .exceptionHandling().accessDeniedHandler(customAccessDeniedHandler)
                 .and()
                 .authorizeRequests()
@@ -36,6 +39,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .antMatchers("/login").permitAll()
 //                .antMatchers("/verify").permitAll()
                 .antMatchers("/board/**").hasRole("USER")
+                .antMatchers("/test/**").hasRole("USER")
                 .anyRequest().permitAll();
 
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);

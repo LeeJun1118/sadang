@@ -1,8 +1,8 @@
 package com.market.sadang.controller;
 
-import com.market.sadang.domain.SignUpForm;
+
+import com.market.sadang.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
@@ -10,6 +10,8 @@ import org.springframework.web.servlet.ModelAndView;
 @RequiredArgsConstructor
 @RestController
 public class BoardController {
+
+    private final BoardRepository boardRepository;
 
     @GetMapping("/board")
     public ModelAndView board(ModelAndView model) {

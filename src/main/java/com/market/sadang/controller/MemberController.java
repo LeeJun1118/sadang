@@ -174,24 +174,22 @@ public class MemberController {
         return modelAndView;
     }
 
-    /*@GetMapping("/test/new")
+    @GetMapping("/test/new")
     public ModelAndView authTest(ModelAndView model, HttpServletRequest request) {
         //쿠키에서 토큰 받아서 사용자 정보 확인
         Cookie jwtToken = cookieUtil.getCookie(request, "accessToken");
         String userId = null;
 
-        model.setViewName("testForm");
-
-        try {
+        if (jwtToken != null) {
             userId = jwtUtil.getUserId(jwtToken.getValue());
             model.addObject("userId", userId);
 
-        }catch (Exception e){
+        } else {
             model.addObject("userId", "null");
         }
 
         model.setViewName("testForm");
         return model;
-    }*/
+    }
 }
 
