@@ -1,6 +1,7 @@
 package com.market.sadang.controller;
 
 
+import com.market.sadang.config.JwtRequestFilter;
 import com.market.sadang.config.UserRole;
 import com.market.sadang.domain.Member;
 import com.market.sadang.domain.Response;
@@ -25,6 +26,8 @@ import java.util.Map;
 @RequiredArgsConstructor
 
 //ResponseBody 를 모든 메소드에 적용해줌
+//ResponseBody 는 비동기 통신을 위해 Json 형태로 data를 담아서 보내기 위함
+//RequestBody 도 마찬가지지
 @RestController
 //@Controller
 public class MemberController {
@@ -34,6 +37,8 @@ public class MemberController {
     private final JwtUtil jwtUtil;
     private final CookieUtil cookieUtil;
     private final RedisUtil redisUtil;
+
+//    private final JwtRequestFilter jwtRequestFilter;
 
     @GetMapping("/signup")
     public ModelAndView signUpUser(ModelAndView model) {
@@ -68,15 +73,15 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public ModelAndView login(RequestLoginUser userId,
+    public ModelAndView login(RequestLoginUser user,
                               ModelAndView modelAndView,
                               HttpServletRequest req,
                               HttpServletResponse res) {
-        System.out.println("userId.getUserId()=====" + userId.getUserId());
+        System.out.println("userId.getUserId()=====" + user.getUserId());
         Response response;
 
         try {
-            final Member member = authService.loginUser(userId.getUserId(), userId.getPassword());
+            final Member member = authService.loginUser(user.getUserId(), user.getPassword());
             final String token = jwtUtil.generateToken(member);
             final String refreshJwt = jwtUtil.generateRefreshToken(member);
 
@@ -168,6 +173,16 @@ public class MemberController {
     public ModelAndView loginPage(ModelAndView modelAndView) {
         modelAndView.setViewName("auth/loginPage");
         return modelAndView;
+    }
+
+    @GetMapping("/board/new")
+    public ModelAndView test(ModelAndView model,HttpServletRequest request){
+        String jwtToken = cookieUtil.getCookie(request,"accessToken").getValue();
+        String userId = jwtUtil.getUserId(jwtToken);
+
+        model.addObject("userId",userId);
+        model.setViewName("board/boardForm");
+        return model;
     }
 }
 

@@ -1,5 +1,6 @@
 package com.market.sadang.config;
 
+import com.market.sadang.service.MyUserDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,6 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private MyUserDetailService myUserDetailService;
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
     private final JwtRequestFilter jwtRequestFilter;
@@ -33,12 +35,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().accessDeniedHandler(customAccessDeniedHandler)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/signup").permitAll()
-                .antMatchers("/login").permitAll()
-                .antMatchers("/verify").permitAll()
+//                .antMatchers("/**").permitAll()
+//                .antMatchers("/signup").permitAll()
+//                .antMatchers("/login").permitAll()
+//                .antMatchers("/verify").permitAll()
+                .antMatchers("/board/**").hasRole("USER")
                 .anyRequest().permitAll();
 
-        http.addFilterBefore(jwtRequestFilter,UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override // ignore check swagger resource
