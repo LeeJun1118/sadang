@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/header :: header">
+    </head>
+    <body>
+        <div class="container marTop">
+            <div class="container-sm my-auto">
+                <h1 id="h1-center">
+                    <a class="text-dark" href='/'>SADANG</a>
+                </h1>
+                <br/>
+                <br/>
+                <br/>
+                <form class="form-group">
+                    <div class="form-group">
+                        <label>글 번호
+                            <span th:text="${board.id}"></span>
+                        </label>
+                            작성자 <span th:text="${board.member}"></span>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="form-group border-bottom">
+                                <label for="cardTitle">제목</label>
+                                <span id="cardTitle" class="form-control-plaintext" th:text="${board.title}"></span>
+                            </div>
+                            <br/>
+
+                            <div class="form-group">
+                                <label for="cardTextArea">내용</label>
+                                <textarea class="form-control form-control-plaintext h-25" rows="10"
+                                          disabled="disabled"
+                                          id="cardTextArea"
+                                          th:text="${board.content}"></textarea>
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+
+
+            </div>
+        </div>
+    </body>
+</html>

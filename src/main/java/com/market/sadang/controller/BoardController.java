@@ -24,13 +24,7 @@ public class BoardController {
 
     private final BoardService boardService;
 
-
-   /* @GetMapping("/board")
-    public ModelAndView board(ModelAndView model) {
-        model.setViewName("board/boardForm");
-        return model;
-    }*/
-
+    // 글 쓰기 폼
     @GetMapping("/board/new")
     public ModelAndView boardForm(ModelAndView modelAndView) {
         modelAndView.addObject("boardForm", new BoardResponseDto());
@@ -38,15 +32,22 @@ public class BoardController {
         return modelAndView;
     }
 
+    // 쓴 글 저장 후 글 보기
     @PostMapping("/board/new")
-    public String create(BoardCreateRequestDto boardCreateRequestDto,
-                         HttpServletRequest request) {
-        return "/board/" + boardService.create(boardCreateRequestDto, request);
+    public ModelAndView create(BoardCreateRequestDto boardCreateRequestDto,
+                               HttpServletRequest request,
+                               ModelAndView modelAndView) {
+        modelAndView.setViewName("redirect:/board/" + boardService.create(boardCreateRequestDto, request));
+        return modelAndView;
     }
 
+    // 게시글 보기
     @GetMapping("/board/{id}")
-    public BoardResponseDto searchById(@PathVariable Long id) {
-        return boardService.searchById(id);
+    public ModelAndView searchById(@PathVariable Long id, ModelAndView modelAndView) {
+        BoardResponseDto boardResponseDto = boardService.searchById(id);
+        modelAndView.addObject("board", boardResponseDto);
+        modelAndView.setViewName("board/showBoard");
+        return modelAndView;
     }
 
     @GetMapping("/board")
