@@ -50,12 +50,12 @@ public class BoardController {
         return modelAndView;
     }
 
-    @GetMapping("/board")
-    public String searchAllDesc(Model model) {
+    @GetMapping("/")
+    public ModelAndView searchAllDesc(ModelAndView modelAndView) {
         List<BoardListResponseDto> boardList = boardService.searchAllDesc();
-        model.addAttribute("boardList", boardList);
-
-        return "index";
+        modelAndView.addObject("boardList", boardList);
+        modelAndView.setViewName("index");
+        return modelAndView;
     }
 
     @PutMapping("/board/{id}")

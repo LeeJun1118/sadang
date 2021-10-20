@@ -31,10 +31,10 @@
                         </tr>
                     </thead>
                     <tbody id="goBoard">
-                        <tr  class='table-row'>
-                            <td scope="row"></td>
-                            <td class="col-6"></td>
-                            <td class="col-3"></td>
+                        <tr  class='table-row' th:each="board,index : ${boardList}">
+                            <td scope="row" th:text="${index.count}" th:href="@{/board/{id}(id=${board.id})}"></td>
+                            <td class="col-6" th:text="${board.title}"></td>
+                            <td class="col-3" th:text="${board.id}"></td>
                         </tr>
                     </tbody>
                 </table>
