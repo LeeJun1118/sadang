@@ -38,10 +38,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .antMatchers("/signup").permitAll()
 //                .antMatchers("/login").permitAll()
 //                .antMatchers("/verify").permitAll()
-                .antMatchers("/board/**").hasRole("USER")
+                .antMatchers("/board/new").hasRole("USER")
                 .antMatchers("/test/**").hasRole("USER")
                 .anyRequest().permitAll();
 
+
+        // 모든 요청에 토큰을 검증하는 필터를 추가한다.
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 

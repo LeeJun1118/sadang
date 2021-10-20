@@ -94,11 +94,12 @@ public class MemberController {
             res.addCookie(accessToken);
             res.addCookie(refreshToken);
 
-            modelAndView.setViewName("/index");
+            modelAndView.setViewName("redirect:");
             response = new Response("success", "로그인 성공", token);
 
         } catch (Exception e) {
             modelAndView.setViewName("auth/loginPage");
+            System.out.println("로그인 실패 : " + e.getMessage());
             response = new Response("error", "로그인 실패", e.getMessage());
         }
 

@@ -12,11 +12,10 @@
                     <a href="/signup">회원가입</a>/
                     <a href="/login">로그인</a>/
                     <a href="/test/new">현재 로그인한 사용자 정보</a>/
-                    <a href="/board">게시판 : 로그인 한 사람만 입장가능</a>/
                     <a th:href="@{/board/new}">글쓰기</a>
-                    <form class="form-inline my-2 my-lg-0"  method="get">
+                    <form class="form-inline my-2 my-lg-0" method="get">
                         <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search"
-                               name="search" >
+                               name="search">
                         <input type="hidden" name="page" th:value="1"/>
                         <button class="btn btn-outline-success my-2 my-sm-0">Search</button>
                     </form>
@@ -31,7 +30,7 @@
                         </tr>
                     </thead>
                     <tbody id="goBoard">
-                        <tr  class='table-row' th:each="board,index : ${boardList}">
+                        <tr class='table-row' th:each="board,index : ${boardList}">
                             <td scope="row" th:text="${index.count}" th:href="@{/board/{id}(id=${board.id})}"></td>
                             <td class="col-6" th:text="${board.title}"></td>
                             <td class="col-3" th:text="${board.id}"></td>
@@ -42,4 +41,5 @@
             </div>
         </div>
     </body>
+    <script src="/js/board.js"></script>
 </html>
