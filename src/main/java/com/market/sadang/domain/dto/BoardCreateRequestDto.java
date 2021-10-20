@@ -5,8 +5,10 @@ import com.market.sadang.domain.Member;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
 @NoArgsConstructor
 
 // DTO 사용 이유 : entity 클래스는 데이터베이스와 맞닿은 핵심 클래스이며, 이를 기준으로

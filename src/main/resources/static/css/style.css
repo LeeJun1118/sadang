@@ -292,3 +292,7 @@ select.list-dt:focus {
     font-size: 16px;
     letter-spacing: 1px
 }
+
+#h1-center{
+    text-align: center;
+}

@@ -29,7 +29,11 @@ public class Board {
     @Column(nullable = false)
     private String content;
 
-    @ManyToOne(cascade = {CascadeType.REMOVE})
+    @ManyToOne(cascade = {CascadeType.MERGE})
     private Member member;
 
+    public void update(String title,String content){
+        this.title = title;
+        this.content = content;
+    }
 }
