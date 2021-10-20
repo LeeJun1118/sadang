@@ -19,6 +19,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.swing.plaf.metal.MetalMenuBarUI;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 
@@ -75,9 +76,17 @@ public class BoardService {
     }
 
     @Transactional
-    public void delete(Long id) {
+    public int delete(long id, HttpServletRequest request) {
         Board board = boardRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시물이 존재하지 않습니다"));
-        boardRepository.delete(board);
+
+        Cookie jwtToken = cookieUtil.getCookie(request, "accessToken");
+        String memberId = jwtUtil.getUserId(jwtToken.getValue());
+
+        if (Objects.equals(board.getMember().getUsername(), memberId)){
+            boardRepository.delete(board);
+            return 1;
+        }
+        else return 0;
     }
 }

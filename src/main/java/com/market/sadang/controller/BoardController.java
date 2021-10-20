@@ -1,10 +1,7 @@
 package com.market.sadang.controller;
 
 
-import com.market.sadang.domain.dto.BoardCreateRequestDto;
-import com.market.sadang.domain.dto.BoardListResponseDto;
-import com.market.sadang.domain.dto.BoardResponseDto;
-import com.market.sadang.domain.dto.BoardUpdateRequestDto;
+import com.market.sadang.domain.dto.*;
 import com.market.sadang.service.authUtil.CookieUtil;
 import com.market.sadang.service.authUtil.JwtUtil;
 import com.market.sadang.service.board.BoardService;
@@ -63,8 +60,10 @@ public class BoardController {
         return boardService.update(id, requestDto);
     }
 
-    @DeleteMapping("/board/{id}")
-    public void delete(@PathVariable Long id) {
-        boardService.delete(id);
+    @PostMapping("/board/delete")
+    public int delete(@RequestBody BoardDeleteRequestDto requestDto,
+                      HttpServletRequest request) {
+        long id = Long.parseLong(requestDto.getBoardId());
+        return boardService.delete(id,request);
     }
 }

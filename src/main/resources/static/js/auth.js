@@ -160,12 +160,14 @@ $(document).ready(function () {
         var userId = $('#userId').val();
         var sendData = {"userId": userId};
         console.log(sendData)
+        console.log(userId)
         console.log(JSON.stringify(sendData))
 
         $.ajax({
             type: "POST",
             url: "/idCheck",
-            data: JSON.stringify(sendData),
+            // data: JSON.stringify(sendData),
+            data: JSON.stringify(userId),
             async: false,
             dataType: 'json',
             contentType: "application/json",
