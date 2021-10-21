@@ -1,16 +1,13 @@
 package com.market.sadang.controller;
 
 
+import com.market.sadang.domain.Board;
 import com.market.sadang.domain.dto.*;
-import com.market.sadang.service.authUtil.CookieUtil;
-import com.market.sadang.service.authUtil.JwtUtil;
 import com.market.sadang.service.board.BoardService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -55,15 +52,35 @@ public class BoardController {
         return modelAndView;
     }
 
+    @GetMapping("/board/update/{id}")
+    public ModelAndView updateForm(@PathVariable Long id, ModelAndView modelAndView) {
+        BoardUpdateRequestDto board = boardService.findById(id);
+        modelAndView.addObject("board",board);
+        modelAndView.setViewName("board/updateBoard");
+        return modelAndView;
+    }
+
+    @GetMapping("/board/verify/{id}")
+    public int writerVerify(@PathVariable Long id,
+                             HttpServletRequest request) {
+        //작성자가 맞으면 게시글 번호 반환하고 아니면 -1을 반환하게 해야함
+        System.out.println("verify board id =="+id);
+        Board board = boardService.verifyWriter(id, request);
+        if (board != null)
+            return board.getId().intValue();
+        else
+            return -1;
+    }
+
     @PutMapping("/board/{id}")
     public Long update(@PathVariable Long id, @RequestBody BoardUpdateRequestDto requestDto) {
         return boardService.update(id, requestDto);
     }
 
     @PostMapping("/board/delete")
-    public int delete(@RequestBody BoardDeleteRequestDto requestDto,
+    public int delete(@RequestBody BoardWriterRequestDto requestDto,
                       HttpServletRequest request) {
-        long id = Long.parseLong(requestDto.getBoardId());
-        return boardService.delete(id,request);
+        long userId = Long.parseLong(requestDto.getBoardId());
+        return boardService.delete(userId, request);
     }
 }

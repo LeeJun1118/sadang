@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonDeserialize
-public class BoardDeleteRequestDto {
+public class BoardWriterRequestDto {
     private String boardId;
 }

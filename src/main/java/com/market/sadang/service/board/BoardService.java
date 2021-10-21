@@ -2,10 +2,7 @@ package com.market.sadang.service.board;
 
 import com.market.sadang.domain.Board;
 import com.market.sadang.domain.Member;
-import com.market.sadang.domain.dto.BoardCreateRequestDto;
-import com.market.sadang.domain.dto.BoardListResponseDto;
-import com.market.sadang.domain.dto.BoardResponseDto;
-import com.market.sadang.domain.dto.BoardUpdateRequestDto;
+import com.market.sadang.domain.dto.*;
 import com.market.sadang.repository.BoardRepository;
 import com.market.sadang.repository.MemberRepository;
 import com.market.sadang.service.authUtil.CookieUtil;
@@ -69,24 +66,41 @@ public class BoardService {
     }
 
     @Transactional(readOnly = true)
-    public List<BoardListResponseDto> searchAllDesc(){
-        return boardRepository.findAll(Sort.by(Sort.Direction.DESC,"id")).stream()
+    public List<BoardListResponseDto> searchAllDesc() {
+        return boardRepository.findAll(Sort.by(Sort.Direction.DESC, "id")).stream()
                 .map(BoardListResponseDto::new)
                 .collect(Collectors.toList());
     }
 
     @Transactional
     public int delete(long id, HttpServletRequest request) {
+        Board board = verifyWriter(id, request);
+        if (board != null) {
+            boardRepository.delete(board);
+            return 1;
+        } else
+            return 0;
+    }
+
+    public Board verifyWriter(Long id, HttpServletRequest request) {
         Board board = boardRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시물이 존재하지 않습니다"));
-
         Cookie jwtToken = cookieUtil.getCookie(request, "accessToken");
         String memberId = jwtUtil.getUserId(jwtToken.getValue());
 
-        if (Objects.equals(board.getMember().getUsername(), memberId)){
-            boardRepository.delete(board);
-            return 1;
-        }
-        else return 0;
+        if (Objects.equals(board.getMember().getUsername(), memberId)) {
+            return board;
+        } else return null;
+    }
+
+    public BoardUpdateRequestDto findById(Long id) {
+        Board board = boardRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시물이 존재하지 않습니다."));
+
+        BoardUpdateRequestDto myBoard = new BoardUpdateRequestDto();
+        myBoard.setTitle(board.getTitle());
+        myBoard.setContent(board.getContent());
+
+        return myBoard;
     }
 }
