@@ -17,7 +17,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 
 @Builder
-public class Board {
+public class Board extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

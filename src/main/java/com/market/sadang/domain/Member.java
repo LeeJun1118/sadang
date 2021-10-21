@@ -34,7 +34,7 @@ import java.util.List;
 //기본 값으로 클래스의 카멜케이스 이름을 언더스코어 네이밍(_)으로 테이블 이름을 매칭(ex: SalesManager.java -> sales_manager table)
 @Entity
 //Spring Security는 UserDetails 객체를 통해 권한 정보를 관리하기 때문에 User 클래스에 UserDetails 를 구현하고 추가 정보를 재정의 해야함
-public class Member /*implements Serializable*/ {
+public class Member extends BaseTimeEntity{
     //해당 테이블의 PK 필드를 나타냄
     @Id
     //PK 의 생성 규칙을 나타냄 strategy = GenerationType.IDENTITY 로 자동 증가 됨
@@ -62,7 +62,7 @@ public class Member /*implements Serializable*/ {
     private UserRole role = UserRole.ROLE_NOT_PERMITTED;
 
 
-    //date + time 의 timestamp
+/*    //date + time 의 timestamp
     @Temporal(TemporalType.TIMESTAMP)
     //insert 시 자동을 값을 채워줌
     @CreationTimestamp
@@ -70,7 +70,7 @@ public class Member /*implements Serializable*/ {
 
     @Temporal(TemporalType.TIMESTAMP)
     @UpdateTimestamp
-    private Date updateAt;
+    private Date updateAt;*/
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "salt_id")
@@ -89,8 +89,8 @@ public class Member /*implements Serializable*/ {
                 ", email='" + email + '\'' +
                 ", address='" + address + '\'' +
                 ", role=" + role +
-                ", createAt=" + createAt +
-                ", updateAt=" + updateAt +
+/*                ", createAt=" + createAt +
+                ", updateAt=" + updateAt +*/
                 '}';
     }
 }
