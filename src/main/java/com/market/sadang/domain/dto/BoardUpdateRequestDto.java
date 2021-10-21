@@ -9,11 +9,13 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class BoardUpdateRequestDto {
+    private Long id;
     private String title;
     private String content;
 
     @Builder
-    public BoardUpdateRequestDto(String title, String content) {
+    public BoardUpdateRequestDto(Long id, String title, String content) {
+        this.id = id;
         this.title = title;
         this.content = content;
     }

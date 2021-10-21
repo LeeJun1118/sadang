@@ -21,7 +21,6 @@ $(document).ready(function($) {
             success: function (data) {
                 if (JSON.parse(data) == 1) {
                     location.replace("/")
-                    alert('삭제 되었습니다.');
                 } else {
                     alert("작성자만 삭제할 수 있습니다.")
                 }

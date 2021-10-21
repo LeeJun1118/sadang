@@ -98,6 +98,7 @@ public class BoardService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시물이 존재하지 않습니다."));
 
         BoardUpdateRequestDto myBoard = new BoardUpdateRequestDto();
+        myBoard.setId(board.getId());
         myBoard.setTitle(board.getTitle());
         myBoard.setContent(board.getContent());
 

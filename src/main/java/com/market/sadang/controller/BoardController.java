@@ -55,16 +55,16 @@ public class BoardController {
     @GetMapping("/board/update/{id}")
     public ModelAndView updateForm(@PathVariable Long id, ModelAndView modelAndView) {
         BoardUpdateRequestDto board = boardService.findById(id);
-        modelAndView.addObject("board",board);
+        modelAndView.addObject("board", board);
         modelAndView.setViewName("board/updateBoard");
         return modelAndView;
     }
 
     @GetMapping("/board/verify/{id}")
     public int writerVerify(@PathVariable Long id,
-                             HttpServletRequest request) {
+                            HttpServletRequest request) {
         //작성자가 맞으면 게시글 번호 반환하고 아니면 -1을 반환하게 해야함
-        System.out.println("verify board id =="+id);
+        System.out.println("verify board id ==" + id);
         Board board = boardService.verifyWriter(id, request);
         if (board != null)
             return board.getId().intValue();
@@ -72,9 +72,11 @@ public class BoardController {
             return -1;
     }
 
-    @PutMapping("/board/{id}")
-    public Long update(@PathVariable Long id, @RequestBody BoardUpdateRequestDto requestDto) {
-        return boardService.update(id, requestDto);
+    @PostMapping("/board/update/{id}")
+    public ModelAndView update(@PathVariable Long id, BoardUpdateRequestDto requestDto, ModelAndView modelAndView) {
+        boardService.update(id, requestDto);
+        modelAndView.setViewName("redirect:/board/" + id);
+        return modelAndView;
     }
 
     @PostMapping("/board/delete")
