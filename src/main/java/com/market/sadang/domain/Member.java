@@ -61,23 +61,15 @@ public class Member extends BaseTimeEntity{
     @Enumerated(EnumType.STRING)
     private UserRole role = UserRole.ROLE_NOT_PERMITTED;
 
-
-/*    //date + time 의 timestamp
-    @Temporal(TemporalType.TIMESTAMP)
-    //insert 시 자동을 값을 채워줌
-    @CreationTimestamp
-    private Date createAt;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @UpdateTimestamp
-    private Date updateAt;*/
-
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "salt_id")
     private Salt salt;
 
     @OneToMany(mappedBy = "member")
     private List<Board> boards = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<MyFile> fileList = new ArrayList<>();
 
     @Override
     public String toString() {

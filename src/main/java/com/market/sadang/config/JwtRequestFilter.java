@@ -72,9 +72,15 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 refreshUname = redisUtil.getData(refreshJwt);
 
                 if (refreshUname.equals(jwtUtil.getUserId(refreshJwt))){
+
                     UserDetails userDetails = userDetailService.loadUserByUsername(refreshUname);
+
+                    if (userDetails == null)
+                        throw new Exception("사용자가 존재하지 않음");
+
                     UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken
                             = new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
+
                     usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
 
@@ -88,6 +94,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             }
         }catch (ExpiredJwtException e){
 
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         filterChain.doFilter(request,response);
     }

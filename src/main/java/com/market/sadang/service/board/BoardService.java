@@ -1,20 +1,24 @@
 package com.market.sadang.service.board;
 
+import com.market.sadang.config.FileHandler;
 import com.market.sadang.domain.Board;
 import com.market.sadang.domain.Member;
+import com.market.sadang.domain.MyFile;
 import com.market.sadang.domain.dto.*;
+import com.market.sadang.domain.dto.form.BoardForm;
 import com.market.sadang.repository.BoardRepository;
 import com.market.sadang.repository.MemberRepository;
+import com.market.sadang.repository.MyFileRepository;
 import com.market.sadang.service.authUtil.CookieUtil;
 import com.market.sadang.service.authUtil.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.swing.plaf.metal.MetalMenuBarUI;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -28,14 +32,30 @@ public class BoardService {
     private final MemberRepository memberRepository;
     private final JwtUtil jwtUtil;
     private final CookieUtil cookieUtil;
+    private final MyFileRepository fileRepository;
+    private final FileHandler fileHandler;
+    private final MemberService memberService;
 
     @Transactional
-    public Long create(BoardCreateRequestDto requestDto, HttpServletRequest request) {
-        Cookie jwtToken = cookieUtil.getCookie(request, "accessToken");
-        String memberId = jwtUtil.getUserId(jwtToken.getValue());
-        Member member = memberRepository.findByUserId(memberId);
-        requestDto.setMember(member);
-        return boardRepository.save(requestDto.toEntity()).getId();
+    public Long create(BoardCreateRequestDto requestDto,
+                       List<MultipartFile> files) throws Exception {
+
+        Board board = new Board(
+                requestDto.getMember(),
+                requestDto.getTitle(),
+                requestDto.getContent());
+
+        List<MyFile> fileList = fileHandler.parseFileInfo(files, board);
+
+        files.forEach(f -> {
+            if (f.getSize() != 0) {
+                for (MyFile file : fileList) {
+                    board.addFile(fileRepository.save(file));
+                }
+            }
+        });
+
+        return boardRepository.save(board).getId();
     }
 
     //DB에 쿼리를 날리는 부분이 없다
@@ -82,17 +102,17 @@ public class BoardService {
             return 0;
     }
 
+    @Transactional
     public Board verifyWriter(Long id, HttpServletRequest request) {
         Board board = boardRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시물이 존재하지 않습니다"));
-        Cookie jwtToken = cookieUtil.getCookie(request, "accessToken");
-        String memberId = jwtUtil.getUserId(jwtToken.getValue());
-
+        String memberId = memberService.searchMemberId(request).getUserId();
         if (Objects.equals(board.getMember().getUsername(), memberId)) {
             return board;
         } else return null;
     }
 
+    @Transactional
     public BoardUpdateRequestDto findById(Long id) {
         Board board = boardRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시물이 존재하지 않습니다."));

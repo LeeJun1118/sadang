@@ -19,7 +19,8 @@ public class MyUserDetailService implements UserDetailsService {
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
         Member member = memberRepository.findByUserId(userId);
         if (member == null){
-            throw new UsernameNotFoundException(userId + " : 사용자가 존재하지 않음");
+            return null;
+//            throw new UsernameNotFoundException(userId + " : 사용자가 존재하지 않음");
         }
         return new SecurityMember(member);
     }
