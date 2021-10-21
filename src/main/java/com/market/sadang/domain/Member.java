@@ -65,11 +65,10 @@ public class Member extends BaseTimeEntity{
     @JoinColumn(name = "salt_id")
     private Salt salt;
 
-    @OneToMany(mappedBy = "member")
+    //CascadeType.MERGE – 트랜잭션이 종료되고 detach 상태에서 연관 엔티티를 추가하거나 변경된 이후에
+    // 부모 엔티티가 merge()를 수행하게 되면 변경사항이 적용된다.(연관 엔티티의 추가 및 수정 모두 반영됨)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.MERGE, orphanRemoval = true)
     private List<Board> boards = new ArrayList<>();
-
-    @OneToMany(mappedBy = "member")
-    private List<MyFile> fileList = new ArrayList<>();
 
     @Override
     public String toString() {
