@@ -62,7 +62,19 @@ public class BoardController {
     // 게시글 보기
     @GetMapping("/board/{id}")
     public ModelAndView searchById(@PathVariable Long id, ModelAndView modelAndView) {
-        BoardResponseDto boardResponseDto = boardService.searchById(id);
+
+        //게시글 id로 해당 글의 첨부파일 전체 조회
+        List<MyFileResponseDto> myFileResponseDtoList = myFileService.findAllByBoard(id);
+
+        //게시글 첨부파일 id 담을 List 객체 생성
+        List<Long> myFileIdList = new ArrayList<>();
+
+        for (MyFileResponseDto myFileResponseDto : myFileResponseDtoList){
+            myFileIdList.add(myFileResponseDto.getFileId());
+        }
+
+        BoardResponseDto boardResponseDto = boardService.searchById(id, myFileIdList);
+
         modelAndView.addObject("board", boardResponseDto);
         modelAndView.setViewName("board/showBoard");
         return modelAndView;

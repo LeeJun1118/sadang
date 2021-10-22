@@ -77,11 +77,11 @@ public class BoardService {
 
     // readonly : 트랜잭션 범위는 유지하되 기능을 조회로 제한하여 조회 속도 개선
     @Transactional(readOnly = true)
-    public BoardResponseDto searchById(Long id) {
+    public BoardResponseDto searchById(Long id, List<Long> fileIdList) {
         Board board = boardRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
 
-        return new BoardResponseDto(board);
+        return new BoardResponseDto(board,fileIdList);
     }
 
     @Transactional(readOnly = true)

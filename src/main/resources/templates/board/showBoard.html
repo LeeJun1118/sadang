@@ -75,6 +75,11 @@
                         <a class="btn btn-default" href="/">목록으로</a>
                     </li>
                 </ul>
+
+                <p th:each="file : ${board.fileIdList}">
+                    <img th:src="@{/thumbnail/{id}(id=${file})}">
+                </p>
+
             </div>
         </div>
     </body>
