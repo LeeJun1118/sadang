@@ -36,6 +36,8 @@ public class Board extends BaseTimeEntity {
     @JsonBackReference
     private Member member;
 
+
+    //게시글 삭제 시 첨부파일도 같이 삭제
     @OneToMany(
             mappedBy = "board",
             cascade = {CascadeType.PERSIST, CascadeType.REMOVE},

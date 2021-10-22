@@ -11,7 +11,7 @@
                 <br/>
                 <h4>팔자</h4>
                 <br/>
-                <form id="frm" role="form"  th:object="${board}" th:action="@{/board/update/{id}(id=${board.id})}"
+                <form id="frm" role="form"  th:object="${boardForm}" th:action="@{/board/update/{id}(id=${boardForm.id})}"
                       method="post" enctype="multipart/form-data">
                     <div class="form-group">
                         <label th:for="title">제목</label>
@@ -26,6 +26,10 @@
                                   placeholder="내용을 입력하세요"
                                   th:class="${#fields.hasErrors('content')}? 'form-control h-25 fieldError' : 'form-control h-25'"></textarea>
                         <p th:if="${#fields.hasErrors('content')}" th:errors="*{content}">Incorrect data</p>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="file" name="uploadFile"/>
                     </div>
 
                     <div class="nav justify-content-end">
