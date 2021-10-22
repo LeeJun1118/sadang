@@ -24,6 +24,7 @@ public class MyFileController {
     // 처음 전송되는 리소스의 도메인과 다른 도메인으로부터 리소스가 요청될 경우 해당 리소스는
     // cross-origin HTTP 요청이 된다.
     @CrossOrigin
+    //전체 조회 : 게시글 리스트에 각각의 썸네일 이미지를 뿌려줌
     @GetMapping(value = "/thumbnail/{id}",
             produces = {MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_JPEG_VALUE})
     public ResponseEntity<byte[]> getThumbnail(@PathVariable Long id) throws IOException {
@@ -38,8 +39,28 @@ public class MyFileController {
         }
         // 기본 썸네일일 경우
         else{
-            path = "images" + File.separator + "thumbnail" + File.separator + "thumbnail.png";
+            path = "files" + File.separator + "thumbnail" + File.separator + "thumbnail.png";
         }
+
+        InputStream imageStream = new FileInputStream(absolutePath + path);
+        byte[] imageByteArray = IOUtils.toByteArray(imageStream);
+        imageStream.close();
+
+        return new ResponseEntity<>(imageByteArray, HttpStatus.OK);
+    }
+
+    // 처음 전송되는 리소스의 도메인과 다른 도메인으로부터 리소스가 요청될 경우 해당 리소스는
+    // cross-origin HTTP 요청이 된다.
+    @CrossOrigin
+    //하나의 게시글이 가지고 있는 파일 리스트
+    @GetMapping(value = "/images/{id}",
+            produces = {MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_JPEG_VALUE})
+    public ResponseEntity<byte[]> getImageList(@PathVariable Long id) throws IOException {
+
+        MyFileDto myFileDto = myFileService.findByFileId(id);
+
+        String absolutePath = new File("").getAbsolutePath() + File.separator + File.separator;
+        String path = myFileDto.getFilePath();
 
         InputStream imageStream = new FileInputStream(absolutePath + path);
         byte[] imageByteArray = IOUtils.toByteArray(imageStream);

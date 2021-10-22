@@ -85,10 +85,8 @@ public class BoardService {
     }
 
     @Transactional(readOnly = true)
-    public List<BoardListResponseDto> searchAllDesc() {
-        return boardRepository.findAll(Sort.by(Sort.Direction.DESC, "id")).stream()
-                .map(BoardListResponseDto::new)
-                .collect(Collectors.toList());
+    public List<Board> searchAllDesc() {
+        return boardRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
     }
 
     @Transactional

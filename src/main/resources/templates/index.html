@@ -25,6 +25,7 @@
                     <thead>
                         <tr>
                             <th scope="col">#</th>
+                            <th scope="col">썸네일</th>
                             <th scope="col">제목</th>
                             <th scope="col">글번호</th>
                         </tr>
@@ -32,6 +33,7 @@
                     <tbody id="goBoard">
                         <tr class='table-row' th:each="board,index : ${boardList}">
                             <td scope="row" th:text="${index.count}" th:href="@{/board/{id}(id=${board.id})}"></td>
+                            <td class="col-3"><img th:src="@{/thumbnail/{id}(id=${board.thumbnailId})}"></td>
                             <td class="col-6" th:text="${board.title}"></td>
                             <td class="col-3" th:text="${board.id}"></td>
                         </tr>

@@ -82,8 +82,20 @@ public class BoardController {
 
     @GetMapping("/")
     public ModelAndView searchAllDesc(ModelAndView modelAndView) {
-        List<BoardListResponseDto> boardList = boardService.searchAllDesc();
-        modelAndView.addObject("boardList", boardList);
+
+        //게시글 전체 조회
+        List<Board> boardList = boardService.searchAllDesc();
+
+        //반환할 리스트 생성
+        List<BoardListResponseDto> responseDtoList = new ArrayList<>();
+
+        //전체 리스트를 하나씩 반환할 리스트에 넣음
+        for (Board board : boardList){
+            BoardListResponseDto responseDto = new BoardListResponseDto(board);
+            responseDtoList.add(responseDto);
+        }
+
+        modelAndView.addObject("boardList", responseDtoList);
         modelAndView.setViewName("index");
         return modelAndView;
     }
