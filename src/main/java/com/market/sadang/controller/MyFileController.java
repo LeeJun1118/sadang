@@ -1,6 +1,5 @@
 package com.market.sadang.controller;
 
-import com.market.sadang.domain.MyFile;
 import com.market.sadang.domain.dto.MyFileDto;
 import com.market.sadang.service.MyFileService;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +12,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.*;
 
 @RequiredArgsConstructor
@@ -42,9 +43,8 @@ public class MyFileController {
             path = "files" + File.separator + "thumbnail" + File.separator + "thumbnail.png";
         }
 
-        InputStream imageStream = new FileInputStream(absolutePath + path);
-        byte[] imageByteArray = IOUtils.toByteArray(imageStream);
-        imageStream.close();
+        BufferedImage resizeThumbnail = ImageIO.read(new File(absolutePath + path));
+        byte[] imageByteArray = myFileService.resizeThumbnail(resizeThumbnail);
 
         return new ResponseEntity<>(imageByteArray, HttpStatus.OK);
     }

@@ -37,4 +37,7 @@ out/
 .vscode/
 
 /src/main/resources/application.yml
-/files/
+
+!files
+files/*
+!/files/thumbnail
