@@ -65,7 +65,7 @@ $(document).ready(function($) {
 
 });
 
-var img = document.getElementsByTagName("img");
+var img = document.getElementsByClassName("myImage");
 for (var x = 0; x < img.length; x++) {
     img.item(x).onclick=function() {window.open(this.src)};
 }
