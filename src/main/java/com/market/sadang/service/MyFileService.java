@@ -55,7 +55,7 @@ public class MyFileService {
     }
 
     //썸네일 크기 조절
-    public byte[] resizeThumbnail(BufferedImage resizeImg) throws IOException {
+    public byte[] resizeImage(BufferedImage resizeImg, int Image_Width, int Image_Height) throws IOException {
 
         //원본 크기
         int originWidth = resizeImg.getWidth();
@@ -63,25 +63,25 @@ public class MyFileService {
 
         //원본 너비를 기준으로 썸네일의 비율로 높이 계산
         int newWidth = originWidth;
-        int newHeight = (originWidth * Thumbnail_Height) / Thumbnail_Width;
+        int newHeight = (originWidth * Image_Height) / Image_Width;
 
         //계산된 높이가 원본보다 높으면 안되므로
         //원본 높이를 기준으로 썸네일의 비율로 너비 계산
         if (newHeight > originHeight) {
-            newWidth = (originHeight * Thumbnail_Width) / Thumbnail_Height;
+            newWidth = (originHeight * Image_Width) / Image_Height;
             newHeight = originHeight;
         }
         BufferedImage cropImg =
                 Scalr.crop(resizeImg, (originWidth - newWidth) / 2, (originHeight - newHeight) / 2, newWidth, newHeight);
 
-        BufferedImage resultImg = Scalr.resize(cropImg, Thumbnail_Width, Thumbnail_Height);
+        BufferedImage resultImg = Scalr.resize(cropImg, Image_Width, Image_Height);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         ImageIO.write(resultImg, "png", outputStream);
 
         return outputStream.toByteArray();
     }
 
-    public byte[] resizeImg(InputStream imageStream) throws IOException {
+    /*public byte[] resizeImg(InputStream imageStream) throws IOException {
         Image image = ImageIO.read(imageStream);
 
         int imageWidth = image.getWidth(null);
@@ -119,5 +119,5 @@ public class MyFileService {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         ImageIO.write(outputImg, "png", outputStream);
         return outputStream.toByteArray();
-    }
+    }*/
 }

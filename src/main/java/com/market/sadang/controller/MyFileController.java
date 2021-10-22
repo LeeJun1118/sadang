@@ -7,6 +7,7 @@ import org.apache.commons.io.IOUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +23,11 @@ public class MyFileController {
 
     private final MyFileService myFileService;
 
+    private static final int Thumbnail_Width = 250;
+    private static final int Thumbnail_Height = 150;
+    private static final int Image_Width = 800;
+    private static final int Image_Height = 600;
+
     // 처음 전송되는 리소스의 도메인과 다른 도메인으로부터 리소스가 요청될 경우 해당 리소스는
     // cross-origin HTTP 요청이 된다.
     @CrossOrigin
@@ -34,17 +40,17 @@ public class MyFileController {
         String path;
 
         // 전달되어 온 이미지가 기본 썸네일이 아닐 경우
-        if (id != 0){
+        if (id != 0) {
             MyFileDto myFileDto = myFileService.findByFileId(id);
             path = myFileDto.getFilePath();
         }
         // 기본 썸네일일 경우
-        else{
+        else {
             path = "files" + File.separator + "thumbnail" + File.separator + "thumbnail.png";
         }
 
         BufferedImage resizeThumbnail = ImageIO.read(new File(absolutePath + path));
-        byte[] imageByteArray = myFileService.resizeThumbnail(resizeThumbnail);
+        byte[] imageByteArray = myFileService.resizeImage(resizeThumbnail,Thumbnail_Width,Thumbnail_Height);
 
         return new ResponseEntity<>(imageByteArray, HttpStatus.OK);
     }
@@ -62,10 +68,9 @@ public class MyFileController {
         String absolutePath = new File("").getAbsolutePath() + File.separator + File.separator;
         String path = myFileDto.getFilePath();
 
-        InputStream imageStream = new FileInputStream(absolutePath + path);
-        byte[] imageByteArray = myFileService.resizeImg(imageStream);
-//        byte[] imageByteArray = IOUtils.toByteArray(imageStream);
-        imageStream.close();
+        BufferedImage resizeImage = ImageIO.read(new File(absolutePath + path));
+
+        byte[] imageByteArray = myFileService.resizeImage(resizeImage,Image_Width,Image_Height);
 
         return new ResponseEntity<>(imageByteArray, HttpStatus.OK);
     }
