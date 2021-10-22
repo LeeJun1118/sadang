@@ -297,3 +297,8 @@ select.list-dt:focus {
 #h1-center{
     text-align: center;
 }
+
+.image-size{
+    width: 650px;
+    height: 500px;
+}

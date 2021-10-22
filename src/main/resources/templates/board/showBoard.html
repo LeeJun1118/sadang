@@ -78,7 +78,7 @@
                 </ul>
 
                 <p th:each="file : ${board.fileIdList}">
-                    <img th:src="@{/images/{id}(id=${file})}" width="500px" height="300px">
+                    <img class="image-size" th:src="@{/images/{id}(id=${file})}" >
                 </p>
 
 
