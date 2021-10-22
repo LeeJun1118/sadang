@@ -1,11 +1,9 @@
-package com.market.sadang.service.board;
+package com.market.sadang.service;
 
 import com.market.sadang.config.FileHandler;
 import com.market.sadang.domain.Board;
-import com.market.sadang.domain.Member;
 import com.market.sadang.domain.MyFile;
 import com.market.sadang.domain.dto.*;
-import com.market.sadang.domain.dto.form.BoardForm;
 import com.market.sadang.repository.BoardRepository;
 import com.market.sadang.repository.MemberRepository;
 import com.market.sadang.repository.MyFileRepository;
@@ -17,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Objects;
@@ -45,7 +42,7 @@ public class BoardService {
                 requestDto.getTitle(),
                 requestDto.getContent());
 
-        List<MyFile> fileList = fileHandler.parseFileInfo(files, board);
+        List<MyFile> fileList = fileHandler.parseFileInfo(board, files);
 
         files.forEach(f -> {
             if (f.getSize() != 0) {
@@ -66,9 +63,11 @@ public class BoardService {
     // 시점에 해당 테이블에 변경분을 반영함
     // ==> Entity 객체의 값만 변경하면 별도로 update 쿼리를 날릴 필요가 없음
     @Transactional
-    public Long update(Long id, BoardUpdateRequestDto requestDto) {
+    public Long update(Long id, BoardUpdateRequestDto requestDto, List<MultipartFile> addFileList) throws Exception {
         Board board = boardRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
+
+        List<MyFile> myFileList = fileHandler.parseFileInfo(board,addFileList);
 
         board.update(requestDto.getTitle(),
                 requestDto.getContent());

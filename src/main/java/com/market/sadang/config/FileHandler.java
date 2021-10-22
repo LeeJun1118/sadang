@@ -2,7 +2,12 @@ package com.market.sadang.config;
 
 import com.market.sadang.domain.Board;
 import com.market.sadang.domain.MyFile;
+import com.market.sadang.domain.dto.MyFileDto;
+import com.market.sadang.repository.MyFileRepository;
+import com.market.sadang.service.MyFileService;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
@@ -15,10 +20,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class FileHandler {
 
-    public List<MyFile> parseFileInfo(List<MultipartFile> multipartFiles, Board board) throws Exception{
+    private final MyFileService myFileService;
+    private final MyFileRepository myFileRepository;
+
+    public List<MyFile> parseFileInfo(Board board, List<MultipartFile> multipartFiles) throws Exception{
         //반환할 파일 리스트
         List<MyFile> fileList = new ArrayList<>();
 
@@ -48,20 +56,35 @@ public class FileHandler {
 
             for (MultipartFile multipartFile : multipartFiles){
                 //파일의 확장자 추출
-                String contentType = multipartFile.getContentType().split("/")[1];
-                String originalFileExtension = "." + contentType;
+                String contentType = multipartFile.getContentType();
+                String originalFileExtension;
 
                 //확장자명이 존재하지 않을 경우 처리 안함
                 if (ObjectUtils.isEmpty(contentType))
                     break;
+                else{
+                    if (contentType.contains("image/jpeg"))
+                        originalFileExtension = ".jpg";
+                    else if(contentType.contains("image/png"))
+                        originalFileExtension = ".png";
+                    else
+                        break;
+                }
 
                 //파일명 중복을 피하기 위해 나노초 얻어 지정
                 String newFileName = System.nanoTime() + originalFileExtension;
 
-                MyFile uploadFile = new MyFile();
-                uploadFile.setOriginFileName(multipartFile.getOriginalFilename());
-                uploadFile.setFilePath(path + File.separator + newFileName);
-                uploadFile.setFileSize(multipartFile.getSize());
+                MyFileDto myFileDto = MyFileDto.builder()
+                        .originFileName(multipartFile.getOriginalFilename())
+                        .filePath(path + File.separator + newFileName)
+                        .fileSize(multipartFile.getSize())
+                        .build();
+
+                MyFile uploadFile = new MyFile(
+                        myFileDto.getOriginFileName(),
+                        myFileDto.getFilePath(),
+                        myFileDto.getFileSize()
+                );
 
                 if (board.getId() != null)
                     uploadFile.setBoard(board);
@@ -75,8 +98,6 @@ public class FileHandler {
 
                 file.setWritable(true);
                 file.setReadable(true);
-
-
             }
         }
 

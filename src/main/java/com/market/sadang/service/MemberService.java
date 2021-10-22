@@ -1,4 +1,4 @@
-package com.market.sadang.service.board;
+package com.market.sadang.service;
 
 import com.market.sadang.domain.Member;
 import com.market.sadang.repository.MemberRepository;
