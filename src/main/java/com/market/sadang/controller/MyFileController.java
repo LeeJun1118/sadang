@@ -63,7 +63,8 @@ public class MyFileController {
         String path = myFileDto.getFilePath();
 
         InputStream imageStream = new FileInputStream(absolutePath + path);
-        byte[] imageByteArray = IOUtils.toByteArray(imageStream);
+        byte[] imageByteArray = myFileService.resizeImg(imageStream);
+//        byte[] imageByteArray = IOUtils.toByteArray(imageStream);
         imageStream.close();
 
         return new ResponseEntity<>(imageByteArray, HttpStatus.OK);

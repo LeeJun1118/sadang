@@ -10,9 +10,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,6 +25,9 @@ public class MyFileService {
     private final MyFileRepository fileRepository;
     private static final int Thumbnail_Width = 250;
     private static final int Thumbnail_Height = 150;
+    private static final int Image_Width = 800;
+    private static final int Image_Height = 600;
+    private static final String Main_Position = "M";
 
     @Transactional
     public List<MyFileResponseDto> findAllByBoard(Long boardId) {
@@ -73,6 +78,46 @@ public class MyFileService {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         ImageIO.write(resultImg, "png", outputStream);
 
+        return outputStream.toByteArray();
+    }
+
+    public byte[] resizeImg(InputStream imageStream) throws IOException {
+        Image image = ImageIO.read(imageStream);
+
+        int imageWidth = image.getWidth(null);
+        int imageHeight = image.getHeight(null);
+
+        int resultWidth, resultHeight;
+
+        double ratio;
+
+        //넓이 기준
+        if (Main_Position.equals("W")){
+            ratio = (double)Image_Width/(double) imageWidth;
+            resultWidth = (int) (imageWidth * ratio);
+            resultHeight = (int) (imageHeight * ratio);
+        }
+        // 높이 기준
+        else if (Main_Position.equals("H")){
+            ratio = (double)Image_Height/(double) imageHeight;
+            resultWidth = (int) (imageWidth * ratio);
+            resultHeight = (int) (imageHeight * ratio);
+        }
+        // 사용자 설정 기준
+        else{
+            resultWidth = Image_Width;
+            resultHeight = Image_Height;
+        }
+
+        Image resizeImage = image.getScaledInstance(resultWidth,resultHeight,Image.SCALE_SMOOTH);
+
+        BufferedImage outputImg = new BufferedImage(resultWidth,resultHeight,BufferedImage.TYPE_INT_BGR);
+        Graphics2D graphics2D = outputImg.createGraphics();
+        graphics2D.drawImage(resizeImage,0,0, null);
+        graphics2D.dispose();
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        ImageIO.write(outputImg, "png", outputStream);
         return outputStream.toByteArray();
     }
 }
