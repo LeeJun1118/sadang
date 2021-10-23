@@ -1,8 +1,6 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/header :: header">
-    <script src="/js/board.js"></script>
-</head>
+<head th:replace="fragments/header :: header"></head>
 <body>
 <div class="container marTop">
     <div class="container-sm my-auto">
@@ -91,15 +89,5 @@
 </div>
 </body>
 
-<script>
-
-    $(document).ready(function () {
-        $('.bxslider').bxSlider({
-            mode: 'fade',
-            captions: true,
-            slideWidth: 600,
-            touchEnabled: false
-        });
-    });
-</script>
+<script src="/js/board.js"></script>
 </html>

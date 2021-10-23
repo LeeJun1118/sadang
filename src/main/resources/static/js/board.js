@@ -1,19 +1,21 @@
-$(document).ready(function($) {
+$(document).ready(function ($) {
 
-    $('.slider').bxSlider();
-
-
-    $("#goBoard tr").click(function() {
-        window.document.location = $(this).find('td:eq(0)').attr("href");
+    $('.bxslider').bxSlider({
+        mode: 'fade',
+        captions: true,
+        slideWidth: 600,
+        touchEnabled: false
     });
 
-
+    $("#goBoard tr").click(function () {
+        window.document.location = $(this).find('td:eq(0)').attr("href");
+    });
 
     $('.deleteBoard').on('click', function (event) {
 
         var boardId = $('.deleteBoardId').val();
 
-        console.log("sendData=="+boardId);
+        console.log("sendData==" + boardId);
 
         $.ajax({
             type: "POST",
@@ -41,7 +43,7 @@ $(document).ready(function($) {
 
     $('.verifyWriter').on('click', function (event) {
         var myUrl = $('.verifyWriter').attr('href');
-        console.log("myUrl=="+myUrl);
+        console.log("myUrl==" + myUrl);
         $.ajax({
             type: "GET",
             url: myUrl,
@@ -49,7 +51,7 @@ $(document).ready(function($) {
             dataType: 'json',
             contentType: "application/json",
             success: function (data) {
-                console.log("JSON.parse Data==="+JSON.parse(data));
+                console.log("JSON.parse Data===" + JSON.parse(data));
                 var boardId = JSON.parse(data);
                 if (boardId == -1) {
                     alert("작성자만 수정할 수 있습니다.")
@@ -72,9 +74,11 @@ $(document).ready(function($) {
 var img = document.getElementsByClassName("myImage");
 for (var x = 0; x < img.length; x++) {
     // img.item(x).onclick=function() {window.open(this.src)};
-    img.item(x).onclick=function() {window.document.location = this.href};
+    img.item(x).onclick = function () {
+        window.document.location = this.href
+    };
 }
 
-var goBoard = function(boardId) {
+var goBoard = function (boardId) {
     window.document.location = "board/" + boardId;
 }
