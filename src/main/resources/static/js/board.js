@@ -67,7 +67,8 @@ $(document).ready(function($) {
 
 var img = document.getElementsByClassName("myImage");
 for (var x = 0; x < img.length; x++) {
-    img.item(x).onclick=function() {window.open(this.src)};
+    // img.item(x).onclick=function() {window.open(this.src)};
+    img.item(x).onclick=function() {window.document.location = this.src};
 }
 
 var goBoard = function(boardId) {
