@@ -303,7 +303,7 @@ select.list-dt:focus {
     max-height: 100%;
 }
 
-.myImage{
+#myImage{
     width: 650px;
     height: 500px;
 }
