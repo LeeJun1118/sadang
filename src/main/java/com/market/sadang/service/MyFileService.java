@@ -23,12 +23,6 @@ import java.util.stream.Collectors;
 public class MyFileService {
 
     private final MyFileRepository fileRepository;
-    private static final int Thumbnail_Width = 250;
-    private static final int Thumbnail_Height = 150;
-    private static final int Image_Width = 800;
-    private static final int Image_Height = 600;
-    private static final String Main_Position = "M";
-
     @Transactional
     public List<MyFileResponseDto> findAllByBoard(Long boardId) {
         List<MyFile> myFiles = fileRepository.findAllByBoardId(boardId);

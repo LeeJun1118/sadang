@@ -69,3 +69,7 @@ var img = document.getElementsByClassName("myImage");
 for (var x = 0; x < img.length; x++) {
     img.item(x).onclick=function() {window.open(this.src)};
 }
+
+var goBoard = function(boardId) {
+    window.document.location = "board/" + boardId;
+}

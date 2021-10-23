@@ -23,7 +23,7 @@ public class MyFileController {
 
     private final MyFileService myFileService;
 
-    private static final int Thumbnail_Width = 250;
+    private static final int Thumbnail_Width = 210;
     private static final int Thumbnail_Height = 150;
     private static final int Image_Width = 800;
     private static final int Image_Height = 600;
