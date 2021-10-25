@@ -81,10 +81,7 @@ public class BoardService {
     public BoardResponseDto searchById(Long id, List<Long> fileIdList) {
         Board board = boardRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
-
-        Member member = memberRepository.findByUserId(board.getMember().getUserId());
-
-        return new BoardResponseDto(board,member,fileIdList);
+        return new BoardResponseDto(board,fileIdList);
     }
 
     @Transactional(readOnly = true)

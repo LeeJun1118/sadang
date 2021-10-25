@@ -301,6 +301,8 @@ select.list-dt:focus {
 .thumbnail-image{
     max-width: 100%;
     max-height: 100%;
+    margin-bottom: 10px;
+    border-radius: 12px;
 }
 
 .cursor-pointer{
@@ -316,4 +318,8 @@ select.list-dt:focus {
     display: block;
     max-width: 920px;
     margin: auto;
+}
+
+.sm-font{
+    font-size: 0.8rem;
 }

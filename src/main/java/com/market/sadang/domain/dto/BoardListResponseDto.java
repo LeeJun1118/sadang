@@ -7,12 +7,14 @@ import lombok.Getter;
 public class BoardListResponseDto {
     private Long id;
     private String member;
+    private String address;
     private String title;
     private Long thumbnailId;
 
     public BoardListResponseDto(Board entity){
         this.id = entity.getId();
         this.member = entity.getMember().getUserId();
+        this.address = entity.getMember().getAddress();
         this.title = entity.getTitle();
 
         //첨부파일이 존재하면

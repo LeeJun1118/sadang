@@ -17,12 +17,12 @@ public class BoardResponseDto {
     private String address;
     private List<Long> fileIdList;
 
-    public BoardResponseDto(Board entity, Member member, List<Long> fileIdList){
+    public BoardResponseDto(Board entity, List<Long> fileIdList){
         this.id = entity.getId();
         this.member = entity.getMember().getUserId();
         this.title = entity.getTitle();
         this.content = entity.getContent();
-        this.address = member.getAddress();
+        this.address = entity.getMember().getAddress();
         this.fileIdList = fileIdList;
     }
 }
