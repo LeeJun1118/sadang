@@ -1,44 +1,44 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/header :: header"></head>
-<body>
-<div class="container marTop">
-    <div class="container-sm my-auto">
-        <h1 id="h1-center">
-            <a class="text-dark" href='/'>SADANG</a>
-        </h1>
-        <br/>
-        <nav class="navbar marBottom">
-            <a href="/signup">회원가입</a>/
-            <a href="/login">로그인</a>/
-            <a href="/test/new">현재 로그인한 사용자 정보</a>/
-            <a th:href="@{/board/new}">글쓰기</a>
-            <a href="/user/out">로그아웃</a>
-            <form class="form-inline my-2 my-lg-0" method="get">
-                <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search"
-                       name="search">
-                <input type="hidden" name="page" th:value="1"/>
-                <button class="btn btn-outline-success my-2 my-sm-0">Search</button>
-            </form>
-        </nav>
-        </br>
-        <div class="row">
-            <div th:each="board, stat : ${boardList}" class="col-sm-3">
-                <div class="card mb-3 border-0">
-                    <div class="card-body cursor-pointer border-0 p-0" th:onclick="'javascript:goBoard('+ ${board.id} + ');'"
-                         th:href="@{/board/{id}(id=${board.id})}">
-                        <img class="thumbnail-image" th:src="@{/thumbnail/{id}(id=${board.thumbnailId})}">
-                        <div class="card-text font-weight-bold text-truncate" th:text="${board.title}"></div>
-                        <div class="card-text sm-font text-muted" th:text="${board.address}"></div>
-                        <div class="card-text font-weight-bold" >[[${board.price}]] 원</div>
+    <head th:replace="fragments/header :: header"></head>
+    <body>
+        <div class="container mt-5 pt-4">
+            <div class="container-sm my-auto">
+                <h1 id="h1-center">
+                    <a class="text-dark" href='/'>SADANG</a>
+                </h1>
+                <br/>
+                <nav class="navbar marBottom">
+                    <a href="/signup">회원가입</a>/
+                    <a href="/login">로그인</a>/
+                    <a href="/test/new">현재 로그인한 사용자 정보</a>/
+                    <a th:href="@{/board/new}">글쓰기</a>
+                    <a href="/user/out">로그아웃</a>
+                    <a href="/myPage">내 정보</a>
+                    <form class="form-inline my-2 my-lg-0" method="get">
+                        <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search"
+                               name="search">
+                        <input type="hidden" name="page" th:value="1"/>
+                        <button class="btn btn-outline-success my-2 my-sm-0">Search</button>
+                    </form>
+                </nav>
+                </br>
+                <div class="row">
+                    <div th:each="board, stat : ${boardList}" class="col-sm-3 p-1">
+                        <div class="card mb-3 p-0 border-0">
+                            <div class="card-body cursor-pointer border-0"
+                                 th:onclick="'javascript:goBoard('+ ${board.id} + ');'"
+                                 th:href="@{/board/{id}(id=${board.id})}">
+                                <img class="thumbnail-image" th:src="@{/thumbnail/{id}(id=${board.thumbnailId})}">
+                                <div class="card-text font-weight-bold text-truncate" th:text="${board.title}"></div>
+                                <div class="card-text sm-font text-muted" th:text="${board.address}"></div>
+                                <div class="card-text font-weight-bold">[[${board.price}]] 원</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
-
-    </div>
-</div>
-</body>
-<script src="/js/board.js"></script>
+    </body>
+    <script src="/js/board.js"></script>
 </html>

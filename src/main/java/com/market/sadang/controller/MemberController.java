@@ -5,6 +5,7 @@ import com.market.sadang.config.UserRole;
 import com.market.sadang.domain.Member;
 import com.market.sadang.domain.Response;
 import com.market.sadang.domain.SignUpForm;
+import com.market.sadang.domain.dto.MemberResponseDto;
 import com.market.sadang.domain.request.RequestLoginUser;
 import com.market.sadang.domain.request.RequestVerifyUser;
 import com.market.sadang.repository.MemberRepository;
@@ -13,9 +14,7 @@ import com.market.sadang.service.authUtil.AuthService;
 import com.market.sadang.service.authUtil.CookieUtil;
 import com.market.sadang.service.authUtil.JwtUtil;
 import com.market.sadang.service.authUtil.RedisUtil;
-import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -297,6 +296,15 @@ public class MemberController {
 
         model.setViewName("testForm");
         return model;
+    }
+
+    // My Page
+    @GetMapping("/myPage")
+    public ModelAndView myPageForm(ModelAndView modelAndView, HttpServletRequest request) {
+        Member member = memberService.searchMemberId(request);
+        modelAndView.addObject("member", new MemberResponseDto(member));
+        modelAndView.setViewName("auth/myPage");
+        return modelAndView;
     }
 }
 
