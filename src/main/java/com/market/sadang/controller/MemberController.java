@@ -8,6 +8,7 @@ import com.market.sadang.domain.SignUpForm;
 import com.market.sadang.domain.request.RequestLoginUser;
 import com.market.sadang.domain.request.RequestVerifyUser;
 import com.market.sadang.repository.MemberRepository;
+import com.market.sadang.service.MemberService;
 import com.market.sadang.service.authUtil.AuthService;
 import com.market.sadang.service.authUtil.CookieUtil;
 import com.market.sadang.service.authUtil.JwtUtil;
@@ -15,9 +16,11 @@ import com.market.sadang.service.authUtil.RedisUtil;
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -39,6 +42,8 @@ public class MemberController {
     private final JwtUtil jwtUtil;
     private final CookieUtil cookieUtil;
     private final RedisUtil redisUtil;
+    private final MemberService memberService;
+    private final RedisTemplate redisTemplate;
 
 //    private final JwtRequestFilter jwtRequestFilter;
 
@@ -107,8 +112,35 @@ public class MemberController {
     }
 
 
+    @PostMapping("/user/out")
+    public ModelAndView logout(ModelAndView modelAndView,
+                               HttpServletRequest req,
+                               HttpServletResponse res) throws ServletException {
+
+        Cookie accessToken = cookieUtil.getCookie(req, "accessToken");
+        redisUtil.deleteData(accessToken.getValue());
 
 
+        Cookie resAccessToken = new Cookie("accessToken",null);
+        Cookie resRefreshToken = new Cookie("refreshToken",null);
+
+        resAccessToken.setHttpOnly(true);
+        resAccessToken.setSecure(false);
+        resAccessToken.setMaxAge(0);
+        resAccessToken.setPath("/");
+
+        resRefreshToken.setHttpOnly(true);
+        resRefreshToken.setSecure(false);
+        resRefreshToken.setMaxAge(0);
+        resRefreshToken.setPath("/");
+
+        res.addCookie(resAccessToken);
+        res.addCookie(resRefreshToken);
+
+
+        modelAndView.setViewName("redirect:/");
+        return modelAndView;
+    }
 
   /*  @PostMapping("/login")
     public ModelAndView login(RequestLoginUser user,
@@ -173,7 +205,6 @@ public class MemberController {
         model.setViewName("auth/mailConfirm");
         return model;
     }*/
-
 
 
     @PostMapping("/sendMail")
