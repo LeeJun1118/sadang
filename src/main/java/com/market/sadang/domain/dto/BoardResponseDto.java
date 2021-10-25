@@ -1,6 +1,7 @@
 package com.market.sadang.domain.dto;
 
 import com.market.sadang.domain.Board;
+import com.market.sadang.domain.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -13,13 +14,15 @@ public class BoardResponseDto {
     private String member;
     private String title;
     private String content;
+    private String address;
     private List<Long> fileIdList;
 
-    public BoardResponseDto(Board entity, List<Long> fileIdList){
+    public BoardResponseDto(Board entity, Member member, List<Long> fileIdList){
         this.id = entity.getId();
         this.member = entity.getMember().getUserId();
         this.title = entity.getTitle();
         this.content = entity.getContent();
+        this.address = member.getAddress();
         this.fileIdList = fileIdList;
     }
 }

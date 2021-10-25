@@ -2,6 +2,7 @@ package com.market.sadang.service;
 
 import com.market.sadang.config.FileHandler;
 import com.market.sadang.domain.Board;
+import com.market.sadang.domain.Member;
 import com.market.sadang.domain.MyFile;
 import com.market.sadang.domain.dto.*;
 import com.market.sadang.repository.BoardRepository;
@@ -81,7 +82,9 @@ public class BoardService {
         Board board = boardRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
 
-        return new BoardResponseDto(board,fileIdList);
+        Member member = memberRepository.findByUserId(board.getMember().getUserId());
+
+        return new BoardResponseDto(board,member,fileIdList);
     }
 
     @Transactional(readOnly = true)

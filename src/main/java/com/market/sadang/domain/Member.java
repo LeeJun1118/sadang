@@ -57,6 +57,9 @@ public class Member extends BaseTimeEntity{
     @Column(nullable = false)
     private String address;
 
+    @Column(nullable = false)
+    private String detailAddress;
+
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private UserRole role = UserRole.ROLE_NOT_PERMITTED;

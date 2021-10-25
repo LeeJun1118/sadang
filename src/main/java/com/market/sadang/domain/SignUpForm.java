@@ -22,6 +22,7 @@ public class SignUpForm {
     @NotEmpty(message = "주소를 입력해주세요")
     private String address;
 
+    @NotEmpty(message = "상세 주소를 입력해주세요")
     private String detailAddress;
 
     @NotEmpty(message = "메일 주소를 입력해주세요")
