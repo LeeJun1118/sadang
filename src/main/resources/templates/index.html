@@ -13,11 +13,7 @@
             <a href="/login">로그인</a>/
             <a href="/test/new">현재 로그인한 사용자 정보</a>/
             <a th:href="@{/board/new}">글쓰기</a>
-
-            <form method="post" action="/user/out">
-                <button class="btn">로그아웃</button>
-            </form>
-
+            <a href="/user/out">로그아웃</a>
             <form class="form-inline my-2 my-lg-0" method="get">
                 <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search"
                        name="search">

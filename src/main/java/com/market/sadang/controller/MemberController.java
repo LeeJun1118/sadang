@@ -112,7 +112,7 @@ public class MemberController {
     }
 
 
-    @PostMapping("/user/out")
+    @GetMapping("/user/out")
     public ModelAndView logout(ModelAndView modelAndView,
                                HttpServletRequest req,
                                HttpServletResponse res) throws ServletException {
