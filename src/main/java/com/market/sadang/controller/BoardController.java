@@ -52,6 +52,7 @@ public class BoardController {
                 BoardCreateRequestDto.builder()
                         .member(member)
                         .title(boardForm.getTitle())
+                        .price(boardForm.getPrice())
                         .content(boardForm.getContent())
                         .build();
 
@@ -128,6 +129,7 @@ public class BoardController {
 
         BoardUpdateRequestDto requestDto = BoardUpdateRequestDto.builder()
                 .title(boardForm.getTitle())
+                .price(boardForm.getPrice())
                 .content(boardForm.getContent())
                 .build();
 

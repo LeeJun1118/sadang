@@ -41,6 +41,7 @@ public class BoardService {
         Board board = new Board(
                 requestDto.getMember(),
                 requestDto.getTitle(),
+                requestDto.getPrice(),
                 requestDto.getContent());
 
         List<MyFile> fileList = fileHandler.parseFileInfo(board, files);

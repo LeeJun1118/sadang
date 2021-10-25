@@ -13,8 +13,8 @@
                 <div class="slide-container">
                     <div class="bxslider">
                         <div class="slide" th:each="file : ${board.fileIdList}">
-                            <a class="myImage" th:href="@{/images/{id}(id=${file})}">
-                                <img th:src="@{/images/{id}(id=${file})}">
+                            <a th:href="@{/images/{id}(id=${file})}">
+                                <img class="center-cropped img-fluid" th:src="@{/images/{id}(id=${file})}">
                             </a>
                         </div>
                     </div>
@@ -29,16 +29,11 @@
                         </div>
                         <div class="card">
                             <div class="card-body">
-                                <div class="form-group border-bottom">
-                                    <label>
-                                        <span class="font-weight-bold" th:text="${board.title}"></span>
-                                    </label>
-                                </div>
                                 <div class="form-group">
-                                    <div class="form-control form-control-plaintext"
-                                         th:text="${board.content}"></div>
+                                    <div class="font-weight-bold h5" th:text="${board.title}"></div>
+                                    <div class="font-weight-bold text-primary mb-4">[[${board.price}]] 원</div>
+                                    <div th:text="${board.content}"></div>
                                 </div>
-
                             </div>
                         </div>
                     </form>

@@ -22,12 +22,14 @@ public class BoardCreateRequestDto {
 
     private Member member;
     private String title;
+    private String price;
     private String content;
 
     @Builder
-    public BoardCreateRequestDto(Member member, String title, String content) {
+    public BoardCreateRequestDto(Member member, String title, String price, String content) {
         this.member = member;
         this.title = title;
+        this.price = price;
         this.content = content;
     }
 
@@ -35,6 +37,7 @@ public class BoardCreateRequestDto {
         return Board.builder()
                 .member(member)
                 .title(title)
+                .price(price)
                 .content(content)
                 .build();
     }

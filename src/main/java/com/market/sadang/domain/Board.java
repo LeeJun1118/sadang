@@ -32,6 +32,9 @@ public class Board extends BaseTimeEntity {
     @Column(nullable = false)
     private String content;
 
+    @Column(nullable = false)
+    private String price;
+
     //CascadeType.MERGE – 트랜잭션이 종료되고 detach 상태에서 연관 엔티티를 추가하거나 변경된 이후에
     // 부모 엔티티가 merge()를 수행하게 되면 변경사항이 적용된다.(연관 엔티티의 추가 및 수정 모두 반영됨)
     @ManyToOne(cascade = {CascadeType.MERGE})
@@ -49,9 +52,10 @@ public class Board extends BaseTimeEntity {
 
 
     @Builder
-    public Board(Member member, String title, String content) {
+    public Board(Member member, String title, String price, String content) {
         this.member = member;
         this.title = title;
+        this.price = price;
         this.content = content;
     }
 

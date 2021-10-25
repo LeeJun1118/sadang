@@ -15,12 +15,14 @@ public class BoardResponseDto {
     private String title;
     private String content;
     private String address;
+    private String price;
     private List<Long> fileIdList;
 
     public BoardResponseDto(Board entity, List<Long> fileIdList){
         this.id = entity.getId();
         this.member = entity.getMember().getUserId();
         this.title = entity.getTitle();
+        this.price = entity.getPrice();
         this.content = entity.getContent();
         this.address = entity.getMember().getAddress();
         this.fileIdList = fileIdList;

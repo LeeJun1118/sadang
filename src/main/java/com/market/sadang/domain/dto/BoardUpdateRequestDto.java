@@ -12,11 +12,13 @@ public class BoardUpdateRequestDto {
     private Long id;
     private String title;
     private String content;
+    private String price;
 
     @Builder
-    public BoardUpdateRequestDto(Long id, String title, String content) {
+    public BoardUpdateRequestDto(Long id, String title,String price, String content) {
         this.id = id;
         this.title = title;
+        this.price = price;
         this.content = content;
     }
 }

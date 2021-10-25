@@ -29,6 +29,7 @@
                         <img class="thumbnail-image" th:src="@{/thumbnail/{id}(id=${board.thumbnailId})}">
                         <div class="card-text font-weight-bold text-truncate" th:text="${board.title}"></div>
                         <div class="card-text sm-font text-muted" th:text="${board.address}"></div>
+                        <div class="card-text font-weight-bold" >[[${board.price}]] 원</div>
                     </div>
                 </div>
             </div>

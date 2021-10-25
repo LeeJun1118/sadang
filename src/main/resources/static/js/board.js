@@ -4,7 +4,8 @@ $(document).ready(function ($) {
         mode: 'fade',
         captions: false,
         slideWidth: 900,
-        touchEnabled: false
+        touchEnabled: false,
+        keyboardEnabled: true
     });
 
     $("#goBoard tr").click(function () {

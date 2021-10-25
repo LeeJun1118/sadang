@@ -9,6 +9,7 @@ public class BoardListResponseDto {
     private String member;
     private String address;
     private String title;
+    private String price;
     private Long thumbnailId;
 
     public BoardListResponseDto(Board entity){
@@ -16,6 +17,7 @@ public class BoardListResponseDto {
         this.member = entity.getMember().getUserId();
         this.address = entity.getMember().getAddress();
         this.title = entity.getTitle();
+        this.price = entity.getPrice();
 
         //첨부파일이 존재하면
         if (!entity.getFileList().isEmpty()){
