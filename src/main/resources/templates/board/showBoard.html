@@ -1,93 +1,96 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/header :: header"></head>
-<body>
-<div class="container marTop">
-    <div class="container-sm my-auto">
-        <h1 id="h1-center">
-            <a class="text-dark" href='/'>SADANG</a>
-        </h1>
-        <br/>
-        <br/>
-        <br/>
-        <form class="form-group">
-            <div class="form-group">
-                <label>글 번호
-                    <span th:text="${board.id}"></span>
-                </label>
-                작성자 <span th:text="${board.member}"></span>
-            </div>
-            <div class="card">
-                <div class="card-body">
-                    <div class="form-group border-bottom">
-                        <label for="cardTitle">제목</label>
-                        <span id="cardTitle" class="form-control-plaintext" th:text="${board.title}"></span>
-                    </div>
-                    <br/>
-
-                    <div class="form-group">
-                        <label for="cardTextArea">내용</label>
-                        <textarea class="form-control form-control-plaintext h-25" rows="10"
-                                  disabled="disabled"
-                                  id="cardTextArea"
-                                  th:text="${board.content}"></textarea>
-                    </div>
-
-                </div>
-            </div>
-        </form>
-
-
-        <ul class="nav justify-content-end">
-            <li class="nav-item">
-                <a class="btn" data-toggle="modal" data-target="#deletePost" href="#">
-                    글삭제
-                </a>
-                <div class="modal fade" id="deletePost" tabindex="-1"
-                     role="dialog" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-body">
-                                <p>게시글을 삭제하시겠습니까?</p>
-                            </div>
-
-                            <div class="modal-footer">
-                                <button type="button" data-dismiss="modal"
-                                        class="btn btn-secondary">
-                                    취소
-                                </button>
-                                <form class="deleteBoard">
-                                    <input class="deleteBoardId" name="boardId" th:field="${board.id}"
-                                           type="hidden">
-                                    <button class="btn btn-primary" data-dismiss="modal" type="button">확인
-                                    </button>
-                                </form>
-                            </div>
+    <head th:replace="fragments/header :: header"></head>
+    <body>
+        <div class="container marTop">
+            <div class="container-sm my-auto">
+                <h1 id="h1-center">
+                    <a class="text-dark" href='/'>SADANG</a>
+                </h1>
+                <br/>
+                <br/>
+                <br/>
+                <div class="slide-container">
+                    <div class="bxslider">
+                        <div class="slide" th:each="file : ${board.fileIdList}">
+                            <a class="myImage" th:href="@{/images/{id}(id=${file})}">
+                                <img th:src="@{/images/{id}(id=${file})}">
+                            </a>
                         </div>
                     </div>
+
+
+                    <form class="form-group">
+                        <div class="form-group">
+                            <label>글 번호
+                                <span th:text="${board.id}"></span>
+                            </label>
+                            작성자 <span th:text="${board.member}"></span>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="form-group border-bottom">
+                                    <label for="cardTitle">제목</label>
+                                    <span id="cardTitle" class="form-control-plaintext" th:text="${board.title}"></span>
+                                </div>
+                                <br/>
+
+                                <div class="form-group">
+                                    <label for="cardTextArea">내용</label>
+                                    <textarea class="form-control form-control-plaintext h-25" rows="10"
+                                              disabled="disabled"
+                                              id="cardTextArea"
+                                              th:text="${board.content}"></textarea>
+                                </div>
+
+                            </div>
+                        </div>
+                    </form>
+
+
+                    <ul class="nav justify-content-end">
+                        <li class="nav-item">
+                            <a class="btn" data-toggle="modal" data-target="#deletePost" href="#">
+                                글삭제
+                            </a>
+                            <div class="modal fade" id="deletePost" tabindex="-1"
+                                 role="dialog" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            <p>게시글을 삭제하시겠습니까?</p>
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <button type="button" data-dismiss="modal"
+                                                    class="btn btn-secondary">
+                                                취소
+                                            </button>
+                                            <form class="deleteBoard">
+                                                <input class="deleteBoardId" name="boardId" th:field="${board.id}"
+                                                       type="hidden">
+                                                <button class="btn btn-primary" data-dismiss="modal" type="button">확인
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="btn verifyWriter" th:href="@{/board/verify/{id}(id=${board.id})}">글 수정</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-default" href="/">목록으로</a>
+                        </li>
+                    </ul>
                 </div>
-            </li>
-
-            <li class="nav-item">
-                <a class="btn verifyWriter" th:href="@{/board/verify/{id}(id=${board.id})}">글 수정</a>
-            </li>
-            <li class="nav-item">
-                <a class="btn btn-default" href="/">목록으로</a>
-            </li>
-        </ul>
 
 
-        <div class="bxslider">
-            <div th:each="file : ${board.fileIdList}">
-                <a class="myImage" th:href="@{/images/{id}(id=${file})}">
-                    <img th:src="@{/images/{id}(id=${file})}">
-                </a>
             </div>
         </div>
+    </body>
 
-    </div>
-</div>
-</body>
-
-<script src="/js/board.js"></script>
+    <script src="/js/board.js"></script>
 </html>

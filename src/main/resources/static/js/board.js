@@ -2,8 +2,8 @@ $(document).ready(function ($) {
 
     $('.bxslider').bxSlider({
         mode: 'fade',
-        captions: true,
-        slideWidth: 600,
+        captions: false,
+        slideWidth: 900,
         touchEnabled: false
     });
 

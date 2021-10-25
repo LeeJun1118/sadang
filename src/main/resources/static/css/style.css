@@ -15,7 +15,7 @@ input::-webkit-file-upload-button {
     cursor:pointer;
 }
 .marBottom{
-    margin-bottom: 5px;
+    margin-bottom: 10px;
 }
 .fieldError {
     border-color: #bd2130;
@@ -303,11 +303,17 @@ select.list-dt:focus {
     max-height: 100%;
 }
 
-#myImage{
-    width: 650px;
-    height: 500px;
-}
-
 .cursor-pointer{
     cursor: pointer;
+}
+
+#article-images{
+    position: relative;
+    margin: 0;
+}
+
+.slide-container{
+    display: block;
+    max-width: 920px;
+    margin: auto;
 }

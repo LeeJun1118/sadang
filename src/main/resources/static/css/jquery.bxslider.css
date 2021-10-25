@@ -27,12 +27,12 @@ ul.bxslider {
   -webkit-transform: translatez(0);
 }
 
-
+/* 슬라이드 안의 이미지 크기 조절  */
 .bx-wrapper,
 .bx-viewport,
 .bx-wrapper img {
-  width: 650px;
-  height:500px;
+  width: 900px;
+  height:650px;
 }
 
 
