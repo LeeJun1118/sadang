@@ -68,9 +68,13 @@ public class MyFileController {
         String absolutePath = new File("").getAbsolutePath() + File.separator + File.separator;
         String path = myFileDto.getFilePath();
 
-        BufferedImage resizeImage = ImageIO.read(new File(absolutePath + path));
+//        이미지 크기 조절
+//        BufferedImage resizeImage = ImageIO.read(new File(absolutePath + path));
+//        byte[] imageByteArray = myFileService.resizeImage(resizeImage,Image_Width,Image_Height);
 
-        byte[] imageByteArray = myFileService.resizeImage(resizeImage,Image_Width,Image_Height);
+        InputStream imageStream = new FileInputStream(absolutePath + path);
+        byte[] imageByteArray = IOUtils.toByteArray(imageStream);
+        imageStream.close();
 
         return new ResponseEntity<>(imageByteArray, HttpStatus.OK);
     }

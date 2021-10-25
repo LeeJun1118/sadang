@@ -12,6 +12,7 @@
 }
 .bx-wrapper img {
   max-width: 100%;
+  max-height: 100%;
   display: block;
 }
 .bxslider {
@@ -25,6 +26,16 @@ ul.bxslider {
   /*fix other elements on the page moving (on Chrome)*/
   -webkit-transform: translatez(0);
 }
+
+
+.bx-wrapper,
+.bx-viewport,
+.bx-wrapper img {
+  width: 650px;
+  height:500px;
+}
+
+
 /** THEME
 ===================================*/
 .bx-wrapper {
