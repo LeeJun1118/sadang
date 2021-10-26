@@ -2,7 +2,9 @@ package com.market.sadang.init;
 
 import com.market.sadang.config.UserRole;
 import com.market.sadang.domain.Member;
+import com.market.sadang.domain.Salt;
 import com.market.sadang.repository.MemberRepository;
+import com.market.sadang.service.authUtil.SaltUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -82,25 +84,34 @@ public class InitMember {
             );
 
             String detailAddress = "상세 주소 Example";
+
+            String password = "1234";
+            SaltUtil saltUtil = new SaltUtil();
+            String salt = saltUtil.genSalt();
+            Salt mySalt = new Salt(salt);
+
             Member member = getMember(
                     randomNames[i-1],
                     randomUsernames[i-1],
-                    bCryptPasswordEncoder.encode("1234"),
+                    saltUtil.encodePassword(salt,password),
+                    randomEmails.get(i-1),
                     address,
                     detailAddress,
-                    randomEmails.get(i-1)
+                    mySalt
+
             );
             em.persist(member);
         }
 
-        private Member getMember(String name, String username, String password, Address address1, String detailAddress, String email) {
+        private Member getMember(String name, String username, String password, String email, Address address1, String detailAddress, Salt salt) {
             return new Member(
                     name,
                     username,
                     password,
+                    email,
                     address1.getCity() + " " + address1.getStreet1(),
                     detailAddress,
-                    email,
+                    salt,
                     UserRole.ROLE_USER
             );
         }
