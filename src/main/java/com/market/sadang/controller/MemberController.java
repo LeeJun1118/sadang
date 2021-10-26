@@ -5,7 +5,11 @@ import com.market.sadang.config.UserRole;
 import com.market.sadang.domain.Member;
 import com.market.sadang.domain.Response;
 import com.market.sadang.domain.SignUpForm;
+import com.market.sadang.domain.dto.BoardUpdateRequestDto;
 import com.market.sadang.domain.dto.MemberResponseDto;
+import com.market.sadang.domain.dto.MemberUpdateRequestDto;
+import com.market.sadang.domain.dto.form.BoardForm;
+import com.market.sadang.domain.dto.form.MemberForm;
 import com.market.sadang.domain.request.RequestLoginUser;
 import com.market.sadang.domain.request.RequestVerifyUser;
 import com.market.sadang.repository.MemberRepository;
@@ -17,14 +21,18 @@ import com.market.sadang.service.authUtil.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 //final이 선언된 모든 필드를 인자값으로 하는 생성자를 대신 생성
 @RequiredArgsConstructor
@@ -78,6 +86,25 @@ public class MemberController {
         return count;
     }
 
+    @PostMapping("/updateIdCheck")
+    public int updateIdCheck(@RequestBody RequestVerifyUser userId, HttpServletRequest request) {
+        Member member = memberService.searchMemberId(request);
+        int count = 0;
+        int distinctCount = memberRepository.countByUserId(userId.getUserId());
+
+        if (Objects.equals(userId.getUserId(), member.getUserId())) {
+            count = 0;
+        } else {
+            if (distinctCount > 0)
+                count = 1;
+        }
+
+        System.out.println("update userId==" + userId.getUserId());
+        System.out.println("update countUser==" + count);
+
+        return count;
+    }
+
     @PostMapping("/login")
     public ModelAndView login(RequestLoginUser user,
                               ModelAndView modelAndView,
@@ -120,8 +147,8 @@ public class MemberController {
         redisUtil.deleteData(accessToken.getValue());
 
 
-        Cookie resAccessToken = new Cookie("accessToken",null);
-        Cookie resRefreshToken = new Cookie("refreshToken",null);
+        Cookie resAccessToken = new Cookie("accessToken", null);
+        Cookie resRefreshToken = new Cookie("refreshToken", null);
 
         resAccessToken.setHttpOnly(true);
         resAccessToken.setSecure(false);
@@ -302,8 +329,37 @@ public class MemberController {
     @GetMapping("/myPage")
     public ModelAndView myPageForm(ModelAndView modelAndView, HttpServletRequest request) {
         Member member = memberService.searchMemberId(request);
+        modelAndView.addObject("member", member);
+        modelAndView.setViewName("member/myPage");
+        return modelAndView;
+    }
+
+    @GetMapping("/myPage/update")
+    public ModelAndView updateInfoForm(ModelAndView modelAndView, HttpServletRequest request) {
+        Member member = memberService.searchMemberId(request);
         modelAndView.addObject("member", new MemberResponseDto(member));
-        modelAndView.setViewName("auth/myPage");
+        modelAndView.setViewName("member/updateInfo");
+        return modelAndView;
+    }
+
+    @PostMapping("/myInfo/update")
+    public ModelAndView infoUpdate(@Valid MemberForm memberForm,
+                               HttpServletRequest request,
+                               ModelAndView modelAndView) {
+
+        MemberUpdateRequestDto requestDto = MemberUpdateRequestDto.builder()
+                .username(memberForm.getUsername())
+                .userId(memberForm.getUserId())
+                .email(memberForm.getEmail())
+                .address(memberForm.getAddress())
+                .detailAddress(memberForm.getDetailAddress())
+                .build();
+
+        Member member = memberService.searchMemberId(request);
+        memberService.update(requestDto,member.getId());
+
+        modelAndView.setViewName("redirect:/");
+
         return modelAndView;
     }
 }

@@ -197,6 +197,51 @@ $(document).ready(function () {
 
         event.preventDefault();
     })
+
+
+
+    $('#updateUserId').on('blur', function (event) {
+
+        var updateUserId = $('#updateUserId').val();
+        var sendData = {"updateUserId": updateUserId};
+        console.log(sendData)
+        console.log(updateUserId)
+        console.log(JSON.stringify(sendData))
+
+        $.ajax({
+            type: "POST",
+            url: "/updateIdCheck",
+            // data: JSON.stringify(sendData),
+            data: JSON.stringify(updateUserId),
+            async: false,
+            dataType: 'json',
+            contentType: "application/json",
+            success: function (data) {
+                if (JSON.parse(data) > 0) {
+                    console.log(JSON.parse(data));
+                    $("#update_id_check").css("color", "red");
+                    $("#update_id_check").css("margin-bottom", "15px");
+                    $("#update_id_check").text("사용할 수 없는 아이디입니다.");
+                    $("#updateUserId").css("margin-bottom", "0px");
+                    $("#updateUserId-btn").attr("disabled", true);
+                } else {
+                    console.log(JSON.parse(data));
+                    $("#update_id_check").css("color", "blue");
+                    $("#update_id_check").css("margin-bottom", "15px");
+                    $("#update_id_check").text("사용할 수 있는 아이디입니다.");
+                    $("#updateUserId").css("margin-bottom", "0px");
+                    $("#updateUserId-btn").attr("disabled", false);
+                }
+
+            },
+            error: function (request, status, error, jqXHR, textStatus, errorThrown) {
+                console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+                //console.log("ERROR : " + textStatus + " : " + errorThrown);
+            }
+        });
+
+        event.preventDefault();
+    })
 });
 
 function sample6_execDaumPostcode() {

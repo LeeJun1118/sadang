@@ -1,0 +1,90 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/header :: header"></head>
+    <body>
+        <div class="container mt-5 pt-4">
+            <div class="container-sm my-auto mb-5">
+                <h1 id="h1-center" class="pb-5 mb-5">
+                    <a class="text-dark" href='/'>SADANG</a>
+                </h1>
+
+                <div class="row">
+
+                    <div class="col-md-12">
+                        <h4 class="mb-5">내 정보 수정하기</h4>
+                        <form method="post" th:object="${member}" action="/myInfo/update">
+                            <div class="row mb-5">
+                                <div class="col-md-3 mt-2">이름</div>
+                                <div class="col-md-8">
+                                    <div>
+                                        <input id="username" type="text" class="form-control"
+                                               name="username"
+                                               aria-label="large" aria-describedby="inputGroup-sizing-sm"
+                                               th:field="*{username}"/>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="row mb-5">
+                                <div class="col-md-3 mt-2">아이디</div>
+                                <div class="col-md-8">
+                                    <div>
+                                        <input id="updateUserId" name="userId" type="text" class="form-control"
+                                               aria-label="large" aria-describedby="inputGroup-sizing-sm"
+                                               th:field="*{userId}"/>
+                                        <div id="update_id_check"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mb-5">
+                                <div class="col-md-3 mt-2">이메일</div>
+                                <div class="col-md-8">
+                                    <div>
+                                        <input id="email" type="text" class="form-control"
+                                               name="email"
+                                               aria-label="large" aria-describedby="inputGroup-sizing-sm"
+                                               th:field="*{email}"/>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="row mb-5">
+
+                                <div class="col-md-4 mt-2">
+                                    <input type="button" onclick="sample6_execDaumPostcode()"
+                                           readonly value="우편번호 찾기">
+                                    <div>
+                                        <input id="address" type="text" name="address"
+                                               th:field="*{address}"/>
+                                    </div>
+                                </div>
+                                <div class="col-md-7 mb-3">
+                                    <label>상세 주소</label>
+                                    <div>
+                                        <input id="detailAddress" type="text" class="col-md-12 form-control"
+                                               name="detailAddress" aria-label="large" aria-describedby="inputGroup-sizing-sm"
+                                               th:field="*{detailAddress}"/>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                            <ul class="nav justify-content-center">
+                                <li class="nav-item">
+                                    <button type="submit" class="btn btn-primary">등록</button>
+                                </li>
+                            </ul>
+                        </form>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </body>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+</html>

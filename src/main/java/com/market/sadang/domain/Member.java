@@ -52,6 +52,7 @@ public class Member extends BaseTimeEntity{
 
     //테이블의 컬럼을 나타내면 굳이 선언하지 않아도 해당 클래스의 모든 필드는 모두 컬럼이 됨.
     //기본 값 외에 추가 변경 옵션이 있을 때 사용
+    @Column(nullable = false)
     private String email;
 
     @Column(nullable = false)
@@ -86,5 +87,13 @@ public class Member extends BaseTimeEntity{
 /*                ", createAt=" + createAt +
                 ", updateAt=" + updateAt +*/
                 '}';
+    }
+
+    public void update(String username,String userId, String email, String address, String detailAddress){
+        this.username = username;
+        this.userId = userId;
+        this.email = email;
+        this.address = address;
+        this.detailAddress = detailAddress;
     }
 }

@@ -1,14 +1,18 @@
 package com.market.sadang.config;
 
+import com.market.sadang.service.MemberService;
 import com.market.sadang.service.authUtil.MyUserDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity
@@ -19,6 +23,26 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
     private final JwtRequestFilter jwtRequestFilter;
+    private final MemberService memberService;
+/*
+    private static final String[] PUBLIC_URI = {
+            "/", "/login", "/verify/**", "/signup",
+            "/board/**",
+            "/thumbnail/**", "/images/**",
+            "/test", "/sendMail/**",
+
+    };
+
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(memberService)
+                .passwordEncoder(new BCryptPasswordEncoder());
+    }*/
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -38,21 +62,36 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .antMatchers("/signup").permitAll()
 //                .antMatchers("/login").permitAll()
 //                .antMatchers("/verify").permitAll()
-                .antMatchers("/board/new").hasRole("USER")
+
+                /*.antMatchers("/board/new").hasRole("USER")
                 .antMatchers("/myPage").hasRole("USER")
-                .antMatchers("/test/**").hasRole("USER")
-                .anyRequest().permitAll();
+                .antMatchers("/test/**").hasRole("USER")*/
+                .anyRequest()
+                .permitAll();
+
+
+               /* .antMatchers(PUBLIC_URI).permitAll()
+                .anyRequest()
+                .authenticated()
+                .and()
+                .formLogin().disable()
+                .httpBasic().disable()
+                .logout().disable()
+                .exceptionHandling()
+                .accessDeniedPage("/403error");*/
 
 
         // 모든 요청에 토큰을 검증하는 필터를 추가한다.
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
+/*
     @Override // ignore check swagger resource
     public void configure(WebSecurity web) {
         web.ignoring().antMatchers("/v2/api-docs", "/swagger-resources/**",
                 "/swagger-ui.html", "/webjars/**", "/swagger/**");
     }
+*/
 
     @Bean
     @Override
