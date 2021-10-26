@@ -1,0 +1,40 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/sadang
+    username: dbName
+    password: dbPassword
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  cache:
+    type: redis
+
+  redis:
+    host: localhost
+    port: 6379
+
+  jwt:
+    secret: asdfasdklfkljsdflkjsdalfjbvklvcb
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: email
+    password: password
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 30MB
+server:
+  port: 8080
+  netty:
+    connection-timeout: -1
+
+
