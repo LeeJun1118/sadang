@@ -24,13 +24,15 @@ public class BoardCreateRequestDto {
     private String title;
     private String price;
     private String content;
+    private String address;
 
     @Builder
-    public BoardCreateRequestDto(Member member, String title, String price, String content) {
+    public BoardCreateRequestDto(Member member, String title, String price, String content, String address) {
         this.member = member;
         this.title = title;
         this.price = price;
         this.content = content;
+        this.address = address;
     }
 
     public Board toEntity(){
@@ -39,6 +41,7 @@ public class BoardCreateRequestDto {
                 .title(title)
                 .price(price)
                 .content(content)
+                .address(address)
                 .build();
     }
 }

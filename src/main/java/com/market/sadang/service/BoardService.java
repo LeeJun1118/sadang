@@ -42,6 +42,7 @@ public class BoardService {
                 requestDto.getMember(),
                 requestDto.getTitle(),
                 requestDto.getPrice(),
+                requestDto.getAddress(),
                 requestDto.getContent());
 
         List<MyFile> fileList = fileHandler.parseFileInfo(board, files);
@@ -121,5 +122,10 @@ public class BoardService {
         myBoard.setContent(board.getContent());
 
         return myBoard;
+    }
+
+    public List<Board> searchParam(String search) {
+//        List<Board> boardList = boardRepository.findByTitleContainingOrMember_Address(search);
+        return boardRepository.findByTitleContainingAndMember_Address(search, search);
     }
 }

@@ -1,6 +1,7 @@
 package com.market.sadang.domain;
 
 import com.market.sadang.config.UserRole;
+import com.market.sadang.init.Address;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -95,5 +96,17 @@ public class Member extends BaseTimeEntity {
         this.email = email;
         this.address = address;
         this.detailAddress = detailAddress;
+    }
+
+    @Builder
+
+    public Member(String name, String username, String password, String email, String address, String detailAddress, UserRole role) {
+        this.name = name;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.address = address;
+        this.detailAddress = detailAddress;
+        this.role = role;
     }
 }
