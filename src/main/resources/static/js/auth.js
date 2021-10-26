@@ -291,3 +291,47 @@ function sample6_execDaumPostcode() {
         }
     }).open();
 }
+
+var timerID;
+$(document).ready(function () {
+    $('#loginCheck').on('click',function(e){
+        e.preventDefault();
+        updateData();
+    });
+
+    window.onload = function() {
+        document.getElementById('loginCheck').click();
+    }
+});
+
+function updateData(){
+    $.ajax({
+        url: "/loginCheck",
+        type:"get",
+        cache : false,
+        success: function (data) {
+            if (JSON.parse(data) == 1) {
+                $("#loginVerify").text("로그아웃");
+                $("#loginVerify").css('cursor','pointer');
+                $("#loginVerify").css('color','blue');
+                // $("#loginVerify").attr("href","/user/out");
+                $('#loginVerify').on('click',function(e){
+                    e.preventDefault();
+                    location.replace("/user/out")
+                });
+
+            } else {
+                $("#loginVerify").text("로그인");
+                $("#loginVerify").css('cursor','pointer');
+                $("#loginVerify").css('color','blue');
+                // $("#loginVerify").attr("href","/login");
+                $('#loginVerify').on('click',function(e){
+                    e.preventDefault();
+                    location.replace("/login")
+                });
+            }
+
+        },
+    });
+    timerID = setTimeout("updateData()", 3000); // 2초 단위로 갱신 처리
+}

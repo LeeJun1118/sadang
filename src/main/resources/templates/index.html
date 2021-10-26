@@ -9,15 +9,15 @@
                 </h1>
                 <br/>
                 <nav class="navbar marBottom">
+                    <div id="loginCheck">
+                        <a id="loginVerify"></a>
+                    </div>
                     <a href="/signup">회원가입</a>/
-                    <a href="/login">로그인</a>/
-                    <a href="/test/new">현재 로그인한 사용자 정보</a>/
-                    <a th:href="@{/board/new}">글쓰기</a>
-                    <a href="/user/out">로그아웃</a>
+                    <a href="/board/new">글쓰기</a>
                     <a href="/myPage">내 정보</a>
                     <form class="form-inline my-2 my-lg-0" action="/" method="get">
                         <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search"
-                               name="search">
+                               name="search" th:value="${param.search}">
                         <button class="btn btn-outline-success my-2 my-sm-0">Search</button>
                     </form>
                 </nav>

@@ -360,5 +360,21 @@ public class MemberController {
 
         return modelAndView;
     }
+
+
+    @GetMapping("/loginCheck")
+    public int loginCheck(HttpServletRequest request){
+        int check = 0;
+
+        try {
+            Member member = memberService.searchMemberId(request);
+            if (member == null)
+                check = 0;
+            else
+                check = 1;
+        }catch (Exception e){
+        }
+        return check;
+    }
 }
 
