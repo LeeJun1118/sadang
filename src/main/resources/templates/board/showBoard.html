@@ -41,7 +41,7 @@
 
                     <ul class="nav justify-content-end">
                         <li class="nav-item">
-                            <a class="btn" data-toggle="modal" data-target="#deletePost" href="#">
+                            <a id="deleteBoard" class="btn" data-toggle="modal" data-target="#deletePost" href="#">
                                 글삭제
                             </a>
                             <div class="modal fade" id="deletePost" tabindex="-1"
@@ -70,7 +70,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="btn verifyWriter" th:href="@{/board/verify/{id}(id=${board.id})}">글 수정</a>
+                            <a id="updateBoard" class="btn verifyWriter" th:href="@{/board/verify/{id}(id=${board.id})}">글 수정</a>
                         </li>
                         <li class="nav-item">
                             <a class="btn btn-default" href="/">목록으로</a>
