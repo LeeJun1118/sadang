@@ -23,9 +23,9 @@ public class MemberService {
     //사용자 찾기
     public Member searchMemberId(HttpServletRequest request) {
         Cookie jwtToken = cookieUtil.getCookie(request, "accessToken");
-        String memberId = jwtUtil.getUserId(jwtToken.getValue());
+        String memberId = jwtUtil.getUsername(jwtToken.getValue());
 
-        return memberRepository.findByUserId(memberId);
+        return memberRepository.findByUsername(memberId);
     }
 
     @Transactional
@@ -34,8 +34,8 @@ public class MemberService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
 
         member.update(
-                requestDto.getUsername()
-                , requestDto.getUserId()
+                requestDto.getName()
+                , requestDto.getUsername()
                 , requestDto.getEmail()
                 , requestDto.getAddress()
                 , requestDto.getDetailAddress());

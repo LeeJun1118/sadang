@@ -42,9 +42,9 @@ public class JwtUtil {
                 .getBody();
     }
 
-    //추출한 Payload로부터 userId 가져온다.
-    public String getUserId(String token){
-        return extractAllClaims(token).get("userId",String.class);
+    //추출한 Payload로부터 Username 가져온다.
+    public String getUsername(String token){
+        return extractAllClaims(token).get("username",String.class);
     }
 
     //토큰이 만료됐는지 아닌지 확인
@@ -55,16 +55,16 @@ public class JwtUtil {
 
     //Access, Refresh Token 형성
     public String generateToken(Member member){
-        return doGenerateToken(member.getUserId(),TOKEN_VALIDATION_SECOND);
+        return doGenerateToken(member.getUsername(),TOKEN_VALIDATION_SECOND);
     }
     public String generateRefreshToken(Member member){
-        return doGenerateToken(member.getUserId(),REFRESH_TOKEN_VALIDATION_SECOND);
+        return doGenerateToken(member.getUsername(),REFRESH_TOKEN_VALIDATION_SECOND);
     }
 
-    //토큰 생성, 페이로드에 담길 값은 userId
-    private String doGenerateToken(String userId, long expireTime) {
+    //토큰 생성, 페이로드에 담길 값은 Username
+    private String doGenerateToken(String username, long expireTime) {
         Claims claims = Jwts.claims();
-        claims.put("userId",userId);
+        claims.put("username",username);
 
         String jwt = Jwts.builder()
                 .setClaims(claims)
@@ -76,8 +76,8 @@ public class JwtUtil {
     }
 
     public Boolean validateToken(String token, UserDetails userDetails){
-        final String userId = getUserId(token);
-        return (userId.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        final String username = getUsername(token);
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
 }

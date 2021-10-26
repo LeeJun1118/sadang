@@ -20,7 +20,7 @@ public class BoardResponseDto {
 
     public BoardResponseDto(Board entity, List<Long> fileIdList){
         this.id = entity.getId();
-        this.member = entity.getMember().getUserId();
+        this.member = entity.getMember().getUsername();
         this.title = entity.getTitle();
         this.price = entity.getPrice();
         this.content = entity.getContent();

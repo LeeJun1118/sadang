@@ -9,15 +9,15 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class MemberUpdateRequestDto {
-    private String userId;
+    private String name;
     private String username;
     private String email;
     private String address;
     private String detailAddress;
 
     @Builder
-    public MemberUpdateRequestDto(String userId, String username, String email, String address, String detailAddress) {
-        this.userId = userId;
+    public MemberUpdateRequestDto(String name, String username, String email, String address, String detailAddress) {
+        this.name = name;
         this.username = username;
         this.email = email;
         this.address = address;

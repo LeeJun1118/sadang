@@ -15,5 +15,5 @@ import lombok.Setter;
 @AllArgsConstructor
 @JsonDeserialize
 public class RequestVerifyUser {
-    String userId;
+    String username;
 }

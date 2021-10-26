@@ -104,7 +104,7 @@ public class BoardService {
     public Board verifyWriter(Long id, HttpServletRequest request) {
         Board board = boardRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시물이 존재하지 않습니다"));
-        String memberId = memberService.searchMemberId(request).getUserId();
+        String memberId = memberService.searchMemberId(request).getUsername();
         if (Objects.equals(board.getMember().getUsername(), memberId)) {
             return board;
         } else return null;

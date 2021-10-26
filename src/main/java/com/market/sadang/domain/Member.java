@@ -34,7 +34,7 @@ import java.util.List;
 //기본 값으로 클래스의 카멜케이스 이름을 언더스코어 네이밍(_)으로 테이블 이름을 매칭(ex: SalesManager.java -> sales_manager table)
 @Entity
 //Spring Security는 UserDetails 객체를 통해 권한 정보를 관리하기 때문에 User 클래스에 UserDetails 를 구현하고 추가 정보를 재정의 해야함
-public class Member extends BaseTimeEntity{
+public class Member extends BaseTimeEntity {
     //해당 테이블의 PK 필드를 나타냄
     @Id
     //PK 의 생성 규칙을 나타냄 strategy = GenerationType.IDENTITY 로 자동 증가 됨
@@ -42,10 +42,10 @@ public class Member extends BaseTimeEntity{
     private Long id;
 
     @Column(nullable = false)
-    private String username;
+    private String name;
 
     @Column(nullable = false)
-    private String userId;
+    private String username;
 
     @Column(nullable = false)
     private String password;
@@ -78,8 +78,8 @@ public class Member extends BaseTimeEntity{
     public String toString() {
         return "User{" +
                 "id=" + id +
+                ", name='" + name + '\'' +
                 ", username='" + username + '\'' +
-                ", userId='" + userId + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", address='" + address + '\'' +
@@ -89,9 +89,9 @@ public class Member extends BaseTimeEntity{
                 '}';
     }
 
-    public void update(String username,String userId, String email, String address, String detailAddress){
+    public void update(String name, String username, String email, String address, String detailAddress) {
+        this.name = name;
         this.username = username;
-        this.userId = userId;
         this.email = email;
         this.address = address;
         this.detailAddress = detailAddress;

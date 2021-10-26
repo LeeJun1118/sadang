@@ -10,10 +10,10 @@ import javax.validation.constraints.NotEmpty;
 @Setter
 public class SignUpForm {
 
-    @NotEmpty(message = "id를 입력해주세요")
-    private String userId;
-
     @NotEmpty(message = "이름을 입력해주세요")
+    private String name;
+
+    @NotEmpty(message = "id를 입력해주세요")
     private String username;
 
     @NotEmpty(message = "비밀번호를 입력해주세요")

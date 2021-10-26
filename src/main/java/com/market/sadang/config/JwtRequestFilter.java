@@ -38,7 +38,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         final Cookie jwtToken = cookieUtil.getCookie(request,JwtUtil.ACCESS_TOKEN_NAME);
 
-        String userId = null;
+        String username = null;
         String jwt = null;
         String refreshJwt = null;
         String refreshUname = null;
@@ -46,10 +46,10 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         try {
             if(jwtToken != null){
                 jwt = jwtToken.getValue();
-                userId = jwtUtil.getUserId(jwt);
+                username = jwtUtil.getUsername(jwt);
             }
-            if (userId != null){
-                UserDetails userDetails = userDetailService.loadUserByUsername(userId);
+            if (username != null){
+                UserDetails userDetails = userDetailService.loadUserByUsername(username);
 
                 if (jwtUtil.validateToken(jwt,userDetails)){
                     UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken
@@ -71,7 +71,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             if(refreshJwt != null){
                 refreshUname = redisUtil.getData(refreshJwt);
 
-                if (refreshUname.equals(jwtUtil.getUserId(refreshJwt))){
+                if (refreshUname.equals(jwtUtil.getUsername(refreshJwt))){
 
                     UserDetails userDetails = userDetailService.loadUserByUsername(refreshUname);
 

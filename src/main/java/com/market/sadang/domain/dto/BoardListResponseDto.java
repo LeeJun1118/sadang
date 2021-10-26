@@ -14,7 +14,7 @@ public class BoardListResponseDto {
 
     public BoardListResponseDto(Board entity){
         this.id = entity.getId();
-        this.member = entity.getMember().getUserId();
+        this.member = entity.getMember().getUsername();
         this.address = entity.getMember().getAddress();
         this.title = entity.getTitle();
         this.price = entity.getPrice();

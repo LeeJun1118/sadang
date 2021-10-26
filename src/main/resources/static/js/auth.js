@@ -155,19 +155,19 @@ $(document).ready(function () {
     })
 
 
-    $('#userId').on('blur', function (event) {
+    $('#username').on('blur', function (event) {
 
-        var userId = $('#userId').val();
-        var sendData = {"userId": userId};
+        var username = $('#username').val();
+        var sendData = {"username": username};
         console.log(sendData)
-        console.log(userId)
+        console.log(username)
         console.log(JSON.stringify(sendData))
 
         $.ajax({
             type: "POST",
             url: "/idCheck",
             // data: JSON.stringify(sendData),
-            data: JSON.stringify(userId),
+            data: JSON.stringify(username),
             async: false,
             dataType: 'json',
             contentType: "application/json",
@@ -184,7 +184,7 @@ $(document).ready(function () {
                     $("#id_check").css("color", "blue");
                     $("#id_check").css("margin-bottom", "15px");
                     $("#id_check").text("사용할 수 있는 아이디입니다.");
-                    $("#userId").css("margin-bottom", "0px");
+                    $("#username").css("margin-bottom", "0px");
                     $("#userId-btn").attr("disabled", false);
                 }
 
@@ -200,9 +200,9 @@ $(document).ready(function () {
 
 
 
-    $('#updateUserId').on('blur', function (event) {
+    $('#updateUsername').on('blur', function (event) {
 
-        var updateUserId = $('#updateUserId').val();
+        var updateUserId = $('#updateUsername').val();
         var sendData = {"updateUserId": updateUserId};
         console.log(sendData)
         console.log(updateUserId)
@@ -229,7 +229,7 @@ $(document).ready(function () {
                     $("#update_id_check").css("color", "blue");
                     $("#update_id_check").css("margin-bottom", "15px");
                     $("#update_id_check").text("사용할 수 있는 아이디입니다.");
-                    $("#updateUserId").css("margin-bottom", "0px");
+                    $("#updateUsername").css("margin-bottom", "0px");
                     $("#updateUserId-btn").attr("disabled", false);
                 }
 

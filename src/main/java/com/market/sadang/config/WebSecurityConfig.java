@@ -4,6 +4,7 @@ import com.market.sadang.service.MemberService;
 import com.market.sadang.service.authUtil.MyUserDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -15,6 +16,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -23,26 +25,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
     private final JwtRequestFilter jwtRequestFilter;
-    private final MemberService memberService;
-/*
-    private static final String[] PUBLIC_URI = {
-            "/", "/login", "/verify/**", "/signup",
-            "/board/**",
-            "/thumbnail/**", "/images/**",
-            "/test", "/sendMail/**",
-
-    };
-
-    @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(memberService)
-                .passwordEncoder(new BCryptPasswordEncoder());
-    }*/
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -63,22 +45,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .antMatchers("/login").permitAll()
 //                .antMatchers("/verify").permitAll()
 
-                /*.antMatchers("/board/new").hasRole("USER")
+                .antMatchers("/board/new").hasRole("USER")
                 .antMatchers("/myPage").hasRole("USER")
-                .antMatchers("/test/**").hasRole("USER")*/
+                .antMatchers("/test/**").hasRole("USER")
                 .anyRequest()
                 .permitAll();
 
 
-               /* .antMatchers(PUBLIC_URI).permitAll()
-                .anyRequest()
-                .authenticated()
-                .and()
-                .formLogin().disable()
-                .httpBasic().disable()
-                .logout().disable()
-                .exceptionHandling()
-                .accessDeniedPage("/403error");*/
 
 
         // 모든 요청에 토큰을 검증하는 필터를 추가한다.

@@ -12,16 +12,16 @@ import javax.validation.constraints.NotEmpty;
 @NoArgsConstructor
 public class MemberResponseDto {
 
+    private String name;
     private String username;
-    private String userId;
     private String email;
     private String address;
     private String detailAddress;
 
     @Builder
     public MemberResponseDto(Member member) {
+        this.name = member.getName();
         this.username = member.getUsername();
-        this.userId = member.getUserId();
         this.email = member.getEmail();
         this.address = member.getAddress();
         this.detailAddress = member.getDetailAddress();

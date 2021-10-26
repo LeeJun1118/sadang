@@ -71,35 +71,35 @@ public class MemberController {
     }
 
     @PostMapping("/idCheck")
-    public int idCheck(@RequestBody RequestVerifyUser userId) {
+    public int idCheck(@RequestBody RequestVerifyUser username) {
         // ajax에서 userId=testuserId 이런식으로 받아와짐
         Map<String, Object> object = new HashMap<String, Object>();
         int count = 0;
-        if (userId.getUserId() == "") {
+        if (username.getUsername() == "") {
             count = 1;
         } else
-            count = memberRepository.countByUserId(userId.getUserId());
+            count = memberRepository.countByUsername(username.getUsername());
 
-        System.out.println("userId==" + userId.getUserId());
+        System.out.println("username==" + username.getUsername());
         System.out.println("countUser==" + count);
 
         return count;
     }
 
     @PostMapping("/updateIdCheck")
-    public int updateIdCheck(@RequestBody RequestVerifyUser userId, HttpServletRequest request) {
+    public int updateIdCheck(@RequestBody RequestVerifyUser user, HttpServletRequest request) {
         Member member = memberService.searchMemberId(request);
         int count = 0;
-        int distinctCount = memberRepository.countByUserId(userId.getUserId());
+        int distinctCount = memberRepository.countByUsername(user.getUsername());
 
-        if (Objects.equals(userId.getUserId(), member.getUserId())) {
+        if (Objects.equals(user.getUsername(), member.getUsername())) {
             count = 0;
         } else {
             if (distinctCount > 0)
                 count = 1;
         }
 
-        System.out.println("update userId==" + userId.getUserId());
+        System.out.println("update userId==" + user.getUsername());
         System.out.println("update countUser==" + count);
 
         return count;
@@ -110,18 +110,18 @@ public class MemberController {
                               ModelAndView modelAndView,
                               HttpServletRequest req,
                               HttpServletResponse res) {
-        System.out.println("userId.getUserId()=====" + user.getUserId());
+        System.out.println("userId.getUsername()=====" + user.getUsername());
         Response response;
 
         try {
-            final Member member = authService.loginUser(user.getUserId(), user.getPassword());
+            final Member member = authService.loginUser(user.getUsername(), user.getPassword());
             final String token = jwtUtil.generateToken(member);
             final String refreshJwt = jwtUtil.generateRefreshToken(member);
 
             Cookie accessToken = cookieUtil.createCookie(JwtUtil.ACCESS_TOKEN_NAME, token);
             Cookie refreshToken = cookieUtil.createCookie(JwtUtil.REFRESH_TOKEN_NAME, refreshJwt);
 
-            redisUtil.setDataExpire(refreshJwt, member.getUserId(), JwtUtil.REFRESH_TOKEN_VALIDATION_SECOND);
+            redisUtil.setDataExpire(refreshJwt, member.getUsername(), JwtUtil.REFRESH_TOKEN_VALIDATION_SECOND);
             res.addCookie(accessToken);
             res.addCookie(refreshToken);
 
@@ -245,8 +245,8 @@ public class MemberController {
             authService.sendVerificationMail(member);
 
             RequestVerifyUser verifyUser = new RequestVerifyUser();
-            verifyUser.setUserId(member.getUserId());
-            model.addObject("userId", verifyUser.getUserId());
+            verifyUser.setUsername(member.getUsername());
+            model.addObject("username", verifyUser.getUsername());
 
             response = new Response("success", "성공적으로 인증메일을 보냈습니다.", null);
             System.out.println(response.getMessage());
@@ -273,10 +273,10 @@ public class MemberController {
     }
 
     @PostMapping("/confirm")
-    public int mailConfirm(@RequestBody RequestVerifyUser userId) throws Exception {
+    public int mailConfirm(@RequestBody RequestVerifyUser user) throws Exception {
 
         // ajax에서 userId=testUserId 이런식으로 받아와짐
-        String name = userId.getUserId().split("=")[1];
+        String name = user.getUsername().split("=")[1];
 
 //        Map<String, Object> object = new HashMap<String, Object>();
 
@@ -284,14 +284,14 @@ public class MemberController {
 
         Member member = authService.findByUserId(name);
 
-        System.out.println(member.getUserId());
-        if (member.getUserId() != null && member.getRole() == UserRole.ROLE_USER) {
-            System.out.println("member.name()" + member.getUserId());
+        System.out.println(member.getUsername());
+        if (member.getUsername() != null && member.getRole() == UserRole.ROLE_USER) {
+            System.out.println("member.name()" + member.getUsername());
             System.out.println("member.getRole()=" + member.getRole());
             sendReq = 1;
 //            object.put("responseCode", "success");
         } else {
-            System.out.println("member.name()" + member.getUserId());
+            System.out.println("member.name()" + member.getUsername());
             System.out.println("member.getRole()=" + member.getRole());
 //            object.put("responseCode", "error");
             System.out.println("메일 인증 안함");
@@ -309,16 +309,14 @@ public class MemberController {
     public ModelAndView authTest(ModelAndView model, HttpServletRequest request) {
         //쿠키에서 토큰 받아서 사용자 정보 확인
         Cookie jwtToken = cookieUtil.getCookie(request, "accessToken");
-        String userId = null;
+        String username = null;
 
         if (jwtToken != null) {
-            userId = jwtUtil.getUserId(jwtToken.getValue());
-            String username = memberRepository.findByUserId(userId).getUsername();
-            model.addObject("userId", userId);
+            username = jwtUtil.getUsername(jwtToken.getValue());
             model.addObject("username", username);
 
         } else {
-            model.addObject("userId", "null");
+            model.addObject("username", "null");
         }
 
         model.setViewName("testForm");
@@ -348,8 +346,8 @@ public class MemberController {
                                ModelAndView modelAndView) {
 
         MemberUpdateRequestDto requestDto = MemberUpdateRequestDto.builder()
+                .name(memberForm.getName())
                 .username(memberForm.getUsername())
-                .userId(memberForm.getUserId())
                 .email(memberForm.getEmail())
                 .address(memberForm.getAddress())
                 .detailAddress(memberForm.getDetailAddress())
