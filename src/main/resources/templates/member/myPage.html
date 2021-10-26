@@ -86,8 +86,13 @@
                 </div>
 
                 <ul class="nav justify-content-center">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/myPage/update">수정하기</a>
+                    <li class="nav-item mr-1">
+                        <button type="button" class="btn btn-secondary"
+                                onclick="history.go(-1)">뒤로가기</button>
+                    </li>
+                    <li class="nav-item ml-1">
+                        <button type="button" onclick="location.href='/myPage/update'" class="btn btn-primary">
+                            수정하기</button>
                     </li>
                 </ul>
 

@@ -65,7 +65,8 @@
                                     <label>상세 주소</label>
                                     <div>
                                         <input id="detailAddress" type="text" class="col-md-12 form-control"
-                                               name="detailAddress" aria-label="large" aria-describedby="inputGroup-sizing-sm"
+                                               name="detailAddress" aria-label="large"
+                                               aria-describedby="inputGroup-sizing-sm"
                                                th:field="*{detailAddress}"/>
                                     </div>
                                 </div>
@@ -74,8 +75,12 @@
                             </div>
 
                             <ul class="nav justify-content-center">
-                                <li class="nav-item">
-                                    <button type="submit" class="btn btn-primary">등록</button>
+                                <li class="nav-item mr-1">
+                                    <button type="button" class="btn btn-secondary"
+                                            onclick="history.go(-1)">취소</button>
+                                </li>
+                                <li class="nav-item ml-1">
+                                    <button type="submit" class="btn btn-primary">완료</button>
                                 </li>
                             </ul>
                         </form>
