@@ -320,6 +320,15 @@ function updateData(){
                     location.replace("/user/out")
                 });
 
+                $("#myInfo").text("내 정보");
+                $("#myInfo").css('cursor','pointer');
+                $("#myInfo").css('color','blue');
+                $('#myInfo').on('click',function(e){
+                    e.preventDefault();
+                    location.replace("/myPage")
+                });
+
+
             } else {
                 $("#loginVerify").text("로그인");
                 $("#loginVerify").css('cursor','pointer');
@@ -329,6 +338,16 @@ function updateData(){
                     e.preventDefault();
                     location.replace("/login")
                 });
+
+                $("#signUp").text("회원가입");
+                $("#signUp").css('cursor','pointer');
+                $("#signUp").css('color','blue');
+                $('#signUp').on('click',function(e){
+                    e.preventDefault();
+                    location.replace("/signup")
+                });
+
+
             }
 
         },
