@@ -87,10 +87,6 @@ public class BoardController {
     public ModelAndView searchAllDesc(ModelAndView modelAndView
             , @RequestParam(value = "search", defaultValue = "") String search) {
 
-        System.out.println("search ====" + search +"&&");
-        if (Objects.equals(search, ""))
-            System.out.println("search는 공백");
-
         List<Board> boardList = null;
         if (Objects.equals(search, "")) {
             boardList = boardService.searchAllDesc();

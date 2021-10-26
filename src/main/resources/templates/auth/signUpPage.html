@@ -2,7 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org">
     <head th:replace="fragments/header :: header"></head>
     <div id="layer" style="display:none;position:fixed;overflow:hidden;z-index:1;-webkit-overflow-scrolling:touch;">
-        <img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnCloseLayer" style="cursor:pointer;position:absolute;right:-3px;top:-3px;z-index:1" onclick="closeDaumPostcode()" alt="닫기 버튼">
+        <img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnCloseLayer"
+             style="cursor:pointer;position:absolute;right:-3px;top:-3px;z-index:1" onclick="closeDaumPostcode()"
+             alt="닫기 버튼">
     </div>
     <body>
         <!-- MultiStep Form -->
@@ -27,13 +29,19 @@
                                         <div class="form-card">
                                             <h3 class="fs-title">회원가입</h3>
                                             </br>
-                                            <input id="name" type="text" class="input-form" th:field="*{name}" placeholder="이름을 입력해주세요"/>
-                                            <input id="username" type="text" th:field="*{username}" placeholder="사용할 ID를 입력해주세요."/>
+                                            <input id="name" type="text" class="input-form" th:field="*{name}"
+                                                   placeholder="이름을 입력해주세요"/>
+                                            <input id="username" type="text" th:field="*{username}"
+                                                   placeholder="사용할 ID를 입력해주세요."/>
                                             <div id="id_check"></div>
-                                            <input id="password" type="password" class="input-form" th:field="*{password}" placeholder="비밀번호를 입력해주세요"/>
-                                            <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
-                                            <input id="address" type="text" readonly th:field="*{address}" placeholder="주소를 입력해주세요"/>
-                                            <input id="detailAddress" type="text" class="input-form" th:field="*{detailAddress}" placeholder="상세 주소를 입력해주세요"/>
+                                            <input id="password" type="password" class="input-form"
+                                                   th:field="*{password}" placeholder="비밀번호를 입력해주세요"/>
+                                            <input type="button" onclick="sample6_execDaumPostcode()"
+                                                   value="우편번호 찾기"><br>
+                                            <input id="address" type="text" readonly th:field="*{address}"
+                                                   placeholder="주소를 입력해주세요"/>
+                                            <input id="detailAddress" type="text" class="input-form"
+                                                   th:field="*{detailAddress}" placeholder="상세 주소를 입력해주세요"/>
                                         </div>
                                     </fieldset>
                                     <!--class="next action-button"-->
