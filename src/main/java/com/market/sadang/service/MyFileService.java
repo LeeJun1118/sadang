@@ -1,8 +1,8 @@
 package com.market.sadang.service;
 
 import com.market.sadang.domain.MyFile;
-import com.market.sadang.domain.dto.MyFileDto;
-import com.market.sadang.domain.dto.MyFileResponseDto;
+import com.market.sadang.domain.dto.myFile.MyFileDto;
+import com.market.sadang.domain.dto.myFile.MyFileResponseDto;
 import com.market.sadang.repository.MyFileRepository;
 import lombok.RequiredArgsConstructor;
 import org.imgscalr.Scalr;
@@ -10,11 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 import java.util.stream.Collectors;
 

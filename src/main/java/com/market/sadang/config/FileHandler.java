@@ -2,11 +2,9 @@ package com.market.sadang.config;
 
 import com.market.sadang.domain.Board;
 import com.market.sadang.domain.MyFile;
-import com.market.sadang.domain.dto.MyFileDto;
+import com.market.sadang.domain.dto.myFile.MyFileDto;
 import com.market.sadang.repository.MyFileRepository;
 import com.market.sadang.service.MyFileService;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;

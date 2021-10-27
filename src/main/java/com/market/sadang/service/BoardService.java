@@ -4,7 +4,10 @@ import com.market.sadang.config.FileHandler;
 import com.market.sadang.domain.Board;
 import com.market.sadang.domain.Member;
 import com.market.sadang.domain.MyFile;
-import com.market.sadang.domain.dto.*;
+import com.market.sadang.domain.dto.bord.BoardCreateRequestDto;
+import com.market.sadang.domain.dto.bord.BoardResponseDto;
+import com.market.sadang.domain.dto.bord.BoardUpdateRequestDto;
+import com.market.sadang.domain.dto.member.MyBoardListResponseDto;
 import com.market.sadang.repository.BoardRepository;
 import com.market.sadang.repository.MemberRepository;
 import com.market.sadang.repository.MyFileRepository;
@@ -20,7 +23,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 
 @RequiredArgsConstructor
@@ -74,6 +76,7 @@ public class BoardService {
         List<MyFile> myFileList = fileHandler.parseFileInfo(board, addFileList);
 
         board.update(requestDto.getTitle(),
+                requestDto.getPrice(),
                 requestDto.getContent());
 
         return id;

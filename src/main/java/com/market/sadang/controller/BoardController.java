@@ -3,9 +3,14 @@ package com.market.sadang.controller;
 
 import com.market.sadang.domain.Board;
 import com.market.sadang.domain.Member;
-import com.market.sadang.domain.MyFile;
-import com.market.sadang.domain.dto.*;
+import com.market.sadang.domain.dto.bord.BoardCreateRequestDto;
+import com.market.sadang.domain.dto.bord.BoardListResponseDto;
+import com.market.sadang.domain.dto.bord.BoardResponseDto;
+import com.market.sadang.domain.dto.bord.BoardUpdateRequestDto;
 import com.market.sadang.domain.dto.form.BoardForm;
+import com.market.sadang.domain.dto.member.MyBoardListResponseDto;
+import com.market.sadang.domain.dto.myFile.MyFileDto;
+import com.market.sadang.domain.dto.myFile.MyFileResponseDto;
 import com.market.sadang.service.BoardService;
 import com.market.sadang.service.MemberService;
 import com.market.sadang.service.MyFileService;

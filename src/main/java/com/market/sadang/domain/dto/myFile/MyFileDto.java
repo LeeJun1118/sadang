@@ -1,4 +1,4 @@
-package com.market.sadang.domain.dto;
+package com.market.sadang.domain.dto.myFile;
 
 import com.market.sadang.domain.MyFile;
 import lombok.*;

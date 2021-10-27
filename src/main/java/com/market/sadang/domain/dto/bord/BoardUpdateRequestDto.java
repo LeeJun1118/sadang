@@ -1,4 +1,4 @@
-package com.market.sadang.domain.dto;
+package com.market.sadang.domain.dto.bord;
 
 import lombok.Builder;
 import lombok.Getter;

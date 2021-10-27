@@ -1,13 +1,12 @@
 package com.market.sadang.controller;
 
-import com.market.sadang.domain.dto.MyFileDto;
+import com.market.sadang.domain.dto.myFile.MyFileDto;
 import com.market.sadang.service.MyFileService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.IOUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
