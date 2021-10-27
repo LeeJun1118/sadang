@@ -198,10 +198,28 @@ public class BoardController {
         return modelAndView;
     }
 
-    @PostMapping("/board/delete")
+    /*@PostMapping("/board/delete")
     public int delete(@RequestBody BoardWriterRequestDto requestDto,
                       HttpServletRequest request) {
         long userId = Long.parseLong(requestDto.getBoardId());
         return boardService.delete(userId, request);
+    }*/
+
+    @GetMapping("/board/delete/{id}")
+    public void delete(@PathVariable Long id){
+        boardService.delete(id);
+    }
+
+
+    @GetMapping("/myBoard")
+    public ModelAndView myBoard(HttpServletRequest request,
+                                ModelAndView modelAndView){
+        Member member = memberService.searchMemberId(request);
+        List<MyBoardListResponseDto> myBoardList = boardService.findByMember(member);
+
+        modelAndView.addObject("myBoardList",myBoardList);
+        modelAndView.setViewName("/member/myBoard");
+
+        return modelAndView;
     }
 }

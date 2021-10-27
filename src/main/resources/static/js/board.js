@@ -12,7 +12,7 @@ $(document).ready(function ($) {
         window.document.location = $(this).find('td:eq(0)').attr("href");
     });
 
-    $('.deleteBoard').on('click', function (event) {
+    /*$('.deleteBoard').on('click', function (event) {
 
         var boardId = $('.deleteBoardId').val();
 
@@ -40,9 +40,9 @@ $(document).ready(function ($) {
         });
 
         event.preventDefault();
-    })
+    })*/
 
-    $('.verifyWriter').on('click', function (event) {
+    /*$('.verifyWriter').on('click', function (event) {
         var myUrl = $('.verifyWriter').attr('href');
         console.log("myUrl==" + myUrl);
         $.ajax({
@@ -68,7 +68,7 @@ $(document).ready(function ($) {
             }
         });
         event.preventDefault();
-    })
+    })*/
 
 });
 

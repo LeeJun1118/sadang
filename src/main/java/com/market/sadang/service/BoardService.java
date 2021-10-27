@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -70,7 +71,7 @@ public class BoardService {
         Board board = boardRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
 
-        List<MyFile> myFileList = fileHandler.parseFileInfo(board,addFileList);
+        List<MyFile> myFileList = fileHandler.parseFileInfo(board, addFileList);
 
         board.update(requestDto.getTitle(),
                 requestDto.getContent());
@@ -83,7 +84,7 @@ public class BoardService {
     public BoardResponseDto searchById(Long id, List<Long> fileIdList) {
         Board board = boardRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
-        return new BoardResponseDto(board,fileIdList);
+        return new BoardResponseDto(board, fileIdList);
     }
 
     @Transactional(readOnly = true)
@@ -92,13 +93,8 @@ public class BoardService {
     }
 
     @Transactional
-    public int delete(long id, HttpServletRequest request) {
-        Board board = verifyWriter(id, request);
-        if (board != null) {
-            boardRepository.delete(board);
-            return 1;
-        } else
-            return 0;
+    public void delete(long id) {
+        boardRepository.deleteById(id);
     }
 
     @Transactional
@@ -120,11 +116,26 @@ public class BoardService {
         myBoard.setId(board.getId());
         myBoard.setTitle(board.getTitle());
         myBoard.setContent(board.getContent());
+        myBoard.setPrice(board.getPrice());
 
         return myBoard;
     }
 
     public List<Board> searchParam(String search) {
-        return boardRepository.findAllByTitleContainingOrAddressContaining(search,search);
+        return boardRepository.findAllByTitleContainingOrAddressContaining(search, search);
+    }
+
+    public List<MyBoardListResponseDto> findByMember(Member member) {
+        List<Board> boardList = boardRepository.findAllByMember(member);
+        List<MyBoardListResponseDto> dtoList = new ArrayList<>();
+
+        if (boardList != null) {
+            for (Board board : boardList) {
+                dtoList.add(new MyBoardListResponseDto(board));
+            }
+        }
+
+
+        return dtoList;
     }
 }
