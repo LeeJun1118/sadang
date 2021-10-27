@@ -1,4 +1,4 @@
-package com.market.sadang.config;
+package com.market.sadang.config.handler;
 
 import com.market.sadang.domain.Board;
 import com.market.sadang.domain.MyFile;

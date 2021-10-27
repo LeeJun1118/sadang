@@ -1,6 +1,7 @@
-package com.market.sadang.config;
+package com.market.sadang.config.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.market.sadang.config.UserRole;
 import com.market.sadang.domain.Response;
 import com.market.sadang.domain.SecurityMember;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +35,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
         SecurityMember member = (SecurityMember) authentication.getPrincipal();
         Collection<GrantedAuthority> authorities = member.getAuthorities();
 
-        if (hasRole(authorities,UserRole.ROLE_NOT_PERMITTED.name())){
+        if (hasRole(authorities, UserRole.ROLE_NOT_PERMITTED.name())){
 //            res.setMessage("사용자 인증메일을 받지 않았습니다.");
             response.sendRedirect("/signup");
         }

@@ -1,4 +1,4 @@
-package com.market.sadang.domain.request;
+package com.market.sadang.domain.requestUser;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

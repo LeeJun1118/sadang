@@ -1,6 +1,6 @@
 package com.market.sadang.service;
 
-import com.market.sadang.config.FileHandler;
+import com.market.sadang.config.handler.FileHandler;
 import com.market.sadang.domain.Board;
 import com.market.sadang.domain.Member;
 import com.market.sadang.domain.MyFile;

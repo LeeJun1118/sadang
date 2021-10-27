@@ -2,7 +2,6 @@ package com.market.sadang.service.authUtil;
 
 import com.market.sadang.config.UserRole;
 import com.market.sadang.domain.Member;
-import com.market.sadang.domain.SignUpForm;
 import javassist.NotFoundException;
 
 public interface AuthService {

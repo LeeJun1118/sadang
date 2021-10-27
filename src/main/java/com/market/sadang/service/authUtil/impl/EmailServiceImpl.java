@@ -1,4 +1,4 @@
-package com.market.sadang.service.impl;
+package com.market.sadang.service.authUtil.impl;
 
 import com.market.sadang.service.authUtil.EmailService;
 import lombok.RequiredArgsConstructor;

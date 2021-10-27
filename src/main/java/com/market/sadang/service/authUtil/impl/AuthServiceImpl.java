@@ -1,9 +1,8 @@
-package com.market.sadang.service.impl;
+package com.market.sadang.service.authUtil.impl;
 
 import com.market.sadang.config.UserRole;
 import com.market.sadang.domain.Member;
 import com.market.sadang.domain.Salt;
-import com.market.sadang.domain.SignUpForm;
 import com.market.sadang.repository.MemberRepository;
 import com.market.sadang.service.authUtil.AuthService;
 import com.market.sadang.service.authUtil.EmailService;
