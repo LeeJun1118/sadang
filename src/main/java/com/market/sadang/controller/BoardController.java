@@ -15,6 +15,8 @@ import com.market.sadang.service.BoardService;
 import com.market.sadang.service.MemberService;
 import com.market.sadang.service.MyFileService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +31,8 @@ import java.util.Objects;
 
 //final이 선언된 모든 필드를 인자값으로 하는 생성자를 대신 생성
 @RequiredArgsConstructor
-@RestController
+@Controller
+
 public class BoardController {
 
     private final BoardService boardService;
@@ -46,25 +49,25 @@ public class BoardController {
 
     // 쓴 글 저장 후 글 보기
     @PostMapping("/board/new")
-    public ModelAndView create(@Valid BoardForm boardForm,
-                               BindingResult result,
-                               @RequestParam(value = "uploadFile", required = false) List<MultipartFile> files,
-                               HttpServletRequest request,
-                               ModelAndView modelAndView) throws Exception {
-//        modelAndView.setViewName("redirect:/board/" + boardService.create(boardCreateRequestDto, request));
-        Member member = memberService.searchMemberId(request);
+    public String create(@Valid BoardForm boardForm,
+                         BindingResult result,
+                         @RequestParam(value = "uploadFile", required = false) List<MultipartFile> files,
+                         HttpServletRequest request) throws Exception {
 
-        BoardCreateRequestDto requestDto =
-                BoardCreateRequestDto.builder()
-                        .member(member)
-                        .title(boardForm.getTitle())
-                        .price(boardForm.getPrice())
-                        .content(boardForm.getContent())
-                        .address(member.getAddress())
-                        .build();
-
-        modelAndView.setViewName("redirect:/board/" + boardService.create(requestDto, files));
-        return modelAndView;
+        if (result.hasErrors()) {
+            return "board/boardForm";
+        } else {
+            Member member = memberService.searchMemberId(request);
+            BoardCreateRequestDto requestDto =
+                    BoardCreateRequestDto.builder()
+                            .member(member)
+                            .title(boardForm.getTitle())
+                            .price(boardForm.getPrice())
+                            .content(boardForm.getContent())
+                            .address(member.getAddress())
+                            .build();
+            return "redirect:/board/" + boardService.create(requestDto, files);
+        }
     }
 
     // 게시글 보기
@@ -117,6 +120,7 @@ public class BoardController {
     public ModelAndView updateForm(@PathVariable Long id, ModelAndView modelAndView) {
         BoardUpdateRequestDto board = boardService.findById(id);
         modelAndView.addObject("boardForm", board);
+        modelAndView.addObject("id", id);
         modelAndView.setViewName("board/updateBoard");
         return modelAndView;
     }
@@ -134,11 +138,16 @@ public class BoardController {
     }
 
     @PostMapping("/board/update/{id}")
-    public ModelAndView update(@PathVariable Long id,
-                               @Valid BoardForm boardForm,
-                               @RequestParam(value = "uploadFile", required = false) List<MultipartFile> files,
-                               ModelAndView modelAndView) throws Exception {
+    public String update(@PathVariable Long id,
+                         @Valid BoardForm boardForm,
+                         BindingResult result,
+                         Model model,
+                         @RequestParam(value = "uploadFile", required = false) List<MultipartFile> files) throws Exception {
 
+        if (result.hasErrors()) {
+            model.addAttribute("id",id);
+            return "board/updateBoard";
+        }
         BoardUpdateRequestDto requestDto = BoardUpdateRequestDto.builder()
                 .title(boardForm.getTitle())
                 .price(boardForm.getPrice())
@@ -196,16 +205,17 @@ public class BoardController {
 
             }
         }
-
-
         boardService.update(id, requestDto, addFileList);
-        modelAndView.setViewName("redirect:/board/" + id);
-        return modelAndView;
+
+
+        return "redirect:/board/" + id;
+//        modelAndView.setViewName("redirect:/board/" + id);
+//        return modelAndView;
     }
 
     @GetMapping("/board/delete/{id}")
     public ModelAndView delete(@PathVariable Long id,
-                               ModelAndView modelAndView){
+                               ModelAndView modelAndView) {
         boardService.delete(id);
         modelAndView.setViewName("redirect:/myBoard");
         return modelAndView;
@@ -213,11 +223,11 @@ public class BoardController {
 
     @GetMapping("/myBoard")
     public ModelAndView myBoard(HttpServletRequest request,
-                                ModelAndView modelAndView){
+                                ModelAndView modelAndView) {
         Member member = memberService.searchMemberId(request);
         List<MyBoardListResponseDto> myBoardList = boardService.findByMember(member);
 
-        modelAndView.addObject("myBoardList",myBoardList);
+        modelAndView.addObject("myBoardList", myBoardList);
         modelAndView.setViewName("/member/myBoard");
 
         return modelAndView;
