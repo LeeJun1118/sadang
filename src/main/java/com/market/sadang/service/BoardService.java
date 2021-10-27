@@ -138,4 +138,8 @@ public class BoardService {
 
         return dtoList;
     }
+
+    public int searchAllByMember(Member member) {
+        return boardRepository.findAllByMember(member).size();
+    }
 }

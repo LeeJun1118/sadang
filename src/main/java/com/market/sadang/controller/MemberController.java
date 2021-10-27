@@ -6,6 +6,7 @@ import com.market.sadang.domain.Member;
 import com.market.sadang.domain.Response;
 import com.market.sadang.domain.SignUpForm;
 import com.market.sadang.domain.dto.BoardUpdateRequestDto;
+import com.market.sadang.domain.dto.MemberPageReponseDto;
 import com.market.sadang.domain.dto.MemberResponseDto;
 import com.market.sadang.domain.dto.MemberUpdateRequestDto;
 import com.market.sadang.domain.dto.form.BoardForm;
@@ -13,6 +14,7 @@ import com.market.sadang.domain.dto.form.MemberForm;
 import com.market.sadang.domain.request.RequestLoginUser;
 import com.market.sadang.domain.request.RequestVerifyUser;
 import com.market.sadang.repository.MemberRepository;
+import com.market.sadang.service.BoardService;
 import com.market.sadang.service.MemberService;
 import com.market.sadang.service.authUtil.AuthService;
 import com.market.sadang.service.authUtil.CookieUtil;
@@ -50,6 +52,7 @@ public class MemberController {
     private final CookieUtil cookieUtil;
     private final RedisUtil redisUtil;
     private final MemberService memberService;
+    private final BoardService boardService;
     private final RedisTemplate redisTemplate;
 
 //    private final JwtRequestFilter jwtRequestFilter;
@@ -327,7 +330,11 @@ public class MemberController {
     @GetMapping("/myPage")
     public ModelAndView myPageForm(ModelAndView modelAndView, HttpServletRequest request) {
         Member member = memberService.searchMemberId(request);
-        modelAndView.addObject("member", member);
+        int countBoard = boardService.searchAllByMember(member);
+
+        MemberPageReponseDto memberPageReponseDto = new MemberPageReponseDto(member,countBoard);
+
+        modelAndView.addObject("member", memberPageReponseDto);
         modelAndView.setViewName("member/myPage");
         return modelAndView;
     }
