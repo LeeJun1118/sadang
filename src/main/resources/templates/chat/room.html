@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/header :: header"></head>
+    <body>
+
+        <div id="app" class="container mt-5 mb-5">
+            <div class="container-sm my-auto">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3>채팅방 리스트</h3>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text">방제목</label>
+                    </div>
+
+                    <form class="input-group-append" method="post" action="/chat/room">
+                        <!--                    v-model="room_name" v-on:keyup.enter="createRoom"-->
+                        <input type="text" name="roomName" class="form-control"/>
+
+                        <!--                    @click="createRoom"-->
+                        <span class="input-group">
+                            <button class="btn btn-primary" type="submit">채팅방 개설</button>
+                        </span>
+                    </form>
+                </div>
+
+                <div class="list-group" th:each="room : ${rooms}">
+                    <a th:href="@{/chat/room/enter/{id}(id=${room.roomId})}"
+                       class="list-group-item list-group-item-action d-flex">
+                        <span class="text-muted">[[${room.name}]]</span>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </body>
+</html>

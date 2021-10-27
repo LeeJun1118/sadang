@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/header :: header"></head>
+    <body>
+        <div class="container" id="app">
+            <div class="row">
+                <div class="col-md-6">
+                    <h4>{{roomName}}
+                        <span class="badge badge-info badge-pill">{{userCount}}</span>
+                    </h4>
+                </div>
+                <div class="col-md-6 text-right">
+                    <a class="btn btn-primary btn-sm" href="/logout">로그아웃</a>
+                    <a class="btn btn-info btn-sm" href="/chat/room">채팅방 나가기</a>
+                </div>
+            </div>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <label class="input-group-text">내용</label>
+                </div>
+
+<!--                v-model="message" v-on:keypress.enter="sendMessage('TALK')"-->
+                <input type="text" class="form-control">
+                <div class="input-group-append">
+
+<!--                    @click="sendMessage('TALK')"-->
+                    <button class="btn btn-primary" type="button">보내기</button>
+                </div>
+            </div>
+            <ul class="list-group">
+
+<!--                v-for="message in messages"-->
+                <li class="list-group-item">
+                    {{message.sender}} - {{message.message}}</a>
+                </li>
+            </ul>
+        </div>
+    </body>
+</html>
