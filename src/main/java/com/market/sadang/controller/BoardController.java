@@ -198,18 +198,13 @@ public class BoardController {
         return modelAndView;
     }
 
-    /*@PostMapping("/board/delete")
-    public int delete(@RequestBody BoardWriterRequestDto requestDto,
-                      HttpServletRequest request) {
-        long userId = Long.parseLong(requestDto.getBoardId());
-        return boardService.delete(userId, request);
-    }*/
-
     @GetMapping("/board/delete/{id}")
-    public void delete(@PathVariable Long id){
+    public ModelAndView delete(@PathVariable Long id,
+                               ModelAndView modelAndView){
         boardService.delete(id);
+        modelAndView.setViewName("redirect:/myBoard");
+        return modelAndView;
     }
-
 
     @GetMapping("/myBoard")
     public ModelAndView myBoard(HttpServletRequest request,
