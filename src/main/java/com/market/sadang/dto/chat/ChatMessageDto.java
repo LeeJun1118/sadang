@@ -1,4 +1,4 @@
-package com.market.sadang.domain.dto.chat;
+package com.market.sadang.dto.chat;
 
 import com.market.sadang.domain.ChatMessage;
 import lombok.Getter;

@@ -1,8 +1,8 @@
 package com.market.sadang.service;
 
 import com.market.sadang.domain.MyFile;
-import com.market.sadang.domain.dto.myFile.MyFileDto;
-import com.market.sadang.domain.dto.myFile.MyFileResponseDto;
+import com.market.sadang.dto.myFile.MyFileDto;
+import com.market.sadang.dto.myFile.MyFileResponseDto;
 import com.market.sadang.repository.MyFileRepository;
 import lombok.RequiredArgsConstructor;
 import org.imgscalr.Scalr;

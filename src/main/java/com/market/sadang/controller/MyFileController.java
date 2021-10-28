@@ -1,6 +1,6 @@
 package com.market.sadang.controller;
 
-import com.market.sadang.domain.dto.myFile.MyFileDto;
+import com.market.sadang.dto.myFile.MyFileDto;
 import com.market.sadang.service.MyFileService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.IOUtils;

@@ -2,7 +2,7 @@ package com.market.sadang.config.handler;
 
 import com.market.sadang.domain.Board;
 import com.market.sadang.domain.MyFile;
-import com.market.sadang.domain.dto.myFile.MyFileDto;
+import com.market.sadang.dto.myFile.MyFileDto;
 import com.market.sadang.repository.MyFileRepository;
 import com.market.sadang.service.MyFileService;
 import lombok.RequiredArgsConstructor;

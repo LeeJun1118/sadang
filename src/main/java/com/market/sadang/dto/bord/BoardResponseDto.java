@@ -1,7 +1,6 @@
-package com.market.sadang.domain.dto.bord;
+package com.market.sadang.dto.bord;
 
 import com.market.sadang.domain.Board;
-import com.market.sadang.domain.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

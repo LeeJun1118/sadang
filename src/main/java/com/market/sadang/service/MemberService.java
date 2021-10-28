@@ -1,7 +1,7 @@
 package com.market.sadang.service;
 
 import com.market.sadang.domain.Member;
-import com.market.sadang.domain.dto.member.MemberUpdateRequestDto;
+import com.market.sadang.dto.member.MemberUpdateRequestDto;
 import com.market.sadang.repository.MemberRepository;
 import com.market.sadang.service.authUtil.CookieUtil;
 import com.market.sadang.service.authUtil.JwtUtil;

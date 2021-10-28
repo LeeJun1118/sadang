@@ -1,6 +1,6 @@
 package com.market.sadang.domain;
 
-import com.market.sadang.domain.dto.chat.ChatMessageDto;
+import com.market.sadang.dto.chat.ChatMessageDto;
 import lombok.*;
 
 import javax.persistence.*;

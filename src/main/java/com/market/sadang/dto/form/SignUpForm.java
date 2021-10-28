@@ -1,4 +1,4 @@
-package com.market.sadang.domain.dto.form;
+package com.market.sadang.dto.form;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -2,7 +2,7 @@ package com.market.sadang.controller;
 
 import com.google.gson.Gson;
 import com.market.sadang.domain.ChatMessage;
-import com.market.sadang.domain.dto.chat.ChatMessageDto;
+import com.market.sadang.dto.chat.ChatMessageDto;
 import com.market.sadang.repository.ChatMessageRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

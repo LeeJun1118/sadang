@@ -1,12 +1,9 @@
-package com.market.sadang.domain.dto.member;
+package com.market.sadang.dto.member;
 
 import com.market.sadang.domain.Member;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-import javax.validation.constraints.NotEmpty;
 
 @Getter
 @NoArgsConstructor

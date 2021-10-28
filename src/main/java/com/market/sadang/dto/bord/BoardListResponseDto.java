@@ -1,18 +1,21 @@
-package com.market.sadang.domain.dto.member;
+package com.market.sadang.dto.bord;
 
 import com.market.sadang.domain.Board;
 import lombok.Getter;
 
 @Getter
-public class MyBoardListResponseDto {
+public class BoardListResponseDto {
     private Long id;
     private String member;
+    private String address;
     private String title;
     private String price;
     private Long thumbnailId;
 
-    public MyBoardListResponseDto(Board entity){
+    public BoardListResponseDto(Board entity){
         this.id = entity.getId();
+        this.member = entity.getMember().getUsername();
+        this.address = entity.getMember().getAddress();
         this.title = entity.getTitle();
         this.price = entity.getPrice();
 
