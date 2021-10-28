@@ -3,8 +3,11 @@
     <head th:replace="fragments/header :: header"></head>
 
     <body>
+<!--        채팅방에서 쓸 닉네임 입력-->
         <input type="text" id="nickname" class="form-inline" placeholder="닉네임을 입력해주세요" required autofocus>
         <button class="btn btn-primary" id="name">확인</button>
+
+<!--        메세지 입력-->
         <div id="chatroom" style="width:400px; height: 600px; border:1px solid; background-color : gray"></div>
         <input type="text" id="message" style="height : 30px; width : 340px" placeholder="내용을 입력하세요" autofocus>
         <button class="btn btn-primary" id="send">전송</button>
@@ -13,8 +16,13 @@
         </script>
     </body>
     <script>
+        /* <![CDATA[*/
+        var roomId = /*[[${room.roomId}]]*/;
+        /* ]]> */
         var webSocket;
-        var nickname;
+        var socket;
+        var stompClient = null;
+
         document.getElementById("name").addEventListener("click", function () {
             nickname = document.getElementById("nickname").value;
             document.getElementById("nickname").style.display = "none";
@@ -26,21 +34,31 @@
         })
 
         function connect() {
-            webSocket = new WebSocket("ws://localhost:8080/chat");
-            webSocket.onopen = onOpen;
+            // webSocket = new WebSocket("ws://localhost:8080/chat");
+            socket = new SockJS('/ws-stomp');
+            stompClient = Stomp.over(socket);
+
+            stompClient.connect({}, function (){
+                stompClient.subscribe('/sub/chat/room' + roomId, function (e){
+                    showGreeting(JSON.parse(e.body).content);
+                })
+            })
+
+/*            webSocket.onopen = onOpen;
             webSocket.onclose = onClose;
-            webSocket.onmessage = onMessage;
+            webSocket.onmessage = onMessage;*/
         }
 
         function disconnect() {
-            webSocket.send(nickname + "님이 퇴장하셨습니다");
-            webSocket.close();
+            if (stompClient !== null){
+                stompClient.disconnect();
+            }
         }
 
         function send() {
-            msg = document.getElementById("message").value;
-            webSocket.send(nickname + " : " + msg);
-            document.getElementById("message").value = "";
+            data = {'type': 'TALK', 'roomId' :this.roomId, 'sender':  $("#nickname").val(),'message': $("#message").val()};
+            stompClient.send("/pub/chat/message", {}, JSON.stringify(data));
+            $("#message").val('');
         }
 
         function onOpen() {
@@ -55,6 +73,10 @@
 
         function onClose() {
 
+        }
+
+        function showGreeting(message) {
+            $("#greetings").append("<tr><td>" + message + "</td></tr>");
         }
     </script>
 </html>

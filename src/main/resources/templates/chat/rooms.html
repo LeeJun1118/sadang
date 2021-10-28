@@ -10,6 +10,10 @@
 
                 <div class="container">
                     <table class="table table-striped">
+                        <form method="post" action="/chat/room">
+                            <input name="roomName">
+                            <button class="btn btn-primary pull-right" type="submit">새로 만들기</button>
+                        </form>
                         <thead>
                             <tr>
                                 <th>번호</th>
@@ -22,12 +26,12 @@
                                 <td th:text="${room.roomId}"></td>
                                 <td th:text="${room.name}"></td>
                                 <td>
-                                    <a class="btn btn-primary" th:href="@{/rooms/{id} (id = ${room.roomId})}">입장</a>
+                                    <a class="btn btn-primary" th:href="@{/chat/room/enter/{id} (id = ${room.roomId})}">입장</a>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
-                    <a class="btn btn-primary pull-right" href="/new">새로 만들기</a>
+
                 </div>
             </div>
         </div>

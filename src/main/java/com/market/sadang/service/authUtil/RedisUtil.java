@@ -13,7 +13,6 @@ import java.time.Duration;
 public class RedisUtil {
 
     private final StringRedisTemplate stringRedisTemplate;
-    private final RedisTemplate redisTemplate;
 
     public String getData(String key){
         ValueOperations<String,String> valueOperations = stringRedisTemplate.opsForValue();
