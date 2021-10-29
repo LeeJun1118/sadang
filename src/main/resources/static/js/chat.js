@@ -37,6 +37,11 @@ function connect() {
         console.log("####!!!!!Enter Room token === " + token);
         // "Sender"님이 입장하셨습니다. 메시지 보냄
         stompClient.send("/pub/chat/message", {"token": token}, JSON.stringify(data));
+
+
+        stompClient.subscribe('/sub/' + nickname, function (message) {
+            console.log('구독 중', message);
+        });
     })
 
 }
