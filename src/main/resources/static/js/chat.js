@@ -23,12 +23,10 @@ function connect() {
         'type': 'ENTER',
         'roomId': this.roomId,
         'sender': $("#nickname").val(),
-        'message': '입장'
+        'message': 'Enter Room'
     };
     socket = new SockJS('/ws-stomp');
     stompClient = Stomp.over(socket);
-
-    console.log("this.token == " + this.token);
 
     stompClient.connect({"token": this.token}, function() {
         stompClient.subscribe('/sub/chat/room/' + roomId, function (message) {

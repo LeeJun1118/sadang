@@ -34,22 +34,18 @@ public class ChatController {
     @MessageMapping("/chat/message")
     public void message(ChatMessage message, @Header("token") String token) {
 
-        System.out.println("Chat Controller header token == " + token);
+        //토큰 유효성 검사
         String memberId = jwtUtil.getUsername(token);
         String username = memberRepository.findByUsername(memberId).getUsername();
 
-        System.out.println("Chat Controller header username == " + username);
-
         if (ChatMessage.MessageType.ENTER.equals(message.getType())) {
-//            chatRoomRepository.enterChatRoom(message.getRoomId());
             message.setSender("[알림]");
             message.setMessage(username + "님이 입장하셨습니다.");
         }
 
         // json으로 log 출력
         Gson gson = new Gson();
-        String jsonString = gson.toJson(message);
-        System.out.println("ChatController Chat Message's message == " + jsonString);
+        System.out.println("ChatController Chat Message's message == " + gson.toJson(message));
 
         // Websocket에 발행된 메시지를 redis로 발행(publish)
         redisTemplate.convertAndSend(channelTopic.getTopic(), message);
