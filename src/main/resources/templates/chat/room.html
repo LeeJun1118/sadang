@@ -10,17 +10,16 @@
                     <a class="text-dark" href='/'>SADANG</a>
                 </h1>
             </div>
-
-            <input type="text" id="nickname" class="form-inline" placeholder="닉네임을 입력해주세요" required autofocus>
+            <input type="text" id="token" class="form-inline" th:value="${token}"
+                   readonly hidden>
+            <input type="text" id="nickname" class="form-inline" th:value="${username}"
+                   readonly>
             <button class="btn btn-primary" id="name">확인</button>
             <label for="roomId" class="label label-default">방 번호</label>
             <label th:text="${room.roomId}" id="roomId" class="form-inline"></label>
             <br>
             <label for="roomName" class="label label-default">방 이름</label>
             <label th:text="${room.name}" id="roomName" class="form-inline"></label>
-
-
-
 
 
             <!--            메시지 입력-->
@@ -33,102 +32,14 @@
                     <button class="btn btn-primary" id="send">보내기</button>
                 </div>
             </div>
-                <!--            메시지 출력-->
-                <ul class="list-group" id="sendMessage"></ul>
+            <!--            메시지 출력-->
+            <ul class="list-group" id="sendMessage"></ul>
 
 
         </div>
 
     </body>
-    <script th:inline="javascript">
-        var socket = null;
-        var stompClient = null;
-        var data = null;
-
-        var webSocket;
-        var nickname;
-        var roomId = document.getElementById("roomId").textContent;
-
-        document.getElementById("name").addEventListener("click", function () {
-            nickname = document.getElementById("nickname").value;
-            document.getElementById("nickname").style.display = "none";
-            document.getElementById("name").style.display = "none";
-            connect();
-        })
-        document.getElementById("send").addEventListener("click", function () {
-            send();
-        })
-
-        function connect() {
-            data = {
-                'type': 'ENTER',
-                'roomId': this.roomId,
-                'sender': $("#nickname").val(),
-                'message': '입장'
-            };
-            /*webSocket = new WebSocket("ws://localhost:8080/chat");
-            webSocket.onopen = onOpen;
-            webSocket.onclose = onClose;
-            webSocket.onmessage = onMessage;*/
-
-            socket = new SockJS('/ws-stomp');
-            stompClient = Stomp.over(socket);
-
-            stompClient.connect({}, function () {
-                stompClient.subscribe('/sub/chat/room/' + roomId, function (e) {
-                    showGreeting(JSON.parse(e.body).message);
-                })
-
-                stompClient.send("/pub/chat/message", {}, JSON.stringify(data));
-
-            })
-        }
-        function showGreeting(message) {
-            var messageSpace = document.getElementById("sendMessage");
-            messageSpace.innerHTML = messageSpace.innerHTML +
-                "<li class='list-group-item'>" +
-                    message +
-                "</li>";
-            messageSpace.scrollTop = messageSpace.scrollHeight;
-
-           /* $("#sendMessage").append(
-                "<li className='list-group-item'>" +
-                message
-                + "</li>");*/
-        }
-
-        function disconnect() {
-            if (stompClient !== null) {
-                stompClient.disconnect();
-            }
-        }
-
-        function send() {
-            data = {
-                'type': 'TALK',
-                'roomId': this.roomId,
-                'sender': $("#nickname").val(),
-                'message': $("#message").val()
-            };
-            stompClient.send("/pub/chat/message", {}, JSON.stringify(data));
-            $("#message").val('');
-        }
-
-        function onOpen() {
-            webSocket.send(JSON.stringify({chatRoomId: roomId, type: 'ENTER', writer: nickname}));
-        }
-
-        function onMessage(e) {
-            data = e.data;
-            chatroom = document.getElementById("chatroom");
-            chatroom.innerHTML = chatroom.innerHTML + "<br>" + data;
-        }
-
-        function onClose() {
-            disconnect();
-        }
-
-    </script>
+    <script src="/js/chat.js"></script>
 </html>
 
 

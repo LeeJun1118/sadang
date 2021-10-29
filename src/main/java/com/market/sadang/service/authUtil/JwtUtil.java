@@ -7,13 +7,16 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 
+@RequiredArgsConstructor
 @Component
 public class JwtUtil {
     // 1000L = 1초
@@ -24,6 +27,8 @@ public class JwtUtil {
 
     final static public String ACCESS_TOKEN_NAME = "accessToken";
     final static public String REFRESH_TOKEN_NAME = "refreshToken";
+
+    private final MyUserDetailService userDetailService;
 
     @Value("${spring.jwt.secret}")
     private String SECRET_KEY;
@@ -80,4 +85,9 @@ public class JwtUtil {
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
+    public Boolean validateToken(String token){
+        final String username = getUsername(token);
+        UserDetails userDetails = userDetailService.loadUserByUsername(username);
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    }
 }
