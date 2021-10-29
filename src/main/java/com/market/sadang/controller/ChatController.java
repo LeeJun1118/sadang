@@ -2,36 +2,38 @@ package com.market.sadang.controller;
 
 import com.google.gson.Gson;
 import com.market.sadang.domain.ChatMessage;
-import com.market.sadang.dto.chat.ChatMessageDto;
-import com.market.sadang.repository.ChatMessageRepository;
+import com.market.sadang.redis.RedisPublisher;
+import com.market.sadang.repository.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.messaging.converter.MessageConversionException;
+import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.simp.SimpMessageSendingOperations;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RestController;
+
 
 @Slf4j
 @RequiredArgsConstructor
-@Controller
+@RestController
 public class ChatController {
 
-    private final SimpMessageSendingOperations messagingTemplate;
-    private final ChatMessageRepository chatMessageRepository;
+    private final RedisPublisher redisPublisher;
+    private final ChatRoomRepository chatRoomRepository;
 
+    // websocket "/pub/chat/message"로 들어오는 메시징을 처리
     @MessageMapping("/chat/message")
-    public void message(ChatMessageDto dto) {
-        if (ChatMessage.MessageType.ENTER.equals(dto.getTypes())){
-            dto.setMessage(dto.getSender() + "님이 입장하셨습니다.");
+    public void message(ChatMessage message) {
+        if (ChatMessage.MessageType.ENTER.equals(message.getType())) {
+            chatRoomRepository.enterChatRoom(message.getRoomId());
+            message.setMessage(message.getSender() + "님이 입장하셨습니다.");
         }
-        ChatMessage chat = new ChatMessage(dto);
 
         // json으로 log 출력
         Gson gson = new Gson();
-        String jsonString = gson.toJson(chat);
-        log.info(jsonString);
+        String jsonString = gson.toJson(message);
+        System.out.println("ChatController Chat Message's message == " + jsonString);
 
-
-        chatMessageRepository.save(chat);
-        messagingTemplate.convertAndSend("/sub/chat/room/" + dto.getRoomId(), chat);
+        // Websocket에 발행된 메시지를 redis로 발행(publish)
+        redisPublisher.publish(chatRoomRepository.getTopic(message.getRoomId()), message);
     }
 }

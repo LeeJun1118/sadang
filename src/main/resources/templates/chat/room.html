@@ -60,6 +60,12 @@
         })
 
         function connect() {
+            data = {
+                'type': 'ENTER',
+                'roomId': this.roomId,
+                'sender': $("#nickname").val(),
+                'message': '입장'
+            };
             /*webSocket = new WebSocket("ws://localhost:8080/chat");
             webSocket.onopen = onOpen;
             webSocket.onclose = onClose;
@@ -72,6 +78,9 @@
                 stompClient.subscribe('/sub/chat/room/' + roomId, function (e) {
                     showGreeting(JSON.parse(e.body).message);
                 })
+
+                stompClient.send("/pub/chat/message", {}, JSON.stringify(data));
+
             })
         }
         function showGreeting(message) {
@@ -96,7 +105,7 @@
 
         function send() {
             data = {
-                'types': 'TALK',
+                'type': 'TALK',
                 'roomId': this.roomId,
                 'sender': $("#nickname").val(),
                 'message': $("#message").val()
@@ -106,7 +115,7 @@
         }
 
         function onOpen() {
-            webSocket.send(JSON.stringify({chatRoomId: roomId, types: 'ENTER', writer: nickname}));
+            webSocket.send(JSON.stringify({chatRoomId: roomId, type: 'ENTER', writer: nickname}));
         }
 
         function onMessage(e) {

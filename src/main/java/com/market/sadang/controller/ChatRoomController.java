@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
-import java.util.UUID;
 
 @RequiredArgsConstructor
 @Controller
@@ -30,7 +29,7 @@ public class ChatRoomController {
     @GetMapping("/rooms")
     @ResponseBody
     public ModelAndView room(ModelAndView modelAndView) {
-        List<ChatRoom> rooms = chatRoomRepository.findAll();
+        List<ChatRoom> rooms = chatRoomRepository.findAllRoom();
 
         modelAndView.addObject("rooms", rooms);
         modelAndView.setViewName("chat/rooms");
@@ -42,17 +41,13 @@ public class ChatRoomController {
     @PostMapping("/room")
     @ResponseBody
     public ChatRoom createRoom(@RequestParam String roomName) {
-        ChatRoom chatRoom = new ChatRoom();
-        chatRoom.setName(roomName);
-        chatRoom.setRoomId(UUID.randomUUID().toString());
-
-        return chatRoomRepository.save(chatRoom);
+        return chatRoomRepository.createChatRoom(roomName);
     }
 
     // 채팅방 입장 화면
     @GetMapping("/room/enter/{roomId}")
     public String roomDetail(Model model, @PathVariable String roomId) {
-        ChatRoom room = chatRoomRepository.findByRoomId(roomId);
+        ChatRoom room = chatRoomRepository.findRoomById(roomId);
         model.addAttribute("room", room);
         return "/chat/room";
     }
@@ -61,6 +56,6 @@ public class ChatRoomController {
     @GetMapping("/room/{roomId}")
     @ResponseBody
     public ChatRoom roomInfo(@PathVariable String roomId) {
-        return chatRoomRepository.findByRoomId(roomId);
+        return chatRoomRepository.findRoomById(roomId);
     }
 }

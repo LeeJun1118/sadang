@@ -1,39 +1,18 @@
 package com.market.sadang.domain;
 
-import com.market.sadang.dto.chat.ChatMessageDto;
 import lombok.*;
 
-import javax.persistence.*;
-
-@Entity
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class ChatMessage{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    private Long id;
+public class ChatMessage {
 
-    private MessageType types;
-
-    private String roomId;
-
-    private String sender;
-
-    private String message;
-
-
+    // 메시지 타입 : 입장, 채팅
     public enum MessageType {
-        ENTER, TALK, JOIN
+        ENTER, TALK
     }
 
-    @Builder
-    public ChatMessage(ChatMessageDto dto) {
-        this.types = dto.getTypes();
-        this.roomId = dto.getRoomId();
-        this.sender = dto.getSender();
-        this.message = dto.getMessage();
-    }
+    private MessageType type; // 메시지 타입
+    private String roomId; // 방번호
+    private String sender; // 메시지 보낸사람
+    private String message; // 메시지
 }
