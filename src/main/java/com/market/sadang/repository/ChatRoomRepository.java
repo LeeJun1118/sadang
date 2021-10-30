@@ -74,6 +74,7 @@ public class ChatRoomRepository {
     }
 }*/
 
+/*
 @RequiredArgsConstructor
 @Service
 public class ChatRoomRepository {
@@ -103,4 +104,13 @@ public class ChatRoomRepository {
         opsHashChatRoom.put(CHAT_ROOMS, chatRoom.getRoomId(), chatRoom);
         return chatRoom;
     }
+}
+*/
+
+public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
+    ChatRoom findByBoardIdAndSellerNameAndBuyerName (Long boardId, String SellerName, String buyerName);
+    List<ChatRoom> findBySellerNameOrBuyerName (String sellerName, String buyerName);
+    ChatRoom findByBoardIdAndBuyerName (Long id, String buyerName);
+    ChatRoom findByRoomId (String roomId);
+    int countChatRoomBySellerNameOrBuyerName (String sellerName, String buyerName);
 }

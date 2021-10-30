@@ -5,6 +5,7 @@ import com.market.sadang.domain.Board;
 import com.market.sadang.domain.Member;
 import com.market.sadang.domain.MyFile;
 import com.market.sadang.dto.bord.BoardCreateRequestDto;
+import com.market.sadang.dto.bord.BoardMemberDto;
 import com.market.sadang.dto.bord.BoardResponseDto;
 import com.market.sadang.dto.bord.BoardUpdateRequestDto;
 import com.market.sadang.dto.member.MyBoardListResponseDto;
@@ -121,6 +122,15 @@ public class BoardService {
         myBoard.setContent(board.getContent());
         myBoard.setPrice(board.getPrice());
 
+        return myBoard;
+    }
+
+    @Transactional
+    public BoardMemberDto findByIdMember(Long id) {
+        Board board = boardRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시물이 존재하지 않습니다."));
+
+        BoardMemberDto myBoard = new BoardMemberDto(board);
         return myBoard;
     }
 

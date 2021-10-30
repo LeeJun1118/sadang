@@ -45,7 +45,8 @@ public class ChatController {
 
         // json으로 log 출력
         Gson gson = new Gson();
-        System.out.println("ChatController Chat Message's message == " + gson.toJson(message));
+//        System.out.println("ChatController Chat Message's message == " + gson.toJson(message));
+//        System.out.println("ChatController channelTopic.getTopic() == "+channelTopic.getTopic());
 
         // Websocket에 발행된 메시지를 redis로 발행(publish)
         redisTemplate.convertAndSend(channelTopic.getTopic(), message);

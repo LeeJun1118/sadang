@@ -11,6 +11,7 @@ import com.market.sadang.dto.member.MemberUpdateRequestDto;
 import com.market.sadang.dto.form.MemberForm;
 import com.market.sadang.domain.requestUser.RequestLoginUser;
 import com.market.sadang.domain.requestUser.RequestVerifyUser;
+import com.market.sadang.repository.ChatRoomRepository;
 import com.market.sadang.repository.MemberRepository;
 import com.market.sadang.service.BoardService;
 import com.market.sadang.service.MemberService;
@@ -49,7 +50,7 @@ public class MemberController {
     private final RedisUtil redisUtil;
     private final MemberService memberService;
     private final BoardService boardService;
-    private final RedisTemplate redisTemplate;
+    private final ChatRoomRepository chatRoomRepository;
 
 //    private final JwtRequestFilter jwtRequestFilter;
 
@@ -327,10 +328,12 @@ public class MemberController {
     public ModelAndView myPageForm(ModelAndView modelAndView, HttpServletRequest request) {
         Member member = memberService.searchMemberId(request);
         int countBoard = boardService.searchAllByMember(member);
+        int countChatRoom = chatRoomRepository.countChatRoomBySellerNameOrBuyerName(member.getUsername(), member.getUsername());
 
         MemberPageReponseDto memberPageReponseDto = new MemberPageReponseDto(member,countBoard);
 
         modelAndView.addObject("member", memberPageReponseDto);
+        modelAndView.addObject("countChatRoom", countChatRoom);
         modelAndView.setViewName("member/myPage");
         return modelAndView;
     }
