@@ -2,6 +2,7 @@ package com.market.sadang.controller;
 
 import com.google.gson.Gson;
 import com.market.sadang.domain.ChatMessage;
+import com.market.sadang.repository.ChatMessageRepository;
 import com.market.sadang.repository.ChatRoomRepository;
 import com.market.sadang.repository.MemberRepository;
 import com.market.sadang.service.authUtil.JwtUtil;
@@ -13,6 +14,7 @@ import org.springframework.messaging.converter.MessageConversionException;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,12 +24,15 @@ import org.springframework.web.bind.annotation.RestController;
 @Controller
 public class ChatController {
 
-//    private final RedisPublisher redisPublisher;
+    //    private final RedisPublisher redisPublisher;
     private final ChatRoomRepository chatRoomRepository;
     private final JwtUtil jwtUtil;
     private final RedisTemplate<String, Object> redisTemplate;
     private final ChannelTopic channelTopic;
     private final MemberRepository memberRepository;
+    private final ChatMessageRepository chatMessageRepository;
+
+    private final SimpMessageSendingOperations messagingTemplate;
 
 
     // websocket "/pub/chat/message"로 들어오는 메시징을 처리
@@ -35,21 +40,22 @@ public class ChatController {
     public void message(ChatMessage message, @Header("token") String token) {
 
         //토큰 유효성 검사
-        String memberId = jwtUtil.getUsername(token);
-        String username = memberRepository.findByUsername(memberId).getUsername();
+//        String memberId = jwtUtil.getUsername(token);
+//        String username = memberRepository.findByUsername(memberId).getUsername();
 
-        if (ChatMessage.MessageType.ENTER.equals(message.getType())) {
+        /*if (ChatMessage.MessageType.ENTER.equals(message.getType())) {
             message.setSender("[알림]");
             message.setMessage(username + "님이 입장하셨습니다.");
-        }
+        }*/
 
         // json으로 log 출력
         Gson gson = new Gson();
-//        System.out.println("ChatController Chat Message's message == " + gson.toJson(message));
-//        System.out.println("ChatController channelTopic.getTopic() == "+channelTopic.getTopic());
+        ChatMessage chatMessage = chatMessageRepository.save(new ChatMessage(message));
 
         // Websocket에 발행된 메시지를 redis로 발행(publish)
-        redisTemplate.convertAndSend(channelTopic.getTopic(), message);
+//        redisTemplate.convertAndSend(channelTopic.getTopic(), message);
+
+        messagingTemplate.convertAndSend("/sub/chat/room/" + message.getRoomId(),chatMessage);
 
     }
 }

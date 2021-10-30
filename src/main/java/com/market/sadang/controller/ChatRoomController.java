@@ -2,17 +2,20 @@ package com.market.sadang.controller;
 
 import com.google.gson.Gson;
 import com.market.sadang.domain.Board;
+import com.market.sadang.domain.ChatMessage;
 import com.market.sadang.domain.ChatRoom;
 import com.market.sadang.domain.Member;
 import com.market.sadang.dto.bord.BoardUpdateRequestDto;
 import com.market.sadang.dto.member.MyBoardListResponseDto;
 import com.market.sadang.dto.member.MyChatRoomListResponseDto;
 import com.market.sadang.repository.BoardRepository;
+import com.market.sadang.repository.ChatMessageRepository;
 import com.market.sadang.repository.ChatRoomRepository;
 import com.market.sadang.service.BoardService;
 import com.market.sadang.service.MemberService;
 import com.market.sadang.service.authUtil.CookieUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +35,7 @@ public class ChatRoomController {
     private final MemberService memberService;
     private final CookieUtil cookieUtil;
     private final BoardService boardService;
+    private final ChatMessageRepository chatMessageRepository;
 
     //*
     // 채팅 리스트 화면
@@ -79,13 +83,13 @@ public class ChatRoomController {
             chatRoom = new ChatRoom(roomId, id, sellerName, buyerName);
             chatRoomRepository.save(chatRoom);
         }
-
+        //채팅한 내역 불러오기
 
         model.addAttribute("room", chatRoom);
         model.addAttribute("username", buyerName);
         model.addAttribute("token", token);
 
-        return "/chat/room";
+        return "redirect:/chat/room/enter/" + chatRoom.getRoomId();
     }
 
     /*@GetMapping("/room/enter/{id}")
@@ -123,12 +127,15 @@ public class ChatRoomController {
     @GetMapping("/room/enter/{roomId}")
     public String roomDetail(Model model, @PathVariable String roomId, HttpServletRequest request) {
         ChatRoom room = chatRoomRepository.findByRoomId(roomId);
+        List<ChatMessage> messages = chatMessageRepository
+                .findAllByRoomId(roomId, Sort.by(Sort.Direction.DESC,"id"));
 
         String token = cookieUtil.getCookie(request, "accessToken").getValue();
         String username = memberService.searchMemberId(request).getUsername();
 
         model.addAttribute("room", room);
         model.addAttribute("username", username);
+        model.addAttribute("messages", messages);
         model.addAttribute("token", token);
         return "/chat/room";
     }

@@ -33,7 +33,9 @@
                 </div>
             </div>
             <!--            메시지 출력-->
-            <ul class="list-group" id="sendMessage"></ul>
+            <ul class="list-group" id="sendMessage" th:each="message,index : ${messages}">
+                <li class='list-group-item'>[[${message.message}]]</li>
+            </ul>
 
 
         </div>
