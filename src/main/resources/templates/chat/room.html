@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
     <head th:replace="fragments/header :: header"></head>
-    <script src="/webjars/sockjs-client/1.1.2/sockjs.js"></script>
-    <script src="/webjars/stomp-websocket/2.3.3-1/stomp.js"></script>
     <body>
         <div class="container mt-5 py-5">
             <div class="container-sm my-auto mb-5">
@@ -10,11 +8,9 @@
                     <a class="text-dark" href='/'>SADANG</a>
                 </h1>
             </div>
-            <input type="text" id="token" class="form-inline" th:value="${token}"
-                   readonly hidden>
+
             <input type="text" id="nickname" class="form-inline" th:value="${username}"
-                   readonly>
-            <button class="btn btn-primary" id="name">확인</button>
+                   readonly hidden>
             <label for="roomId" class="label label-default">방 번호</label>
             <label th:text="${room.roomId}" id="roomId" class="form-inline"></label>
             <br>
@@ -34,14 +30,14 @@
             </div>
             <!--            메시지 출력-->
             <ul class="list-group" id="sendMessage" th:each="message,index : ${messages}">
-                <li class='list-group-item'>[[${message.message}]]</li>
+                <li class='list-group-item'> [[${message.sender}]] - [[${message.message}]]</li>
             </ul>
 
 
         </div>
 
+    <div th:replace="fragments/footer :: footer"></div>
     </body>
-    <script src="/js/chat.js"></script>
 </html>
 
 

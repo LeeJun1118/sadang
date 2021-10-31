@@ -40,9 +40,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .antMatchers("/login").permitAll()
 //                .antMatchers("/verify").permitAll()
 
-                .antMatchers("/board/new").hasRole("USER")
+                /*.antMatchers("/board/new").hasRole("USER")
                 .antMatchers("/myPage").hasRole("USER")
-                .antMatchers("/test/**").hasRole("USER")
+                .antMatchers("/test/**").hasRole("USER")*/
                 .anyRequest()
                 .permitAll();
 

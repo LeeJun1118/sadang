@@ -76,7 +76,7 @@ public class ChatRoomController {
         }
 
         ChatRoom chatRoom = chatRoomRepository.findByBoardIdAndBuyerName(id,buyerName);
-        String token = cookieUtil.getCookie(request, "accessToken").getValue();
+//        String token = cookieUtil.getCookie(request, "accessToken").getValue();
 
         if (chatRoom == null) {
             String roomId = UUID.randomUUID().toString();
@@ -87,7 +87,7 @@ public class ChatRoomController {
 
         model.addAttribute("room", chatRoom);
         model.addAttribute("username", buyerName);
-        model.addAttribute("token", token);
+//        model.addAttribute("token", token);
 
         return "redirect:/chat/room/enter/" + chatRoom.getRoomId();
     }
@@ -130,13 +130,16 @@ public class ChatRoomController {
         List<ChatMessage> messages = chatMessageRepository
                 .findAllByRoomId(roomId, Sort.by(Sort.Direction.DESC,"id"));
 
-        String token = cookieUtil.getCookie(request, "accessToken").getValue();
-        String username = memberService.searchMemberId(request).getUsername();
+        String username = null;
+        if ( cookieUtil.getCookie(request, "accessToken") != null) {
+            username = memberService.searchMemberId(request).getUsername();
+        }
+//        String token = cookieUtil.getCookie(request, "accessToken").getValue();
 
         model.addAttribute("room", room);
         model.addAttribute("username", username);
         model.addAttribute("messages", messages);
-        model.addAttribute("token", token);
+//        model.addAttribute("token", token);
         return "/chat/room";
     }
 

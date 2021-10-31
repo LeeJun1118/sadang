@@ -2,6 +2,7 @@ package com.market.sadang.controller;
 
 
 import com.market.sadang.domain.Board;
+import com.market.sadang.domain.ChatRoom;
 import com.market.sadang.domain.Member;
 import com.market.sadang.dto.bord.BoardCreateRequestDto;
 import com.market.sadang.dto.bord.BoardListResponseDto;
@@ -11,9 +12,11 @@ import com.market.sadang.dto.form.BoardForm;
 import com.market.sadang.dto.member.MyBoardListResponseDto;
 import com.market.sadang.dto.myFile.MyFileDto;
 import com.market.sadang.dto.myFile.MyFileResponseDto;
+import com.market.sadang.repository.ChatRoomRepository;
 import com.market.sadang.service.BoardService;
 import com.market.sadang.service.MemberService;
 import com.market.sadang.service.MyFileService;
+import com.market.sadang.service.authUtil.CookieUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,6 +41,8 @@ public class BoardController {
     private final BoardService boardService;
     private final MemberService memberService;
     private final MyFileService myFileService;
+    private final ChatRoomRepository chatRoomRepository;
+    private final CookieUtil cookieUtil;
 
     // 글 쓰기 폼
     @GetMapping("/board/new")
@@ -93,7 +98,8 @@ public class BoardController {
 
     @GetMapping("/")
     public ModelAndView searchAllDesc(ModelAndView modelAndView
-            , @RequestParam(value = "search", defaultValue = "") String search) {
+            , @RequestParam(value = "search", defaultValue = "") String search,
+                                      HttpServletRequest request) {
 
         List<Board> boardList = null;
         if (Objects.equals(search, "")) {
@@ -112,6 +118,17 @@ public class BoardController {
         }
 
         modelAndView.addObject("boardList", responseDtoList);
+
+        List<ChatRoom> roomList = null;
+
+        if ( cookieUtil.getCookie(request, "accessToken") != null) {
+
+            Member member = memberService.searchMemberId(request);
+            roomList = chatRoomRepository.findBySellerNameOrBuyerName(member.getUsername(), member.getUsername());
+
+        }
+
+        modelAndView.addObject("roomIdList", roomList);
         modelAndView.setViewName("index");
         return modelAndView;
     }
@@ -145,7 +162,7 @@ public class BoardController {
                          @RequestParam(value = "uploadFile", required = false) List<MultipartFile> files) throws Exception {
 
         if (result.hasErrors()) {
-            model.addAttribute("id",id);
+            model.addAttribute("id", id);
             return "board/updateBoard";
         }
         BoardUpdateRequestDto requestDto = BoardUpdateRequestDto.builder()

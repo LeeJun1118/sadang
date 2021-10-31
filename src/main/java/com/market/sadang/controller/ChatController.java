@@ -37,7 +37,7 @@ public class ChatController {
 
     // websocket "/pub/chat/message"로 들어오는 메시징을 처리
     @MessageMapping("/chat/message")
-    public void message(ChatMessage message, @Header("token") String token) {
+    public void message(ChatMessage message/*, @Header("token") String token*/) {
 
         //토큰 유효성 검사
 //        String memberId = jwtUtil.getUsername(token);
@@ -50,12 +50,14 @@ public class ChatController {
 
         // json으로 log 출력
         Gson gson = new Gson();
+        System.out.println(gson.toJson(message));
+
         ChatMessage chatMessage = chatMessageRepository.save(new ChatMessage(message));
 
         // Websocket에 발행된 메시지를 redis로 발행(publish)
 //        redisTemplate.convertAndSend(channelTopic.getTopic(), message);
 
-        messagingTemplate.convertAndSend("/sub/chat/room/" + message.getRoomId(),chatMessage);
+        messagingTemplate.convertAndSend("/sub/chat/room/" + message.getRoomId(), chatMessage);
 
     }
 }
