@@ -70,6 +70,10 @@
                 <footer class="my-5 pt-5"></footer>
             </div>
         </div>
+        <p id="roomList" th:each="roomId : ${roomIdList}" class="col-sm-3 p-1" hidden>
+            <input type="text" class="myRoomId" th:value="${roomId.roomId}" readonly hidden/>
+        </p>
+        <div id="show-toastr"></div>
         <div th:replace="fragments/footer :: footer"></div>
     </body>
 </html>

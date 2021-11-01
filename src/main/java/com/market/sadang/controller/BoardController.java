@@ -14,6 +14,7 @@ import com.market.sadang.dto.myFile.MyFileDto;
 import com.market.sadang.dto.myFile.MyFileResponseDto;
 import com.market.sadang.repository.ChatRoomRepository;
 import com.market.sadang.service.BoardService;
+import com.market.sadang.service.ChatRoomService;
 import com.market.sadang.service.MemberService;
 import com.market.sadang.service.MyFileService;
 import com.market.sadang.service.authUtil.CookieUtil;
@@ -43,10 +44,15 @@ public class BoardController {
     private final MyFileService myFileService;
     private final ChatRoomRepository chatRoomRepository;
     private final CookieUtil cookieUtil;
+    private final ChatRoomService chatRoomService;
 
     // 글 쓰기 폼
     @GetMapping("/board/new")
-    public ModelAndView boardForm(ModelAndView modelAndView) {
+    public ModelAndView boardForm(ModelAndView modelAndView, HttpServletRequest request) {
+
+        List<ChatRoom> roomList = chatRoomService.findRoomList(request);
+        modelAndView.addObject("roomIdList", roomList);
+
         modelAndView.addObject("boardForm", new BoardForm());
         modelAndView.setViewName("board/boardForm");
         return modelAndView;
@@ -119,18 +125,10 @@ public class BoardController {
 
         modelAndView.addObject("boardList", responseDtoList);
 
-        List<ChatRoom> roomList = null;
+        List<ChatRoom> roomList = chatRoomService.findRoomList(request);
+        modelAndView.addObject("roomIdList", roomList);
 
         modelAndView.setViewName("index");
-      try {
-            Member member = memberService.searchMemberId(request);
-            roomList = chatRoomRepository.findBySellerNameOrBuyerName(member.getUsername(), member.getUsername());
-
-        }catch (Exception e){
-          return modelAndView;
-      }
-
-        modelAndView.addObject("roomIdList", roomList);
         return modelAndView;
     }
 
