@@ -18,6 +18,8 @@ import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Objects;
+
 
 @Slf4j
 @RequiredArgsConstructor
@@ -54,10 +56,9 @@ public class ChatController {
 
         ChatMessage chatMessage = chatMessageRepository.save(new ChatMessage(message));
 
-        // Websocket에 발행된 메시지를 redis로 발행(publish)
-//        redisTemplate.convertAndSend(channelTopic.getTopic(), message);
-
+        try {
         messagingTemplate.convertAndSend("/sub/chat/room/" + message.getRoomId(), chatMessage);
-
+        }
+        catch (Exception ignored){}
     }
 }

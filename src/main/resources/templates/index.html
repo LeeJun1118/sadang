@@ -45,50 +45,13 @@
             </div>
             <footer class="my-5 pt-5"></footer>
         </div>
-        <div th:each="roomId : ${roomIdList}" class="col-sm-3 p-1">
-            <input class="myRoomId" th:value="${roomId.roomId}" readonly/>
-        </div>
+        <p id="roomList" th:each="roomId : ${roomIdList}" class="col-sm-3 p-1" hidden>
+            <input type="text" class="myRoomId" th:value="${roomId.roomId}" readonly hidden/>
+        </p>
+        <div id="show-toastr"></div>
 
         <div th:replace="fragments/footer :: footer"></div>
     </body>
-   <!-- <script th:inline="javascript">
-        /*<![CDATA[*/
-
-        var roomIdList = [[${roomIdList}]];  //Make sure this is bills and not bill as you have done it.
-
-        for (var i in roomIdList) {
-            console.log(roomIdList[i].roomId);
-        }
-
-
-        function connect() {
-
-            socket = new SockJS('/ws-stomp');
-            stompClient = Stomp.over(socket);
-
-            stompClient.connect({}, function () {
-                data = {
-                    'type': 'ENTER',
-                    'roomId': '',
-                    // 'roomId': this.roomId,
-                    'sender': $("#nickname").val(),
-                    'message': 'Enter Room'
-                };
-                for (var i in roomIdList) {
-                    data.setData('roomdId',roomIdList[i].roomId)
-                    stompClient.subscribe('/sub/chat/room/' + roomIdList[i].roomId, function (message) {
-                        // stompClient.subscribe('/sub/chat/room/' + roomId, function (message) {
-                        console.log("Send Message === " + JSON.parse(message.body).message);
-                        showGreeting(JSON.parse(message.body).sender,JSON.parse(message.body).message);
-
-                    })
-                }
-
-            })
-        }
-
-        /*]]>*/
-    </script>-->
 
     <script src="/js/board.js"></script>
 </html>

@@ -121,15 +121,16 @@ public class BoardController {
 
         List<ChatRoom> roomList = null;
 
-        if ( cookieUtil.getCookie(request, "accessToken") != null) {
-
+        modelAndView.setViewName("index");
+      try {
             Member member = memberService.searchMemberId(request);
             roomList = chatRoomRepository.findBySellerNameOrBuyerName(member.getUsername(), member.getUsername());
 
-        }
+        }catch (Exception e){
+          return modelAndView;
+      }
 
         modelAndView.addObject("roomIdList", roomList);
-        modelAndView.setViewName("index");
         return modelAndView;
     }
 

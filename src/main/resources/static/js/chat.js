@@ -6,8 +6,7 @@ var webSocket;
 var nickname;
 var roomId = document.getElementById("roomId").textContent;
 
-$(document).ready(function () {
-});
+
 connect();
 
 document.getElementById("send").addEventListener("click", function () {
@@ -18,42 +17,30 @@ document.getElementById("send").addEventListener("click", function () {
 
 
 function connect() {
-    /*<![CDATA[*/
-    var roomIdList = [[${roomIdList}]];
-    /*]]>*/
 
-
-    for (var i in roomIdList) {
-        console.log(roomIdList[i].roomId)
-    }
-
-    /*data = {
+    data = {
         'type': 'ENTER',
         'roomId': '',
         // 'roomId': this.roomId,
         'sender': $("#nickname").val(),
         'message': 'Enter Room'
-    };*/
+    };
     socket = new SockJS('/ws-stomp');
     stompClient = Stomp.over(socket);
 
     stompClient.connect({}, function () {
 
-        // for (var i in roomIdList) {
             data = {
                 'type': 'ENTER',
-                // 'roomId': roomIdList[i].roomId,
                 'roomId': this.roomId,
                 'sender': $("#nickname").val(),
                 'message': 'Enter Room'
             };
-            // stompClient.subscribe('/sub/chat/room/' + roomIdList[i].roomId, function (message) {
             stompClient.subscribe('/sub/chat/room/' + roomId, function (message) {
                 console.log("Send Message === " + JSON.parse(message.body).message);
                 showGreeting(JSON.parse(message.body).sender, JSON.parse(message.body).message);
 
             })
-        // }
 
     })
 
@@ -65,7 +52,7 @@ function showGreeting(sender,message) {
         "<li class='list-group-item'>" +
         "[" + sender + "] - " + message +
         "</li>";
-    toastr.success('메시지가 도착했습니다.');
+    // toastr.success('메시지가 도착했습니다.');
     messageSpace.scrollTop = messageSpace.scrollHeight;
 }
 
@@ -78,7 +65,6 @@ function disconnect() {
 function send() {
     data = {
         'type': 'TALK',
-        // 'roomId': myRoomId,
         'roomId': this.roomId,
         'sender': $("#nickname").val(),
         'message': $("#message").val()

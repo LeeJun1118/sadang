@@ -24,9 +24,6 @@ public class MemberService {
     public Member searchMemberId(HttpServletRequest request) {
         Cookie jwtToken = cookieUtil.getCookie(request, "accessToken");
 
-        if (jwtToken == null)
-            return null;
-
         String memberId = jwtUtil.getUsername(jwtToken.getValue());
 
         return memberRepository.findByUsername(memberId);
