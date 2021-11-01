@@ -12,6 +12,7 @@ import com.market.sadang.repository.BoardRepository;
 import com.market.sadang.repository.ChatMessageRepository;
 import com.market.sadang.repository.ChatRoomRepository;
 import com.market.sadang.service.BoardService;
+import com.market.sadang.service.ChatRoomService;
 import com.market.sadang.service.MemberService;
 import com.market.sadang.service.authUtil.CookieUtil;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +37,7 @@ public class ChatRoomController {
     private final CookieUtil cookieUtil;
     private final BoardService boardService;
     private final ChatMessageRepository chatMessageRepository;
+    private final ChatRoomService chatRoomService;
 
     //*
     // 채팅 리스트 화면
@@ -164,6 +166,9 @@ public class ChatRoomController {
                 dtoList.add(new MyChatRoomListResponseDto(chatRoom));
             }
         }
+
+        List<ChatRoom> roomList = chatRoomService.findRoomList(request);
+        modelAndView.addObject("roomIdList", roomList);
 
         modelAndView.addObject("myChatRoomList", dtoList);
         modelAndView.setViewName("/member/myChatRoom");

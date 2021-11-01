@@ -2,18 +2,11 @@ var socket = null;
 var stompClient = null;
 var data = null;
 
-var webSocket;
-var nickname;
 
 var get_input = $("#roomList input[type=text]");
+
+
 connect();
-
-document.getElementById("send").addEventListener("click", function () {
-    nickname = document.getElementById("nickname").value;
-    send();
-})
-
-
 function connect() {
 
     socket = new SockJS('/ws-stomp');
@@ -50,7 +43,7 @@ function showGreeting(sender, message) {
                 "<div>"
         }
     }*/
-    var messageSpace = document.getElementById("show-toastr");
+    // var messageSpace = document.getElementById("show-toastr");
     toastr.success('메시지가 도착했습니다.');
-    messageSpace.scrollTop = messageSpace.scrollHeight;
+    // messageSpace.scrollTop = messageSpace.scrollHeight;
 }

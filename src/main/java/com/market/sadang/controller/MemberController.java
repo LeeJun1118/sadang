@@ -2,6 +2,7 @@ package com.market.sadang.controller;
 
 
 import com.market.sadang.config.UserRole;
+import com.market.sadang.domain.ChatRoom;
 import com.market.sadang.domain.Member;
 import com.market.sadang.domain.Response;
 import com.market.sadang.dto.form.SignUpForm;
@@ -14,6 +15,7 @@ import com.market.sadang.domain.requestUser.RequestVerifyUser;
 import com.market.sadang.repository.ChatRoomRepository;
 import com.market.sadang.repository.MemberRepository;
 import com.market.sadang.service.BoardService;
+import com.market.sadang.service.ChatRoomService;
 import com.market.sadang.service.MemberService;
 import com.market.sadang.service.authUtil.AuthService;
 import com.market.sadang.service.authUtil.CookieUtil;
@@ -30,6 +32,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -51,6 +54,7 @@ public class MemberController {
     private final MemberService memberService;
     private final BoardService boardService;
     private final ChatRoomRepository chatRoomRepository;
+    private final ChatRoomService chatRoomService;
 
 //    private final JwtRequestFilter jwtRequestFilter;
 
@@ -332,6 +336,9 @@ public class MemberController {
 
         MemberPageReponseDto memberPageReponseDto = new MemberPageReponseDto(member,countBoard);
 
+        List<ChatRoom> roomList = chatRoomService.findRoomList(request);
+        modelAndView.addObject("roomIdList", roomList);
+
         modelAndView.addObject("member", memberPageReponseDto);
         modelAndView.addObject("countChatRoom", countChatRoom);
         modelAndView.setViewName("member/myPage");
@@ -341,6 +348,10 @@ public class MemberController {
     @GetMapping("/myPage/update")
     public ModelAndView updateInfoForm(ModelAndView modelAndView, HttpServletRequest request) {
         Member member = memberService.searchMemberId(request);
+
+        List<ChatRoom> roomList = chatRoomService.findRoomList(request);
+        modelAndView.addObject("roomIdList", roomList);
+
         modelAndView.addObject("member", new MemberResponseDto(member));
         modelAndView.setViewName("member/updateInfo");
         return modelAndView;

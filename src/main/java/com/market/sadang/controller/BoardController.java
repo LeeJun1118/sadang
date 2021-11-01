@@ -83,7 +83,7 @@ public class BoardController {
 
     // 게시글 보기
     @GetMapping("/board/{id}")
-    public ModelAndView searchById(@PathVariable Long id, ModelAndView modelAndView) {
+    public ModelAndView searchById(@PathVariable Long id, ModelAndView modelAndView,HttpServletRequest request) {
 
         //게시글 id로 해당 글의 첨부파일 전체 조회
         List<MyFileResponseDto> myFileResponseDtoList = myFileService.findAllByBoard(id);
@@ -96,6 +96,9 @@ public class BoardController {
         }
 
         BoardResponseDto boardResponseDto = boardService.searchById(id, myFileIdList);
+
+        List<ChatRoom> roomList = chatRoomService.findRoomList(request);
+        modelAndView.addObject("roomIdList", roomList);
 
         modelAndView.addObject("board", boardResponseDto);
         modelAndView.setViewName("board/showBoard");
@@ -242,6 +245,9 @@ public class BoardController {
                                 ModelAndView modelAndView) {
         Member member = memberService.searchMemberId(request);
         List<MyBoardListResponseDto> myBoardList = boardService.findByMember(member);
+
+        List<ChatRoom> roomList = chatRoomService.findRoomList(request);
+        modelAndView.addObject("roomIdList", roomList);
 
         modelAndView.addObject("myBoardList", myBoardList);
         modelAndView.setViewName("/member/myBoard");
