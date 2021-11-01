@@ -136,8 +136,12 @@ public class BoardController {
     }
 
     @GetMapping("/board/update/{id}")
-    public ModelAndView updateForm(@PathVariable Long id, ModelAndView modelAndView) {
+    public ModelAndView updateForm(@PathVariable Long id, ModelAndView modelAndView, HttpServletRequest request) {
         BoardUpdateRequestDto board = boardService.findById(id);
+
+        List<ChatRoom> roomList = chatRoomService.findRoomList(request);
+        modelAndView.addObject("roomIdList", roomList);
+
         modelAndView.addObject("boardForm", board);
         modelAndView.addObject("id", id);
         modelAndView.setViewName("board/updateBoard");

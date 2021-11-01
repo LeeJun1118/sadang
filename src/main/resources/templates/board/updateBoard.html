@@ -77,6 +77,9 @@
                         <button id="btn" type="submit" class="btn btn-primary">등록</button>
                     </div>
                 </form>
+                <p id="roomList" th:each="roomId : ${roomIdList}" class="col-sm-3 p-1" hidden>
+                    <input type="text" class="myRoomId" th:value="${roomId.roomId}" readonly hidden/>
+                </p>
                 <footer class="my-5 pt-5"></footer>
             </div>
         </div>
