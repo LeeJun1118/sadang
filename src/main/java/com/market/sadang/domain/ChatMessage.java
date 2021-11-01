@@ -26,6 +26,9 @@ public class ChatMessage extends BaseTimeEntity{
     private String sender; // 메시지 보낸사람
     private String message; // 메시지
 
+   /* @Enumerated(EnumType.STRING)
+    private ReadStatus readStatus;*/
+
 
     @Builder
     public ChatMessage(ChatMessage entity) {
