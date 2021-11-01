@@ -11,9 +11,11 @@ import java.util.List;
 public class BoardMemberDto {
     private Long id;
     private String member;
+    private String title;
 
     public BoardMemberDto(Board entity){
         this.id = entity.getId();
         this.member = entity.getMember().getUsername();
+        this.title = entity.getTitle();
     }
 }

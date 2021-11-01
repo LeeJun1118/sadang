@@ -30,7 +30,6 @@ public class ChatRoom implements Serializable {
 @Entity
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 public class ChatRoom implements Serializable {
     @Id
@@ -46,10 +45,13 @@ public class ChatRoom implements Serializable {
 
     private String buyerName;
 
-    public ChatRoom(String roomId, Long boardId, String sellerName, String buyerName) {
+    private String boardTitle;
+
+    public ChatRoom(String roomId, Long boardId, String sellerName, String buyerName, String boardTitle) {
         this.roomId = roomId;
         this.boardId = boardId;
         this.sellerName = sellerName;
         this.buyerName = buyerName;
+        this.boardTitle = boardTitle;
     }
 }

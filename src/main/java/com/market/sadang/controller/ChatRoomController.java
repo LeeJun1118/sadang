@@ -5,6 +5,7 @@ import com.market.sadang.domain.Board;
 import com.market.sadang.domain.ChatMessage;
 import com.market.sadang.domain.ChatRoom;
 import com.market.sadang.domain.Member;
+import com.market.sadang.dto.bord.BoardMemberDto;
 import com.market.sadang.dto.bord.BoardUpdateRequestDto;
 import com.market.sadang.dto.member.MyBoardListResponseDto;
 import com.market.sadang.dto.member.MyChatRoomListResponseDto;
@@ -135,7 +136,9 @@ public class ChatRoomController {
                              HttpServletRequest request,
                              Model model) {
 
-        String sellerName = boardService.findByIdMember(id).getMember();
+        BoardMemberDto dto = boardService.findByIdMember(id);
+        String sellerName = dto.getMember();
+
         String buyerName = memberService.searchMemberId(request).getUsername();
 
         if (sellerName == buyerName){
@@ -147,7 +150,7 @@ public class ChatRoomController {
 
         if (chatRoom == null) {
             String roomId = UUID.randomUUID().toString();
-            chatRoom = new ChatRoom(roomId, id, sellerName, buyerName);
+            chatRoom = new ChatRoom(roomId, id, sellerName, buyerName, dto.getTitle());
             chatRoomRepository.save(chatRoom);
         }
         //채팅한 내역 불러오기
