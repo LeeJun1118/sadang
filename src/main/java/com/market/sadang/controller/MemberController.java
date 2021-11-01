@@ -145,29 +145,31 @@ public class MemberController {
     @GetMapping("/user/out")
     public ModelAndView logout(ModelAndView modelAndView,
                                HttpServletRequest req,
-                               HttpServletResponse res) throws ServletException {
+                               HttpServletResponse res) {
 
-        Cookie accessToken = cookieUtil.getCookie(req, "accessToken");
-        redisUtil.deleteData(accessToken.getValue());
-
-
-        Cookie resAccessToken = new Cookie("accessToken", null);
-        Cookie resRefreshToken = new Cookie("refreshToken", null);
-
-        resAccessToken.setHttpOnly(true);
-        resAccessToken.setSecure(false);
-        resAccessToken.setMaxAge(0);
-        resAccessToken.setPath("/");
-
-        resRefreshToken.setHttpOnly(true);
-        resRefreshToken.setSecure(false);
-        resRefreshToken.setMaxAge(0);
-        resRefreshToken.setPath("/");
-
-        res.addCookie(resAccessToken);
-        res.addCookie(resRefreshToken);
+        try {
+            Cookie accessToken = cookieUtil.getCookie(req, "accessToken");
+            redisUtil.deleteData(accessToken.getValue());
 
 
+            Cookie resAccessToken = new Cookie("accessToken", null);
+            Cookie resRefreshToken = new Cookie("refreshToken", null);
+
+            resAccessToken.setHttpOnly(true);
+            resAccessToken.setSecure(false);
+            resAccessToken.setMaxAge(0);
+            resAccessToken.setPath("/");
+
+            resRefreshToken.setHttpOnly(true);
+            resRefreshToken.setSecure(false);
+            resRefreshToken.setMaxAge(0);
+            resRefreshToken.setPath("/");
+
+            res.addCookie(resAccessToken);
+            res.addCookie(resRefreshToken);
+
+        } catch (Exception ignored) {
+        }
         modelAndView.setViewName("redirect:/");
         return modelAndView;
     }
@@ -334,7 +336,7 @@ public class MemberController {
         int countBoard = boardService.searchAllByMember(member);
         int countChatRoom = chatRoomRepository.countChatRoomBySellerNameOrBuyerName(member.getUsername(), member.getUsername());
 
-        MemberPageReponseDto memberPageReponseDto = new MemberPageReponseDto(member,countBoard);
+        MemberPageReponseDto memberPageReponseDto = new MemberPageReponseDto(member, countBoard);
 
         List<ChatRoom> roomList = chatRoomService.findRoomList(request);
         modelAndView.addObject("roomIdList", roomList);
@@ -359,8 +361,8 @@ public class MemberController {
 
     @PostMapping("/myInfo/update")
     public ModelAndView infoUpdate(@Valid MemberForm memberForm,
-                               HttpServletRequest request,
-                               ModelAndView modelAndView) {
+                                   HttpServletRequest request,
+                                   ModelAndView modelAndView) {
 
         MemberUpdateRequestDto requestDto = MemberUpdateRequestDto.builder()
                 .name(memberForm.getName())
@@ -371,7 +373,7 @@ public class MemberController {
                 .build();
 
         Member member = memberService.searchMemberId(request);
-        memberService.update(requestDto,member.getId());
+        memberService.update(requestDto, member.getId());
 
         modelAndView.setViewName("redirect:/");
 
@@ -380,7 +382,7 @@ public class MemberController {
 
 
     @GetMapping("/loginCheck")
-    public int loginCheck(HttpServletRequest request){
+    public int loginCheck(HttpServletRequest request) {
         int check = 0;
 
         try {
@@ -389,7 +391,7 @@ public class MemberController {
                 check = 0;
             else
                 check = 1;
-        }catch (Exception e){
+        } catch (Exception e) {
         }
         return check;
     }
