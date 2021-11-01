@@ -42,6 +42,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .antMatchers("/board/new").hasRole("USER")
                 .antMatchers("/myPage").hasRole("USER")
+                .antMatchers("/chat/**").hasRole("USER")
                 .antMatchers("/test/**").hasRole("USER")
                 .anyRequest()
                 .permitAll();

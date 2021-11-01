@@ -94,7 +94,8 @@ public class ChatRoomController {
             }
         }
 
-        ChatRoom thisRoom = chatRoomRepository.findByRoomId(lastMessageRoomId);
+//        ChatRoom thisRoom = chatRoomRepository.findByRoomId(lastMessageRoomId);
+        ChatRoom thisRoom =chatRoomService.findByRoomId(lastMessageRoomId);
 
         List<ChatMessage> messages = chatMessageRepository
                 .findAllByRoomId(lastMessageRoomId/*, Sort.by(Sort.Direction.DESC,"id")*/);
@@ -162,7 +163,8 @@ public class ChatRoomController {
     // 채팅방 입장 화면
     @GetMapping("/room/enter/{roomId}")
     public String roomDetail(Model model, @PathVariable String roomId, HttpServletRequest request) {
-        ChatRoom thisRoom = chatRoomRepository.findByRoomId(roomId);
+
+        ChatRoom thisRoom =chatRoomService.findByRoomId(roomId);
         List<ChatMessage> messages = chatMessageRepository
                 .findAllByRoomId(roomId);
 

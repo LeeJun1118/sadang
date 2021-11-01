@@ -23,10 +23,19 @@ public class ChatRoomService {
             Member member = memberService.searchMemberId(request);
             roomList = chatRoomRepository.findBySellerNameOrBuyerName(member.getUsername(), member.getUsername());
 
-        }catch (Exception e){
+        } catch (Exception e) {
             return null;
         }
 
         return roomList;
+    }
+
+    public ChatRoom findByRoomId(String roomId) {
+        try {
+            ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
+            return chatRoom;
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

@@ -133,7 +133,9 @@
                 <input type="text" id="nickname" class="form-inline" th:value="${username}"
                        readonly hidden>
 
-                <input th:value="${thisRoom.roomId}" id="roomId" class="form-inline" readonly hidden>
+                <div th:if="${not #strings.isEmpty(thisRoom)}">
+                    <input th:value="${thisRoom.roomId}" id="roomId" class="form-inline" readonly hidden>
+                </div>
                 <div th:replace="fragments/roomFooter :: footer"></div>
             </div>
         </div>
