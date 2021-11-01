@@ -93,7 +93,8 @@ function showGreeting(sender, message) {
         messageSpace.innerHTML = messageSpace.innerHTML +
             "<div class=\"incoming_msg mb-3\" th:if=\"${message.sender} != ${username}\">\n" +
             "   <div class=\"incoming_msg_img\">\n" +
-            "       <img src=\"https://ptetutorials.com/images/user-profile.png\" alt=\"sunil\">\n" +
+            "       <img src=\"/css/images/userProfile.png\" alt=\"sunil\">\n" +
+            // "       <img src=\"https://ptetutorials.com/images/user-profile.png\" alt=\"sunil\">\n" +
             "   </div>\n" +
             "   <div class=\"received_msg\">\n" +
             "       <div class=\"received_withd_msg\">\n" +
