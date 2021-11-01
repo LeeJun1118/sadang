@@ -15,6 +15,8 @@ document.getElementById("send").addEventListener("click", function () {
 })
 
 function connect() {
+    var element = document.getElementById('message-history');
+    element.scrollTop = element.scrollHeight;
 
     socket = new SockJS('/ws-stomp');
     stompClient = Stomp.over(socket);
@@ -103,7 +105,8 @@ function showGreeting(sender, message) {
 
     }
 
-    messageSpace.scrollTop = messageSpace.scrollHeight;
+    var element = document.getElementById('message-history');
+    element.scrollTop = element.scrollHeight;
 }
 
 function showToastr() {

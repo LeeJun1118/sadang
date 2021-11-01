@@ -93,7 +93,7 @@
 
                             <!--                            메세지-->
                             <div class="mesgs">
-                                <div class="msg_history">
+                                <div id="message-history" class="msg_history">
                                     <div th:each="message,index : ${messages}">
                                         <!--                                    받은 메세지-->
                                         <div class="incoming_msg mb-3" th:if="${message.sender} != ${username}">
