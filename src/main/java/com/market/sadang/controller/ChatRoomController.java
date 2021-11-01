@@ -41,14 +41,78 @@ public class ChatRoomController {
 
     //*
     // 채팅 리스트 화면
-   /* @GetMapping("/room")
-    public String rooms(Model model) {
-        return "/chat/room";
+   /* @GetMapping("/room/newChatRoom")
+    public String rooms(Model model, HttpServletRequest request) {
+
+        //
+
+        ChatRoom room = chatRoomRepository.findByRoomId("607fe131-bb73-4b08-9842-7f51e7130461");
+
+        List<ChatMessage> messages = chatMessageRepository
+                .findAllByRoomId("607fe131-bb73-4b08-9842-7f51e7130461", Sort.by(Sort.Direction.DESC,"id"));
+
+        String username = null;
+        if ( cookieUtil.getCookie(request, "accessToken") != null) {
+            username = memberService.searchMemberId(request).getUsername();
+        }
+
+        List<ChatRoom> roomList = chatRoomService.findRoomList(request);
+        model.addAttribute("roomList", roomList);
+
+        model.addAttribute("room", room);
+        model.addAttribute("username", username);
+        model.addAttribute("messages", messages);
+        // roomList도 보냄
+        //message List 보낼때  sender, receiver, 현재 로그인한 username 같이 보냄
+
+        // 프론트에서 messageList.sender 가 현재 username이랑 같다면
+
+
+        return "/chat/chat";
     }*/
+
+    @GetMapping("/myChatRoom")
+    public String roomDetail(Model model, HttpServletRequest request) {
+
+        String username = null;
+        if ( cookieUtil.getCookie(request, "accessToken") != null) {
+            username = memberService.searchMemberId(request).getUsername();
+        }
+
+        //내가 들어간 방 목록 불러오기
+        List<ChatRoom> roomList = chatRoomService.findRoomList(request);
+
+        int lastId = 0;
+        String lastMessageRoomId = null;
+        // 각각의 roomId로 가장 마지막 메세지Id 불러와야함
+        for (ChatRoom myRoom : roomList){
+            ChatMessage message = chatMessageRepository
+                    .findFirstByRoomIdOrderByIdDesc(myRoom.getRoomId());
+            if (lastId < message.getId()){
+                lastId = message.getId().intValue();
+                lastMessageRoomId = message.getRoomId();
+            }
+        }
+
+        ChatRoom thisRoom = chatRoomRepository.findByRoomId(lastMessageRoomId);
+
+        List<ChatMessage> messages = chatMessageRepository
+                .findAllByRoomId(lastMessageRoomId/*, Sort.by(Sort.Direction.DESC,"id")*/);
+
+
+
+        model.addAttribute("roomList", roomList);
+
+        model.addAttribute("thisRoom", thisRoom);
+        model.addAttribute("username", username);
+        model.addAttribute("messages", messages);
+//        model.addAttribute("token", token);
+        return "/chat/chat";
+    }
 
 
     // 모든 채팅방 목록 반환
-    @GetMapping("/rooms")
+    /*@GetMapping("/rooms")
     @ResponseBody
     public ModelAndView room(ModelAndView modelAndView) {
         List<ChatRoom> rooms = chatRoomRepository.findAll();
@@ -57,7 +121,7 @@ public class ChatRoomController {
         modelAndView.setViewName("chat/rooms");
 
         return modelAndView;
-    }
+    }*/
 
     // 채팅방 생성
     // 게시글에서 채팅 클릭 -> BoardId, UserId 받아옴
@@ -94,55 +158,27 @@ public class ChatRoomController {
         return "redirect:/chat/room/enter/" + chatRoom.getRoomId();
     }
 
-    /*@GetMapping("/room/enter/{id}")
-    public String enterRoom(@PathVariable Long id,
-                             HttpServletRequest request,
-                             Model model) {
-
-        String sellerName = boardService.findByIdMember(id).getMember();
-
-        String buyerName = memberService.searchMemberId(request).getUsername();
-        String token = cookieUtil.getCookie(request, "accessToken").getValue();
-
-        //
-        ChatRoom chatRoom = chatRoomRepository.findByBoardIdAndSellerNameAndBuyerName(id, sellerName, buyerName);
-//        System.out.println("ChatRoom Controller : enter room's chatRoom roomId == " + chatRoom.getRoomId());
-//        System.out.println("ChatRoom Controller : enter room's sellerName == " + sellerName);
-//        System.out.println("ChatRoom Controller : enter room's buyerName == " + buyerName);
-
-
-        if (chatRoom == null) {
-            String roomId = UUID.randomUUID().toString();
-            chatRoom = new ChatRoom(roomId, id, sellerName, buyerName);
-            chatRoomRepository.save(chatRoom);
-        }
-
-        model.addAttribute("room", chatRoom);
-        model.addAttribute("buyerName", buyerName);
-        model.addAttribute("sellerName", sellerName);
-        model.addAttribute("token", token);
-
-        return "/chat/room";
-    }*/
 
     // 채팅방 입장 화면
     @GetMapping("/room/enter/{roomId}")
     public String roomDetail(Model model, @PathVariable String roomId, HttpServletRequest request) {
-        ChatRoom room = chatRoomRepository.findByRoomId(roomId);
+        ChatRoom thisRoom = chatRoomRepository.findByRoomId(roomId);
         List<ChatMessage> messages = chatMessageRepository
-                .findAllByRoomId(roomId, Sort.by(Sort.Direction.DESC,"id"));
+                .findAllByRoomId(roomId);
 
         String username = null;
         if ( cookieUtil.getCookie(request, "accessToken") != null) {
             username = memberService.searchMemberId(request).getUsername();
         }
-//        String token = cookieUtil.getCookie(request, "accessToken").getValue();
 
-        model.addAttribute("room", room);
+        List<ChatRoom> roomList = chatRoomService.findRoomList(request);
+        model.addAttribute("roomList", roomList);
+
+        model.addAttribute("thisRoom", thisRoom);
         model.addAttribute("username", username);
         model.addAttribute("messages", messages);
 //        model.addAttribute("token", token);
-        return "/chat/room";
+        return "/chat/chat";
     }
 
     // 특정 채팅방 조회
@@ -152,7 +188,7 @@ public class ChatRoomController {
         return chatRoomRepository.findRoomById(roomId);
     }*/
 
-    @GetMapping("/myChatRoom")
+    /*@GetMapping("/myChatRoom")
     public ModelAndView myChatRoom(HttpServletRequest request,
                                    ModelAndView modelAndView) {
         Member member = memberService.searchMemberId(request);
@@ -174,5 +210,5 @@ public class ChatRoomController {
         modelAndView.setViewName("/member/myChatRoom");
 
         return modelAndView;
-    }
+    }*/
 }

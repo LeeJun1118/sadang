@@ -44,6 +44,6 @@ function showGreeting(sender, message) {
         }
     }*/
     // var messageSpace = document.getElementById("show-toastr");
-    toastr.success('메시지가 도착했습니다.');
+    toastr.success('메세지가 도착했습니다.');
     // messageSpace.scrollTop = messageSpace.scrollHeight;
 }
