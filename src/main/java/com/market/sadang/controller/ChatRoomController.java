@@ -89,9 +89,12 @@ public class ChatRoomController {
         for (ChatRoom myRoom : roomList){
             ChatMessage message = chatMessageRepository
                     .findFirstByRoomIdOrderByIdDesc(myRoom.getRoomId());
-            if (lastId < message.getId()){
-                lastId = message.getId().intValue();
-                lastMessageRoomId = message.getRoomId();
+
+            if (message != null){
+                if (lastId < message.getId().intValue()){
+                    lastId =message.getId().intValue();
+                    lastMessageRoomId = message.getRoomId();
+                }
             }
         }
 
