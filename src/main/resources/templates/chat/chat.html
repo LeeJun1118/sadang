@@ -30,63 +30,72 @@
                                     <div class="recent_heading">
                                         <h4>채팅</h4>
                                     </div>
-                                    <!--<div class="srch_bar">
-                                        <div class="stylish-input-group">
-                                            <input type="text" class="search-bar" placeholder="Search">
-                                            <span class="input-group-addon">
-                                                <button type="button">
-                                                    <i class="fa fa-search" aria-hidden="true"></i>
-                                                </button>
-                                            </span>
-                                        </div>
-                                    </div>-->
                                 </div>
                                 <div class="inbox_chat">
                                     <div id="roomList" th:each="room,index : ${roomList}">
+
+                                        <!--                                        알람 보냄-->
                                         <input type="text" class="myRoomId" th:value="${room.roomId}" readonly hidden/>
 
-                                        <div class="chat_list"
-                                             th:classappend="${thisRoom.getRoomId()} == ${room.roomId} ? active_chat"
-                                             th:if="${room.buyerName} == ${username}">
-                                            <a th:href="@{/chat/room/enter/{id} (id = ${room.roomId})}">
-
-
-                                                <div class="chat_people">
-                                                    <div class="chat_img">
-                                                        <!--<img src="https://ptetutorials.com/images/user-profile.png"
-                                                             alt="sunil">-->
-                                                        <img src="/css/images/userProfile.png" alt="sunil">
+                                        <div th:if="${room.buyerName} == ${username}">
+                                            <div class="chat_list"
+                                                 th:classappend="${thisRoom.getRoomId()} == ${room.roomId} ? active_chat">
+                                                <a class="enterChatRoom"
+                                                   th:href="@{/chat/room/enter/{id} (id = ${room.roomId})}">
+                                                    <div class="chat_people">
+                                                        <div class="chat_img">
+                                                            <img src="/css/images/userProfile.png" alt="sunil">
+                                                        </div>
+                                                        <div class="chat_ib">
+                                                            <h5>[[${room.sellerName}]]
+                                                                <span class="chat_date">Dec 25</span>
+                                                            </h5>
+                                                            <p>[[${room.boardTitle}]]</p>
+                                                            <h5>
+                                                                <div th:if="${room.countReadStatus} == 0">
+                                                                    <span class="unRead"
+                                                                          th:classappend="${room.roomId}"></span>
+                                                                </div>
+                                                                <div th:if="${room.countReadStatus} != 0">
+                                                                    <span class="unRead" th:classappend="${room.roomId}"
+                                                                          th:text="${room.countReadStatus}"></span>
+                                                                </div>
+                                                            </h5>
+                                                        </div>
                                                     </div>
-                                                    <div class="chat_ib">
-                                                        <h5>[[${room.sellerName}]]
-                                                            <span class="chat_date">Dec 25</span>
-                                                        </h5>
-                                                        <p>[[${room.boardTitle}]]</p>
-                                                    </div>
-                                                </div>
-                                            </a>
+                                                </a>
+                                            </div>
                                         </div>
 
-                                        <div class="chat_list"
-                                             th:classappend="${thisRoom.getRoomId()} == ${room.roomId} ? active_chat"
-                                             th:if="${room.sellerName} == ${username}">
-                                            <a th:href="@{/chat/room/enter/{id} (id = ${room.roomId})}">
-                                                <div class="chat_people">
-                                                    <div class="chat_img">
-                                                        <!--<img src="https://ptetutorials.com/images/user-profile.png"
-                                                             alt="sunil">-->
-                                                        <img src="/css/images/userProfile.png" alt="sunil">
+                                        <div th:if="${room.sellerName} == ${username}">
+                                            <div class="chat_list"
+                                                 th:classappend="${thisRoom.getRoomId()} == ${room.roomId} ? active_chat">
+                                                <a class="enterChatRoom"
+                                                   th:href="@{/chat/room/enter/{id} (id = ${room.roomId})}">
+                                                    <div class="chat_people">
+                                                        <div class="chat_img">
+                                                            <img src="/css/images/userProfile.png" alt="sunil">
+                                                        </div>
+                                                        <div class="chat_ib">
+                                                            <h5>[[${room.buyerName}]]
+                                                                <span class="chat_date">Dec 25</span>
+                                                            </h5>
+                                                            <p>[[${room.boardTitle}]]</p>
+                                                            <h5>
+                                                                <div th:if="${room.countReadStatus} == 0">
+                                                                    <span class="unRead"
+                                                                          th:classappend="${room.roomId}"></span>
+                                                                </div>
+                                                                <div th:if="${room.countReadStatus} != 0">
+                                                                    <span class="unRead" th:classappend="${room.roomId}"
+                                                                          th:text="${room.countReadStatus}"></span>
+                                                                </div>
+                                                            </h5>
+                                                        </div>
                                                     </div>
-                                                    <div class="chat_ib">
-                                                        <h5>[[${room.buyerName}]]
-                                                            <span class="chat_date">Dec 25</span>
-                                                        </h5>
-                                                        <p>[[${room.boardTitle}]]</p>
-                                                    </div>
-                                                </div>
-                                            </a>
+                                                </a>
+                                            </div>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
@@ -98,14 +107,13 @@
                                         <!--                                    받은 메세지-->
                                         <div class="incoming_msg mb-3" th:if="${message.sender} != ${username}">
                                             <div class="incoming_msg_img">
-<!--                                                <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">-->
                                                 <img src="/css/images/userProfile.png" alt="sunil">
                                             </div>
                                             <div class="received_msg">
                                                 <div class="received_withd_msg">
                                                     <p>[[${message.message}]]</p>
                                                     <span class="time_date"> 11:01 AM    |    June 9</span>
-<!--                                                    <span class="time_date"> [[${message.createdDate}]]   |    June 9</span>-->
+                                                    <!--                                                    <span class="time_date"> [[${message.createdDate}]]   |    June 9</span>-->
                                                 </div>
                                             </div>
                                         </div>
@@ -115,7 +123,7 @@
                                             <div class="sent_msg">
                                                 <p>[[${message.message}]]</p>
                                                 <span class="time_date"> 11:01 AM    |    June 9</span>
-<!--                                                <span class="time_date"> [[${message.createdDate}]]   |    June 9</span>-->
+                                                <!--                                                <span class="time_date"> [[${message.createdDate}]]   |    June 9</span>-->
                                             </div>
                                         </div>
                                     </div>

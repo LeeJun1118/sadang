@@ -39,7 +39,7 @@ function connect() {
                 if (JSON.parse(message.body).roomId === roomId) {
                     showGreeting(JSON.parse(message.body).sender, JSON.parse(message.body).message);
                 } else {
-                    showToastr();
+                    showToastr(JSON.parse(message.body).roomId);
                 }
             })
             console.log('value =' + $(value).val());
@@ -110,7 +110,15 @@ function showGreeting(sender, message) {
     element.scrollTop = element.scrollHeight;
 }
 
-function showToastr() {
+function showToastr(alarmRoomId) {
+    var alarmRoom = $('.' + alarmRoomId);
+    var count = alarmRoom.text();
+
+    alarmRoom.text(parseInt(count) + 1);
+
+    if (count === "")
+        alarmRoom.text(1);
+    // console.log("alarmRoomId==================" + alarmRoomId);
     toastr.success('메시지가 도착했습니다.');
 }
 
@@ -129,5 +137,47 @@ function send() {
     };
     stompClient.send("/pub/chat/message", {}, JSON.stringify(data));
 
+    /* var alarmRoom = $('.' + roomId);
+     var count = alarmRoom.text();
+     alarmRoom.text(parseInt(count) + 1);*/
+
     $("#message").val('');
 }
+
+
+/*alarmMessage()
+
+// $(document).ready(function ($) {
+function alarmMessage() {
+    // $('.enterChatRoom').on('click', function (event) {
+    var myUrl = $('.enterChatRoom').attr('href');
+    console.log("myUrl==" + myUrl);
+    $.ajax({
+        type: "POST",
+        url: myUrl,
+        async: false,
+        dataType: 'json',
+        contentType: "application/json",
+        success: function (data) {
+            // console.log("JSON.parse Data===" + JSON.parse(data))
+
+            unReads = $('.unRead');
+
+            values = data.alarmList;
+            $.each(values, function (index, value) {
+                console.log("#######alarm[" + index + "] : " + value.boardTitle)
+                $('.' + value.roomId).text(value.countReadStatus)
+
+            });
+        },
+        error: function (request, status, error, jqXHR, textStatus, errorThrown) {
+            alert("수정 중 문제 발생!!")
+            console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            // console.log("ERROR : " + textStatus + " : " + errorThrown);
+        }
+    });
+    // })
+
+}*/
+
+// );
