@@ -23,7 +23,6 @@ function connect() {
     socket = new SockJS('/ws-stomp');
     stompClient = Stomp.over(socket);
 
-
     stompClient.connect({}, function () {
 
         $.each(get_input, function (index, value) {
@@ -39,11 +38,17 @@ function connect() {
             })
             console.log('value =' + $(value).val());
         });
-
-
-
     })
 
+
+    $('#message').on('input', function () {
+        if ($('#message').val() === ''){
+            $('#send').attr("disabled",true);
+        }
+        else{
+            $('#send').attr("disabled",false);
+        }
+    })
 }
 
 /*function connect() {
