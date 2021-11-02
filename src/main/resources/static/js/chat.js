@@ -7,6 +7,8 @@ var nickname;
 var roomId = document.getElementById("roomId").value;
 
 var get_input = $("#roomList input[type=text]");
+
+
 connect();
 
 document.getElementById("send").addEventListener("click", function () {
@@ -37,6 +39,8 @@ function connect() {
             })
             console.log('value =' + $(value).val());
         });
+
+
 
     })
 
@@ -98,6 +102,7 @@ function showGreeting(sender, message) {
             "</div>";
 
     }
+    alarmMessage()
 
     var element = document.getElementById('message-history');
     element.scrollTop = element.scrollHeight;
@@ -130,7 +135,7 @@ function send() {
         'senderStatus' : 'Y',
         'receiverStatus' : 'N'
     };
-    stompClient.send("/pub/chat/message", {'roomId' : roomId}, JSON.stringify(data));
+    stompClient.send("/pub/chat/message", {'roomId' : roomId, 'username' :$("#nickname").val() }, JSON.stringify(data));
     console.log(JSON.stringify(data))
 
     /* var alarmRoom = $('.' + roomId);
@@ -141,7 +146,7 @@ function send() {
 }
 
 
-// alarmMessage()
+
 
 // $(document).ready(function ($) {
 function alarmMessage() {

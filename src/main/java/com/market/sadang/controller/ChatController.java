@@ -2,6 +2,7 @@ package com.market.sadang.controller;
 
 import com.google.gson.Gson;
 import com.market.sadang.domain.ChatMessage;
+import com.market.sadang.domain.ChatRoom;
 import com.market.sadang.domain.ReadStatus;
 import com.market.sadang.repository.ChatMessageRepository;
 import com.market.sadang.repository.ChatRoomRepository;
@@ -40,7 +41,7 @@ public class ChatController {
 
     // websocket "/pub/chat/message"로 들어오는 메시징을 처리
     @MessageMapping("/chat/message")
-    public void message(ChatMessage message, @Header("roomId") String roomId) {
+    public void message(ChatMessage message, @Header("roomId") String roomId,  @Header("username") String username) {
 
         //토큰 유효성 검사
 //        String memberId = jwtUtil.getUsername(token);
@@ -57,6 +58,27 @@ public class ChatController {
 
        /* if (Objects.equals(roomId, message.getRoomId()))
             message.setReceiverStatus(ReadStatus.Y);*/
+
+        ChatRoom chatRoom = chatRoomRepository.findByRoomId(message.getRoomId());
+        String receiverName = null;
+
+
+        // ChatRoom 에는 Buyer, Seller 둘이 있는데
+        // 둘 중 Sender 가 아닌 사람이 receiver 가 된다.
+        if (Objects.equals(message.getSender(), chatRoom.getBuyerName())){
+            receiverName = chatRoom.getSellerName();
+        }
+        else{
+            receiverName = chatRoom.getBuyerName();
+        }
+        message.setReceiver(receiverName);
+
+        //현재 사용자가 위치한 채팅방이 메세지가 온
+      /*  if (Objects.equals(roomId, message.getRoomId())){
+            message.setReceiverStatus(ReadStatus.Y);
+        }*/
+
+
         ChatMessage chatMessage = chatMessageRepository.save(new ChatMessage(message));
 
         System.out.println("chatMessage=======" + gson.toJson(chatMessage));

@@ -39,7 +39,7 @@
 
                                         <div th:if="${room.buyerName} == ${username}">
                                             <div class="chat_list"
-                                                 th:classappend="${thisRoom.getRoomId()} == ${room.roomId} ? active_chat">
+                                                 th:classappend="${thisRoom} == ${room.roomId} ? active_chat">
                                                 <a class="enterChatRoom"
                                                    th:href="@{/chat/room/enter/{id} (id = ${room.roomId})}">
                                                     <div class="chat_people">
@@ -52,18 +52,14 @@
                                                             </h5>
                                                             <p>[[${room.boardTitle}]]</p>
                                                             <h5>
-                                                                <!--<div th:if="${room.countReadStatus} == 0">
+                                                                <div th:if="${room.countReadStatus} == 0">
                                                                     <span class="unRead"
                                                                           th:classappend="${room.roomId}"></span>
                                                                 </div>
                                                                 <div th:if="${room.countReadStatus} != 0">
                                                                     <span class="unRead" th:classappend="${room.roomId}"
                                                                           th:text="${room.countReadStatus}"></span>
-                                                                </div>-->
-                                                                <span class="unRead" th:classappend="${room.roomId}"
-                                                                      th:text="${room.countReceiverReadStatus}"></span>
-                                                                <span class="unRead" th:classappend="${room.roomId}"
-                                                                      th:text="${room.countSenderReadStatus}"></span>
+                                                                </div>
                                                             </h5>
 
                                                         </div>
@@ -74,7 +70,7 @@
 
                                         <div th:if="${room.sellerName} == ${username}">
                                             <div class="chat_list"
-                                                 th:classappend="${thisRoom.getRoomId()} == ${room.roomId} ? active_chat">
+                                                 th:classappend="${thisRoom} == ${room.roomId} ? active_chat">
                                                 <a class="enterChatRoom"
                                                    th:href="@{/chat/room/enter/{id} (id = ${room.roomId})}">
                                                     <div class="chat_people">
@@ -87,18 +83,14 @@
                                                             </h5>
                                                             <p>[[${room.boardTitle}]]</p>
                                                             <h5>
-                                                                <!--<div th:if="${room.countReadStatus} == 0">
+                                                                <div th:if="${room.countReadStatus} == 0">
                                                                     <span class="unRead"
                                                                           th:classappend="${room.roomId}"></span>
                                                                 </div>
                                                                 <div th:if="${room.countReadStatus} != 0">
                                                                     <span class="unRead" th:classappend="${room.roomId}"
                                                                           th:text="${room.countReadStatus}"></span>
-                                                                </div>-->
-                                                                <span class="unRead" th:classappend="${room.roomId}"
-                                                                      th:text="${room.countReceiverReadStatus}"></span>
-                                                                <span class="unRead" th:classappend="${room.roomId}"
-                                                                      th:text="${room.countSenderReadStatus}"></span>
+                                                                </div>
                                                             </h5>
                                                         </div>
                                                     </div>
@@ -154,7 +146,7 @@
                        readonly hidden>
 
                 <div th:if="${not #strings.isEmpty(thisRoom)}">
-                    <input th:value="${thisRoom.roomId}" id="roomId" class="form-inline" readonly hidden>
+                    <input th:value="${thisRoom}" id="roomId" class="form-inline" readonly hidden>
                 </div>
                 <div th:replace="fragments/roomFooter :: footer"></div>
             </div>
