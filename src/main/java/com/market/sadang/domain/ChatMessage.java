@@ -24,10 +24,14 @@ public class ChatMessage extends BaseTimeEntity{
     private MessageType type; // 메시지 타입
     private String roomId; // 방번호
     private String sender; // 메시지 보낸사람
+    private String receiver; // 메시지 받는 사람
     private String message; // 메시지
 
     @Enumerated(EnumType.STRING)
-    private ReadStatus readStatus;
+    private ReadStatus senderStatus;
+
+    @Enumerated(EnumType.STRING)
+    private ReadStatus receiverStatus;
 
 
     @Builder
@@ -35,12 +39,14 @@ public class ChatMessage extends BaseTimeEntity{
         this.type = entity.getType();
         this.roomId = entity.getRoomId();
         this.sender = entity.getSender();
+        this.receiver = entity.getReceiver();
         this.message = entity.getMessage();
-        this.readStatus = ReadStatus.N;
+        this.senderStatus = entity.getSenderStatus();
+        this.receiverStatus = entity.getReceiverStatus();
     }
 
 
     public void update () {
-        this.readStatus = ReadStatus.Y;
+        this.receiverStatus = ReadStatus.Y;
     }
 }

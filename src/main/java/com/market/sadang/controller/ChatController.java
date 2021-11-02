@@ -2,6 +2,7 @@ package com.market.sadang.controller;
 
 import com.google.gson.Gson;
 import com.market.sadang.domain.ChatMessage;
+import com.market.sadang.domain.ReadStatus;
 import com.market.sadang.repository.ChatMessageRepository;
 import com.market.sadang.repository.ChatRoomRepository;
 import com.market.sadang.repository.MemberRepository;
@@ -39,7 +40,7 @@ public class ChatController {
 
     // websocket "/pub/chat/message"로 들어오는 메시징을 처리
     @MessageMapping("/chat/message")
-    public void message(ChatMessage message/*, @Header("token") String token*/) {
+    public void message(ChatMessage message, @Header("roomId") String roomId) {
 
         //토큰 유효성 검사
 //        String memberId = jwtUtil.getUsername(token);
@@ -52,11 +53,15 @@ public class ChatController {
 
         // json으로 log 출력
         Gson gson = new Gson();
-        System.out.println(gson.toJson(message));
+        System.out.println("message=======" + gson.toJson(message));
 
+       /* if (Objects.equals(roomId, message.getRoomId()))
+            message.setReceiverStatus(ReadStatus.Y);*/
         ChatMessage chatMessage = chatMessageRepository.save(new ChatMessage(message));
 
+        System.out.println("chatMessage=======" + gson.toJson(chatMessage));
         try {
+
         messagingTemplate.convertAndSend("/sub/chat/room/" + message.getRoomId(), chatMessage);
         }
         catch (Exception ignored){}

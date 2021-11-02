@@ -26,13 +26,6 @@ function connect() {
 
         $.each(get_input, function (index, value) {
 
-            data = {
-                'type': 'ENTER',
-                'roomId': $(value).val(),
-                'sender': $("#nickname").val(),
-                'message': 'Connect sockJs'
-            };
-
             stompClient.subscribe('/sub/chat/room/' + $(value).val(), function (message) {
                 console.log("roomIdList[i].roomId === " + $(value).val());
 
@@ -133,9 +126,12 @@ function send() {
         'type': 'TALK',
         'roomId': roomId,
         'sender': $("#nickname").val(),
-        'message': $("#message").val()
+        'message': $("#message").val(),
+        'senderStatus' : 'Y',
+        'receiverStatus' : 'N'
     };
-    stompClient.send("/pub/chat/message", {}, JSON.stringify(data));
+    stompClient.send("/pub/chat/message", {'roomId' : roomId}, JSON.stringify(data));
+    console.log(JSON.stringify(data))
 
     /* var alarmRoom = $('.' + roomId);
      var count = alarmRoom.text();
@@ -145,39 +141,40 @@ function send() {
 }
 
 
-/*alarmMessage()
+// alarmMessage()
 
 // $(document).ready(function ($) {
 function alarmMessage() {
     // $('.enterChatRoom').on('click', function (event) {
-    var myUrl = $('.enterChatRoom').attr('href');
-    console.log("myUrl==" + myUrl);
+
     $.ajax({
         type: "POST",
-        url: myUrl,
+        url: '/chat/room/enter/' + roomId,
         async: false,
         dataType: 'json',
         contentType: "application/json",
         success: function (data) {
-            // console.log("JSON.parse Data===" + JSON.parse(data))
+            console.log("JSON.parse Data===" + JSON.parse(data))
 
-            unReads = $('.unRead');
+          /*  unReads = $('.unRead');
 
-            values = data.alarmList;
-            $.each(values, function (index, value) {
+            values = data.alarmList;*/
+           /* $.each(values, function (index, value) {
                 console.log("#######alarm[" + index + "] : " + value.boardTitle)
                 $('.' + value.roomId).text(value.countReadStatus)
 
-            });
+            });*/
+
+            console.log("일단 연결은 됐나?")
         },
         error: function (request, status, error, jqXHR, textStatus, errorThrown) {
             alert("수정 중 문제 발생!!")
             console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
-            // console.log("ERROR : " + textStatus + " : " + errorThrown);
+            console.log("ERROR : " + textStatus + " : " + errorThrown);
         }
     });
     // })
 
-}*/
+}
 
 // );

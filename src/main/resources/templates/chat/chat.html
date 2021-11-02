@@ -52,15 +52,20 @@
                                                             </h5>
                                                             <p>[[${room.boardTitle}]]</p>
                                                             <h5>
-                                                                <div th:if="${room.countReadStatus} == 0">
+                                                                <!--<div th:if="${room.countReadStatus} == 0">
                                                                     <span class="unRead"
                                                                           th:classappend="${room.roomId}"></span>
                                                                 </div>
                                                                 <div th:if="${room.countReadStatus} != 0">
                                                                     <span class="unRead" th:classappend="${room.roomId}"
                                                                           th:text="${room.countReadStatus}"></span>
-                                                                </div>
+                                                                </div>-->
+                                                                <span class="unRead" th:classappend="${room.roomId}"
+                                                                      th:text="${room.countReceiverReadStatus}"></span>
+                                                                <span class="unRead" th:classappend="${room.roomId}"
+                                                                      th:text="${room.countSenderReadStatus}"></span>
                                                             </h5>
+
                                                         </div>
                                                     </div>
                                                 </a>
@@ -82,14 +87,18 @@
                                                             </h5>
                                                             <p>[[${room.boardTitle}]]</p>
                                                             <h5>
-                                                                <div th:if="${room.countReadStatus} == 0">
+                                                                <!--<div th:if="${room.countReadStatus} == 0">
                                                                     <span class="unRead"
                                                                           th:classappend="${room.roomId}"></span>
                                                                 </div>
                                                                 <div th:if="${room.countReadStatus} != 0">
                                                                     <span class="unRead" th:classappend="${room.roomId}"
                                                                           th:text="${room.countReadStatus}"></span>
-                                                                </div>
+                                                                </div>-->
+                                                                <span class="unRead" th:classappend="${room.roomId}"
+                                                                      th:text="${room.countReceiverReadStatus}"></span>
+                                                                <span class="unRead" th:classappend="${room.roomId}"
+                                                                      th:text="${room.countSenderReadStatus}"></span>
                                                             </h5>
                                                         </div>
                                                     </div>

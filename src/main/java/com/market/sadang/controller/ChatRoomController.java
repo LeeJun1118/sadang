@@ -97,14 +97,16 @@ public class ChatRoomController {
             }
         }
 
-        //내가 입장한 roomId의 메세지 중 sender가 내가 아닌 메세지의 readStatus를 Y 로 모두 바꿈
-        List<ChatMessage> messageList = chatMessageRepository.findAllByRoomIdAndReadStatus(lastMessageRoomId, ReadStatus.N);
+        // 채팅방에 입장 시 그 방의 모든 안읽은 메세지를 읽음으로 처리
+        List<ChatMessage> messageList = chatMessageRepository.findAllByRoomIdAndReceiverStatus(lastMessageRoomId, ReadStatus.N);
+//        List<ChatMessage> messageList = chatMessageRepository.findAllByRoomIdAndReceiverAndReceiverStatus(lastMessageRoomId, username, ReadStatus.N);
         for (ChatMessage message : messageList) {
-            chatMessageService.update(message.getId());
+            if (username != message.getSender())
+                chatMessageService.update(message.getId());
         }
 
         //내가 입장한 모든 방 각각의 메세지들 중 sender가 내가 아닌 메세지들의 readStatus가 N 인 메세지들의 수를 같이 반환
-        List<MessageListReadStatusDto> roomListReadStatus = chatRoomService.findAllRoomReadStatus(roomList);
+        List<MessageListReadStatusDto> roomListReadStatus = chatRoomService.findAllRoomReadStatus(roomList, username);
 
 //        ChatRoom thisRoom = chatRoomRepository.findByRoomId(lastMessageRoomId);
         ChatRoom thisRoom = chatRoomService.findByRoomId(lastMessageRoomId);
@@ -184,25 +186,30 @@ public class ChatRoomController {
         // 내가 입장해 있는 채팅 방 목록
         List<ChatRoom> roomList = chatRoomService.findRoomList(request);
 
+        //사용자 이름
+        String username = memberService.searchMemberId(request).getUsername();
+
         // 현재 입장한 채팅방
         ChatRoom thisRoom = chatRoomService.findByRoomId(roomId);
 
-        //내가 입장한 roomId의 메세지 중 sender가 내가 아닌 메세지의 readStatus를 Y 로 모두 바꿈
-        List<ChatMessage> messageList = chatMessageRepository.findAllByRoomIdAndReadStatus(thisRoom.getRoomId(), ReadStatus.N);
+        // 채팅방에 입장 시 그 방의 모든 안읽은 메세지를 읽음으로 처리
+        List<ChatMessage> messageList = chatMessageRepository.findAllByRoomIdAndReceiverStatus(thisRoom.getRoomId(), ReadStatus.N);
+//        List<ChatMessage> messageList = chatMessageRepository.findAllByRoomIdAndReceiverAndReceiverStatus(roomId, username, ReadStatus.N);
         for (ChatMessage message : messageList) {
-            chatMessageService.update(message.getId());
+            if (username != message.getSender())
+                chatMessageService.update(message.getId());
         }
 
         //내가 입장한 모든 방 각각의 메세지들 중 sender가 내가 아닌 메세지들의 readStatus가 N 인 메세지들의 수를 같이 반환
-        List<MessageListReadStatusDto> roomListReadStatus = chatRoomService.findAllRoomReadStatus(roomList);
+        List<MessageListReadStatusDto> roomListReadStatus = chatRoomService.findAllRoomReadStatus(roomList, username);
         List<ChatMessage> messages = chatMessageRepository.findAllByRoomId(thisRoom.getRoomId());
 
 
-        String username = null;
+        /*String username = null;
         if (cookieUtil.getCookie(request, "accessToken") != null) {
             username = memberService.searchMemberId(request).getUsername();
         }
-
+*/
 //        model.addAttribute("roomList", roomList);
         model.addAttribute("roomList", roomListReadStatus);
 
@@ -212,31 +219,35 @@ public class ChatRoomController {
 //        model.addAttribute("token", token);
         return "/chat/chat";
     }
-
+/*
     // 채팅방 입장 화면
     @ResponseBody
     @PostMapping("/room/enter/{roomId}")
-    public Object messageAlarm(@PathVariable String roomId, HttpServletRequest request) throws Exception {
+    public int messageAlarm(@PathVariable String roomId, HttpServletRequest request) throws Exception {
         // 내가 입장해 있는 채팅 방 목록
         List<ChatRoom> roomList = chatRoomService.findRoomList(request);
+        String username = memberService.searchMemberId(request).getUsername();
 
         // 현재 입장한 채팅방
         ChatRoom thisRoom = chatRoomService.findByRoomId(roomId);
 
-        //내가 입장한 roomId의 메세지 중 sender가 내가 아닌 메세지의 readStatus를 Y 로 모두 바꿈
-        List<ChatMessage> messageList = chatMessageRepository.findAllByRoomIdAndReadStatus(thisRoom.getRoomId(), ReadStatus.N);
+        // 현재 있는 채팅방의 메세지들 중 안읽음으로 되어있는 메세지들을 모두 읽음처리
+        List<ChatMessage> messageList = chatMessageRepository.findAllByRoomIdAndReceiverAndReceiverStatus(roomId, username, ReadStatus.N);
         for (ChatMessage message : messageList) {
-            chatMessageService.update(message.getId());
+            message.setReceiverStatus(ReadStatus.Y);
+            chatMessageRepository.save(message);
+//            chatMessageService.update(message.getId());
         }
-
         //내가 입장한 모든 방 각각의 메세지들 중 sender가 내가 아닌 메세지들의 readStatus가 N 인 메세지들의 수를 같이 반환
-        List<MessageListReadStatusDto> alarmList = chatRoomService.findAllRoomReadStatus(roomList);
+        List<MessageListReadStatusDto> alarmList = chatRoomService.findAllRoomReadStatus(roomList,username);
 
         Map<String, Object> messageAlarm = new HashMap<String, Object>();
         messageAlarm.put("alarmList", alarmList);
 
-        return messageAlarm;
-    }
+        System.out.println("여기서 읽음 처리");
+
+        return 0;
+    }*/
 
     // 특정 채팅방 조회
     /*@GetMapping("/room/{roomId}")
