@@ -1,3 +1,4 @@
+updateData();
 $(document).ready(function () {
 
     var current_fs, next_fs, previous_fs; //fieldsets
@@ -293,7 +294,8 @@ function sample6_execDaumPostcode() {
 }
 
 var timerID;
-$(document).ready(function () {
+
+/*$(document).ready(function () {
     $('#loginCheck').on('click',function(e){
         e.preventDefault();
         updateData();
@@ -302,12 +304,17 @@ $(document).ready(function () {
     window.onload = function() {
         document.getElementById('loginCheck').click();
     }
-});
+});*/
 
 function updateData(){
+
     $.ajax({
         url: "/loginCheck",
         type:"get",
+        data:'',
+        dataType: 'json',
+        async: false,
+        contentType: "application/json; charset=utf-8",
         cache : false,
         success: function (data) {
             if (JSON.parse(data) == 1) {
@@ -352,5 +359,5 @@ function updateData(){
 
         },
     });
-    timerID = setTimeout("updateData()", 3000); // 2초 단위로 갱신 처리
+    timerID = setTimeout("updateData()", 1000); // 1초 단위로 갱신 처리
 }
