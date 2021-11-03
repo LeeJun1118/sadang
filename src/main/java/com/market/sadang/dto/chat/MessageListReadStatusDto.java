@@ -15,17 +15,19 @@ public class MessageListReadStatusDto {
     private String sellerName;
     private String boardTitle;
     private int countReadStatus;
+    private String lastMessageTime;
 
     /*private int countSenderReadStatus;
     private int countReceiverReadStatus;*/
 
     @Builder
-    public MessageListReadStatusDto(ChatRoom entity, int countReadStatus/*, int countSenderReadStatus, int countReceiverReadStatus*/) {
+    public MessageListReadStatusDto(ChatRoom entity, int countReadStatus, String lastMessageTime) {
         this.roomId = entity.getRoomId();
         this.buyerName = entity.getBuyerName();
         this.sellerName = entity.getSellerName();
         this.boardTitle = entity.getBoardTitle();
         this.countReadStatus = countReadStatus;
+        this.lastMessageTime = lastMessageTime;
        /* this.countSenderReadStatus = countSenderReadStatus;
         this.countReceiverReadStatus = countReceiverReadStatus;*/
     }

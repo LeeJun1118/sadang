@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,6 +72,11 @@ public class ChatRoomService {
         // 내가 입장해있는 채팅방들에서 sender가 내가 아닌 메세지의 readStatus 가 N인 메세지의 수를 셈
         for (ChatRoom room : roomList) {
             int countReadStatusN = chatMessageRepository.countByRoomIdAndReceiverAndReceiverStatus(room.getRoomId(), username, ReadStatus.N);
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd HH:mm");
+            String createdDateTime = chatMessageRepository.findFirstByRoomIdOrderByIdDesc(room.getRoomId()).getCreatedDate().format(formatter);
+
+
             /*try {
 
                 messageList = chatMessageRepository.countByRoomIdAndReceiverStatus(room.getRoomId(), ReadStatus.N);
@@ -87,7 +93,7 @@ public class ChatRoomService {
             }
             dto = new MessageListReadStatusDto(room, sender, receiver);
 */
-            dto = new MessageListReadStatusDto(room, countReadStatusN);
+            dto = new MessageListReadStatusDto(room, countReadStatusN, createdDateTime);
             listDto.add(dto);
         }
 
