@@ -55,10 +55,15 @@
                                                         <div class="chat_ib">
                                                             <div class="h5 mb-3 text-dark">
                                                                 <span class="h6 text-dark">[[${room.sellerName}]]</span>
-                                                                <span class="unRead float-right h6 p-1 rounded-circle text-white"
+
+                                                                <span class="unRead float-right h6 text-danger"
                                                                       type="text"
-                                                                      th:classappend="${room.countReadStatus} == 0 ? ${room.roomId} : ${room.roomId} + ' bg-danger'"
+                                                                      th:classappend="${room.countReadStatus} == 0 ? ${room.roomId} : ${room.roomId} + ''"
                                                                       th:text="${room.countReadStatus} == 0 ? '' : ${room.countReadStatus}">
+                                                                </span>
+                                                                <span class="unRead float-right h6 text-danger"
+                                                                      type="text"
+                                                                      th:text="${room.countReadStatus} == 0 ? '' : '+'">
                                                                 </span>
                                                             </div>
                                                             <div class="h6 text-muted">
@@ -85,11 +90,17 @@
                                                         <div class="chat_ib">
                                                             <div class="h5 mb-3 text-dark">
                                                                 <span class="h6 mb-3 text-dark">[[${room.buyerName}]]</span>
-                                                                <span class="unRead float-right h6 p-1 rounded-circle text-white"
+
+                                                                <span class="unRead float-right h6 text-danger"
                                                                       type="text"
-                                                                      th:classappend="${room.countReadStatus} == 0 ? ${room.roomId} : ${room.roomId} + ' bg-danger'"
+                                                                      th:classappend="${room.countReadStatus} == 0 ? ${room.roomId} : ${room.roomId} + ''"
                                                                       th:text="${room.countReadStatus} == 0 ? '' : ${room.countReadStatus}">
                                                                 </span>
+                                                                <span class="unRead float-right h6 text-danger"
+                                                                      type="text"
+                                                                      th:text="${room.countReadStatus} == 0 ? '' : '+'">
+                                                                </span>
+<!--                                                                th:classappend="${room.countReadStatus} == 0 ? ${room.roomId} : ${room.roomId} + ' bg-danger'"-->
                                                             </div>
                                                             <div class="h6 text-muted">
                                                                 [[${room.boardTitle}]]

@@ -129,7 +129,7 @@ function showToastr(alarmRoomId) {
     var count = alarmRoom.text();
 
     alarmRoom.text(parseInt(count) + 1);
-    alarmRoom.attr("class","p-1 rounded-circle bg-danger text-white float-right h6 " + alarmRoomId);
+    // alarmRoom.attr("class","p-1 rounded-circle bg-danger text-white float-right h6 " + alarmRoomId);
 
     if (count === "")
         alarmRoom.text(1);
