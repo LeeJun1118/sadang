@@ -38,7 +38,8 @@
                                         <input type="text" class="myRoomId" th:value="${room.roomId}" readonly hidden/>
 
                                         <div th:if="${room.buyerName} == ${username}">
-                                            <div class="chat_list"
+<!--                                            <div class="chat_list"-->
+                                            <div class="px-3 py-2 border-bottom"
                                                  th:classappend="${thisRoom} == ${room.roomId} ? active_chat">
                                                 <a class="enterChatRoom"
                                                    th:href="@{/chat/room/enter/{id} (id = ${room.roomId})}">
@@ -47,20 +48,18 @@
                                                             <img src="/css/images/userProfile.png" alt="sunil">
                                                         </div>
                                                         <div class="chat_ib">
-                                                            <h5>[[${room.sellerName}]]
-                                                                <span class="chat_date">Dec 25</span>
-                                                            </h5>
-                                                            <p>[[${room.boardTitle}]]</p>
-                                                            <h5>
-                                                                <div th:if="${room.countReadStatus} == 0">
-                                                                    <span class="unRead"
-                                                                          th:classappend="${room.roomId}"></span>
-                                                                </div>
-                                                                <div th:if="${room.countReadStatus} != 0">
-                                                                    <span class="unRead rounded-circle bg-danger text-white" th:classappend="${room.roomId}"
-                                                                          th:text="${room.countReadStatus}"></span>
-                                                                </div>
-                                                            </h5>
+                                                            <div class="h5 mb-3 text-dark">
+                                                                <span class="h6 text-dark">[[${room.sellerName}]]</span>
+                                                                <span class="unRead float-right h6 p-1 rounded-circle text-white"
+                                                                      type="text"
+                                                                      th:classappend="${room.countReadStatus} == 0 ? ${room.roomId} : ${room.roomId} + ' bg-danger'"
+                                                                      th:text="${room.countReadStatus} == 0 ? '' : ${room.countReadStatus}">
+                                                                </span>
+                                                            </div>
+                                                            <div class="h6 text-muted">
+                                                                [[${room.boardTitle}]]
+                                                                <span class="float-right">메세지 시간</span>
+                                                            </div>
 
                                                         </div>
                                                     </div>
@@ -69,7 +68,8 @@
                                         </div>
 
                                         <div th:if="${room.sellerName} == ${username}">
-                                            <div class="chat_list"
+                                            <!--                                            <div class="chat_list"-->
+                                            <div class="px-3 py-2 border-bottom"
                                                  th:classappend="${thisRoom} == ${room.roomId} ? active_chat">
                                                 <a class="enterChatRoom"
                                                    th:href="@{/chat/room/enter/{id} (id = ${room.roomId})}">
@@ -78,20 +78,18 @@
                                                             <img src="/css/images/userProfile.png" alt="sunil">
                                                         </div>
                                                         <div class="chat_ib">
-                                                            <h5>[[${room.buyerName}]]
-                                                                <span class="chat_date">Dec 25</span>
-                                                            </h5>
-                                                            <p>[[${room.boardTitle}]]</p>
-                                                            <h5>
-                                                                <div th:if="${room.countReadStatus} == 0">
-                                                                    <span class="unRead"
-                                                                          th:classappend="${room.roomId}"></span>
-                                                                </div>
-                                                                <div th:if="${room.countReadStatus} != 0">
-                                                                    <span class="unRead rounded-circle bg-danger text-white" th:classappend="${room.roomId}"
-                                                                          th:text="${room.countReadStatus}"></span>
-                                                                </div>
-                                                            </h5>
+                                                            <div class="h5 mb-3 text-dark">
+                                                                <span class="h6 mb-3 text-dark">[[${room.buyerName}]]</span>
+                                                                <span class="unRead float-right h6 p-1 rounded-circle text-white"
+                                                                      type="text"
+                                                                      th:classappend="${room.countReadStatus} == 0 ? ${room.roomId} : ${room.roomId} + ' bg-danger'"
+                                                                      th:text="${room.countReadStatus} == 0 ? '' : ${room.countReadStatus}">
+                                                                </span>
+                                                            </div>
+                                                            <div class="h6 text-muted">
+                                                                [[${room.boardTitle}]]
+                                                                <span class="float-right">메세지 시간</span>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </a>

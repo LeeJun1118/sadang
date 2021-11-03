@@ -7,9 +7,19 @@ var nickname;
 var roomId = document.getElementById("roomId").value;
 
 var get_input = $("#roomList input[type=text]");
+var get_span = $(".unRead span[type=text]");
 
 
+// hidden();
 connect();
+
+/*function hidden(){
+    $.each(get_span, function (index, value) {
+        if($(value).text() == 0){
+            $(value).style.visibility = 'hidden';
+        }
+    })
+}*/
 
 document.getElementById("send").addEventListener("click", function () {
     nickname = document.getElementById("nickname").value;
@@ -115,9 +125,11 @@ function showGreeting(sender, message) {
 
 function showToastr(alarmRoomId) {
     var alarmRoom = $('.' + alarmRoomId);
+    // alarmRoom.attr("class","p-1 rounded-circle bg-danger text-white");
     var count = alarmRoom.text();
 
     alarmRoom.text(parseInt(count) + 1);
+    alarmRoom.attr("class","p-1 rounded-circle bg-danger text-white float-right h6 " + alarmRoomId);
 
     if (count === "")
         alarmRoom.text(1);
