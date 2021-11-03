@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
     <head th:replace="fragments/header :: header"></head>
     <body>
-        <div class="container mt-5 py-5">
+        <div class="container mt-5 mb-5">
             <div class="row pr-2">
                 <div class="col-auto mr-auto"></div>
                 <div class="col-auto">
@@ -10,6 +10,7 @@
                         <a id="loginVerify" class="mr-3"></a>
                         <a id="signUp"></a>
                         <a id="myInfo"></a>
+                        <a id="message"></a>
                     </div>
                 </div>
             </div>
@@ -17,10 +18,7 @@
                 <h1 id="h1-center">
                     <a class="text-dark" href='/'>SADANG</a>
                 </h1>
-                <br/>
-                <br/>
-                <br/>
-                <div class="slide-container">
+                <div class="slide-container mt-5">
 
                     <div th:if="${not #lists.isEmpty(board.fileIdList)}" class="bxslider">
                         <div class="slide" th:each="file : ${board.fileIdList}">

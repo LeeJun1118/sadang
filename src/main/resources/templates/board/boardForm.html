@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
     <head th:replace="fragments/header :: header"></head>
     <body>
-        <div class="container mt-5 py-5">
+        <div class="container mt-5 mb-5">
             <div class="row pr-2">
                 <div class="col-auto mr-auto"></div>
                 <div class="col-auto">
@@ -10,15 +10,14 @@
                         <a id="loginVerify" class="mr-3"></a>
                         <a id="signUp"></a>
                         <a id="myInfo"></a>
+                        <a id="message"></a>
                     </div>
                 </div>
             </div>
             <div class="container-sm my-auto">
-                <h1 id="h1-center">
+                <h1 id="h1-center" class="mb-5">
                     <a class="text-dark" href='/'>SADANG</a>
                 </h1>
-                <br/>
-                <br/>
                 <h4>팔자</h4>
                 <br/>
                 <form id="frm" role="form" th:action="@{/board/new}" th:object="${boardForm}" class="form"
