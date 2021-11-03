@@ -83,7 +83,7 @@ public class InitMember {
                     "00000"
             );
 
-            String detailAddress = "상세 주소 Example";
+            String detailAddress = " 상세 주소 Example";
 
             String password = "1234";
             SaltUtil saltUtil = new SaltUtil();

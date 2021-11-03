@@ -40,10 +40,22 @@ function connect() {
             stompClient.subscribe('/sub/chat/room/' + $(value).val(), function (message) {
                 console.log("roomIdList[i].roomId === " + $(value).val());
 
-                if (JSON.parse(message.body).roomId === roomId) {
-                    showGreeting(JSON.parse(message.body).sender, JSON.parse(message.body));
+                const result = JSON.parse(message.body);
+               /* const time = result.createdDate;
+
+
+
+                console.log("여기 입니다. format date format " + format);
+                console.log("여기 입니다. format date getMonth " + format.getMonth);
+                console.log("여기 입니다. format date getDay " + format.getDay);
+                console.log("여기 입니다. format date getHours " + format.getHours);
+                console.log("여기 입니다. format date getMinutes " + format.getMinutes);*/
+
+                if (result.roomId === roomId) {
+                    console.log("여기 입니다. createdDate" + result.createdDate)
+                    showGreeting(result);
                 } else {
-                    showToastr(JSON.parse(message.body).roomId);
+                    showToastr(result.roomId);
                 }
             })
             console.log('value =' + $(value).val());
@@ -91,16 +103,17 @@ function connect() {
 
 }*/
 
-function showGreeting(sender, message) {
+function showGreeting(message) {
     var messageSpace = document.getElementById("sendMessage");
     console.log("showGreeting create Date Time ==== " + message);
     console.log("showGreeting create Date Time ==== " + message.body);
-    if (nickname == sender) {
+
+    if (nickname == message.sender) {
         messageSpace.innerHTML = messageSpace.innerHTML +
             "<div class=\"outgoing_msg mb-3\">\n" +
             "   <div class=\"sent_msg\">\n" +
             "       <p>" + message.message + "</p>\n" +
-            "       <span class=\"time_date\">  message.createdDate.date.year </span>\n" +
+            "       <span class=\"time_date\">" + parse(message.createdDate) + "</span>\n" +
             "   </div>\n" +
             "</div>\n";
     } else {
@@ -113,7 +126,7 @@ function showGreeting(sender, message) {
             "   <div class=\"received_msg\">\n" +
             "       <div class=\"received_withd_msg\">\n" +
             "           <p>" + message.message + "</p>\n" +
-            "               <span class=\"time_date\"> message.createdDate.date.year </span>\n" +
+            "               <span class=\"time_date\">" + parse(message.createdDate) + "</span>\n" +
             "       </div>\n" +
             "   </div>\n" +
             "</div>";
@@ -127,6 +140,7 @@ function showGreeting(sender, message) {
 
 function showToastr(alarmRoomId) {
     var alarmRoom = $('.' + alarmRoomId);
+    $('.' + alarmRoomId + 'plus').text('+');
     // alarmRoom.attr("class","p-1 rounded-circle bg-danger text-white");
     var count = alarmRoom.text();
 
@@ -215,6 +229,18 @@ function alarmMessage() {
     });
     // })
 
+}
+
+function parse(str) {
+    var year = str.substr(0, 4);
+    var month = str.substr(5, 2);
+    var day = str.substr(8, 2);
+    var hour = str.substr(11, 2);
+    var minute = str.substr(14, 2);
+    var time = str.substr(11,5)
+
+    // return month + "-" + day + " " + hour + ":" + minute;
+    return month + "-" + day + " " + time;
 }
 
 // );

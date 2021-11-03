@@ -63,6 +63,7 @@
                                                                 </span>
                                                                 <span class="unRead float-right h6 text-danger"
                                                                       type="text"
+                                                                      th:classappend="${room.roomId} +'plus'"
                                                                       th:text="${room.countReadStatus} == 0 ? '' : '+'">
                                                                 </span>
                                                             </div>
@@ -98,6 +99,7 @@
                                                                 </span>
                                                                 <span class="unRead float-right h6 text-danger"
                                                                       type="text"
+                                                                      th:classappend="${room.roomId} +'plus'"
                                                                       th:text="${room.countReadStatus} == 0 ? '' : '+'">
                                                                 </span>
 <!--                                                                th:classappend="${room.countReadStatus} == 0 ? ${room.roomId} : ${room.roomId} + ' bg-danger'"-->
