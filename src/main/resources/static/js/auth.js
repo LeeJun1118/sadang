@@ -342,7 +342,7 @@ function updateData() {
                     e.preventDefault();
                     location.replace("/myPage")
                 });
-
+                $("#enter-chat").css('display','none');
 
             } else {
                 $("#loginVerify").text("로그인");
@@ -361,6 +361,10 @@ function updateData() {
                     e.preventDefault();
                     location.replace("/signup")
                 });
+
+                $("#modify-board").css('display','none');
+                $("#delete-board").css('display','none');
+
             }
         },
     });

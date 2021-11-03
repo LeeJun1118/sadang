@@ -49,10 +49,41 @@
 
                     <ul class="nav justify-content-end">
                         <li class="nav-item">
-                            <a id="enterChatRoom" class="btn btn-default" th:href="@{/chat/room/{id}(id=${board.id})}">채팅</a>
+                            <a id="modify-board" class="btn" th:href="@{/board/update/{id}(id=${board.id})}">글 수정</a>
+                            <a id="delete-board" class="btn" data-toggle="modal" data-target="#deletePost" href="#">글삭제</a>
+                            <a id="enter-chat" class="btn btn-default" th:href="@{/chat/room/{id}(id=${board.id})}">채팅</a>
                             <a class="btn btn-default" href="/">목록으로</a>
                         </li>
                     </ul>
+
+
+                    <div class="modal fade" id="deletePost" tabindex="-1"
+                         role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <p>게시글을 삭제하시겠습니까?</p>
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button type="button" data-dismiss="modal"
+                                            class="btn btn-secondary">
+                                        취소
+                                    </button>
+                                    <button type="button"
+                                            th:onclick="'window.location.href=\'/board/delete/' + ${board.id} + '\''"
+                                            class="btn btn-primary">
+                                        확인
+                                    </button>
+                                    <!--<form method="post" th:action="@{/board/delete/{id}(id=${board.id})}">
+                                        <button class="btn btn-primary" data-dismiss="modal" type="submit">
+                                            확인
+                                        </button>
+                                    </form>-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <p id="roomList" th:each="roomId : ${roomIdList}" class="col-sm-3 p-1" hidden>

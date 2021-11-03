@@ -240,6 +240,14 @@ public class BoardController {
     public ModelAndView delete(@PathVariable Long id,
                                ModelAndView modelAndView) {
         boardService.delete(id);
+        modelAndView.setViewName("redirect:/");
+        return modelAndView;
+    }
+
+    @GetMapping("/myboard/delete/{id}")
+    public ModelAndView deleteMyBoard(@PathVariable Long id,
+                               ModelAndView modelAndView) {
+        boardService.delete(id);
         modelAndView.setViewName("redirect:/myBoard");
         return modelAndView;
     }
