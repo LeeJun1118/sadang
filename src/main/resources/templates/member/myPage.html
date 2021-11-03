@@ -53,14 +53,14 @@
                         <h4 class="mb-5">내 정보</h4>
                         <form class="needs-validation" novalidate="">
                             <div class="row mb-5">
-                                <div class="col-md-3 mb-3">이름</div>
+                                <div class="col-md-3 mb-3 font-weight-bold">이름</div>
                                 <div class="col-md-8 border-bottom mb-3">
                                     <div type="text" th:text="${member.name}"></div>
                                 </div>
                             </div>
 
                             <div class="row mb-5">
-                                <div class="col-md-3 mb-3">아이디</div>
+                                <div class="col-md-3 mb-3 font-weight-bold">아이디</div>
                                 <div class="col-md-8 border-bottom mb-3">
                                     <div type="text" th:text="${member.username}"></div>
                                 </div>
@@ -68,7 +68,7 @@
 
 
                             <div class="row mb-5">
-                                <div class="col-md-3 mb-3">이메일</div>
+                                <div class="col-md-3 mb-3 font-weight-bold">이메일</div>
                                 <div class="col-md-8 border-bottom mb-3">
                                     <div type="text" th:text="${member.email}"></div>
                                 </div>
@@ -77,11 +77,11 @@
 
                             <div class="row mb-5">
                                 <div class="col-md-4 border-bottom mb-3">
-                                    <label>주소</label>
+                                    <label class="font-weight-bold">주소</label>
                                     <div type="text" th:text="${member.address}"></div>
                                 </div>
                                 <div class="col-md-7 border-bottom mb-3">
-                                    <label>상세 주소</label>
+                                    <label class="font-weight-bold">상세 주소</label>
                                     <div type="text" th:text="${member.detailAddress}"></div>
                                 </div>
                             </div>
