@@ -41,7 +41,7 @@ function connect() {
                 console.log("roomIdList[i].roomId === " + $(value).val());
 
                 if (JSON.parse(message.body).roomId === roomId) {
-                    showGreeting(JSON.parse(message.body).sender, JSON.parse(message.body).message);
+                    showGreeting(JSON.parse(message.body).sender, JSON.parse(message.body));
                 } else {
                     showToastr(JSON.parse(message.body).roomId);
                 }
@@ -93,12 +93,14 @@ function connect() {
 
 function showGreeting(sender, message) {
     var messageSpace = document.getElementById("sendMessage");
+    console.log("showGreeting create Date Time ==== " + message);
+    console.log("showGreeting create Date Time ==== " + message.body);
     if (nickname == sender) {
         messageSpace.innerHTML = messageSpace.innerHTML +
             "<div class=\"outgoing_msg mb-3\">\n" +
             "   <div class=\"sent_msg\">\n" +
-            "       <p>" + message + "</p>\n" +
-            "       <span class=\"time_date\"> 11:01 AM    |    June 9</span>\n" +
+            "       <p>" + message.message + "</p>\n" +
+            "       <span class=\"time_date\">  message.createdDate.date.year </span>\n" +
             "   </div>\n" +
             "</div>\n";
     } else {
@@ -110,8 +112,8 @@ function showGreeting(sender, message) {
             "   </div>\n" +
             "   <div class=\"received_msg\">\n" +
             "       <div class=\"received_withd_msg\">\n" +
-            "           <p>" + message + "</p>\n" +
-            "               <span class=\"time_date\"> 11:01 AM    |    June 9</span>\n" +
+            "           <p>" + message.message + "</p>\n" +
+            "               <span class=\"time_date\"> message.createdDate.date.year </span>\n" +
             "       </div>\n" +
             "   </div>\n" +
             "</div>";
