@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.market.sadang.domain.*;
 import com.market.sadang.dto.bord.BoardMemberDto;
 import com.market.sadang.dto.bord.BoardUpdateRequestDto;
+import com.market.sadang.dto.chat.ChatMessageListTimeDto;
 import com.market.sadang.dto.chat.MessageListReadStatusDto;
 import com.market.sadang.dto.member.MyBoardListResponseDto;
 import com.market.sadang.dto.member.MyChatRoomListResponseDto;
@@ -202,7 +203,11 @@ public class ChatRoomController {
 
         //내가 입장한 모든 방 각각의 메세지들 중 sender가 내가 아닌 메세지들의 readStatus가 N 인 메세지들의 수를 같이 반환
         List<MessageListReadStatusDto> roomListReadStatus = chatRoomService.findAllRoomReadStatus(roomList, username);
-        List<ChatMessage> messages = chatMessageRepository.findAllByRoomId(thisRoom.getRoomId());
+        List<ChatMessage> roomMessageList = chatMessageRepository.findAllByRoomId(thisRoom.getRoomId());
+        List<ChatMessageListTimeDto> messages = new ArrayList<>();
+        for (ChatMessage thisMessage : roomMessageList){
+            messages.add(new ChatMessageListTimeDto(thisMessage));
+        }
 
         model.addAttribute("roomList", roomListReadStatus);
 
