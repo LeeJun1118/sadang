@@ -9,8 +9,12 @@
                     <div id="loginCheck">
                         <a id="loginVerify" class="mr-3"></a>
                         <a id="signUp"></a>
-                        <a id="myInfo"></a>
-                        <a id="message"></a>
+                        <a id="myInfo" class="mr-3"></a>
+                        <a id="enter-chatRoom">
+                            <span id="unReadMessages"></span>
+                            <span id="plus" class="text-danger">+</span>
+                            <span id="count-message"></span>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -49,9 +53,12 @@
 
                     <ul class="nav justify-content-end">
                         <li class="nav-item">
-                            <a id="modify-board" class="btn" th:href="@{/board/update/{id}(id=${board.id})}">글 수정</a>
-                            <a id="delete-board" class="btn" data-toggle="modal" data-target="#deletePost" href="#">글삭제</a>
-                            <a id="enter-chat" class="btn btn-default" th:href="@{/chat/room/{id}(id=${board.id})}">채팅</a>
+                            <a id="modify-board" class="btn" th:href="@{/board/update/{id}(id=${board.id})}"
+                               th:classappend="${board.member == username ? '' : 'd-none'}">글 수정</a>
+                            <a id="delete-board" class="btn" data-toggle="modal" data-target="#deletePost"
+                               th:classappend="${board.member == username ? '' : 'd-none'}" href="#">글삭제</a>
+                            <a id="enter-chat" class="btn btn-default" th:href="@{/chat/room/{id}(id=${board.id})}"
+                               th:classappend="${board.member == username ? 'd-none' : ''}">채팅</a>
                             <a class="btn btn-default" href="/">목록으로</a>
                         </li>
                     </ul>

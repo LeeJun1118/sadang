@@ -91,6 +91,8 @@ public class BoardController {
         //게시글 첨부파일 id 담을 List 객체 생성
         List<Long> myFileIdList = new ArrayList<>();
 
+        String username = memberService.searchMemberId(request).getUsername();
+
         for (MyFileResponseDto myFileResponseDto : myFileResponseDtoList) {
             myFileIdList.add(myFileResponseDto.getFileId());
         }
@@ -99,6 +101,7 @@ public class BoardController {
 
         List<ChatRoom> roomList = chatRoomService.findRoomList(request);
         modelAndView.addObject("roomIdList", roomList);
+        modelAndView.addObject("username", username);
 
         modelAndView.addObject("board", boardResponseDto);
         modelAndView.setViewName("board/showBoard");

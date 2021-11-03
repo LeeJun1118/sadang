@@ -17,5 +17,6 @@ public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long> 
     List<ChatMessage> findAllByRoomIdAndReceiverAndReceiverStatus (String roomId, String receiver, ReadStatus readStatus);
     ChatMessage findFirstBySenderOrderByIdDesc (String sender);
     ChatMessage findFirstByRoomIdOrderByIdDesc (String roomId);
+    int countAllByReceiverAndReceiverStatus (String receiver, ReadStatus readStatus);
 
 }

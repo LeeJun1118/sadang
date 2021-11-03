@@ -7,6 +7,7 @@ var get_input = $("#roomList input[type=text]");
 
 
 connect();
+
 function connect() {
 
     socket = new SockJS('/ws-stomp');
@@ -43,7 +44,21 @@ function showGreeting(sender, message) {
                 "<div>"
         }
     }*/
-    // var messageSpace = document.getElementById("show-toastr");
+    var countMessages = $("#count-message");
+    var count = countMessages.text();
+
+
+    if (count === "" || !Number.isInteger(count) || count === 0)
+        countMessages.text(1);
+    else {
+        countMessages.text(parseInt(count) + 1);
+    }
+    if (count > 0)
+        countMessages.text(parseInt(count) + 1);
+
+    countMessages.css('display', '');
+    $("#plus").css('display', '');
+
     toastr.success('메세지가 도착했습니다.');
     // messageSpace.scrollTop = messageSpace.scrollHeight;
 }

@@ -98,12 +98,12 @@ public class ChatRoomController {
         }
 
         // 채팅방에 입장 시 그 방의 모든 안읽은 메세지를 읽음으로 처리
-        List<ChatMessage> messageList = chatMessageRepository.findAllByRoomIdAndReceiverStatus(lastMessageRoomId, ReadStatus.N);
+//        List<ChatMessage> messageList = chatMessageRepository.findAllByRoomIdAndReceiverStatus(lastMessageRoomId, ReadStatus.N);
 //        List<ChatMessage> messageList = chatMessageRepository.findAllByRoomIdAndReceiverAndReceiverStatus(lastMessageRoomId, username, ReadStatus.N);
-        for (ChatMessage message : messageList) {
+        /*for (ChatMessage message : messageList) {
             if (Objects.equals(username, message.getReceiver()))
                 chatMessageService.update(message.getId());
-        }
+        }*/
 
         //내가 입장한 모든 방 각각의 메세지들 중 sender가 내가 아닌 메세지들의 readStatus가 N 인 메세지들의 수를 같이 반환
         List<MessageListReadStatusDto> roomListReadStatus = chatRoomService.findAllRoomReadStatus(roomList, username);

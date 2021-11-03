@@ -134,6 +134,22 @@ function showToastr(alarmRoomId) {
     if (count === "")
         alarmRoom.text(1);
     // console.log("alarmRoomId==================" + alarmRoomId);
+
+
+
+    var countMessages = $("#count-message");
+    var count = countMessages.text();
+
+
+    if (count === "" || !Number.isInteger(count) || count === 0)
+        countMessages.text(1);
+    else {
+        countMessages.text(parseInt(count) + 1);
+    }
+    if (count > 0)
+        countMessages.text(parseInt(count) + 1);
+
+    countMessages.css('display', '');
     toastr.success('메시지가 도착했습니다.');
 }
 

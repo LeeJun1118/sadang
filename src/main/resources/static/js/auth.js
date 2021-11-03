@@ -325,7 +325,7 @@ function updateData() {
         contentType: "application/json; charset=utf-8",
         cache: false,
         success: function (data) {
-            if (JSON.parse(data) == 1) {
+            if (JSON.parse(data) != -1) {
                 $("#loginVerify").text("로그아웃");
                 $("#loginVerify").css('cursor', 'pointer');
                 $("#loginVerify").css('color', 'blue');
@@ -342,9 +342,39 @@ function updateData() {
                     e.preventDefault();
                     location.replace("/myPage")
                 });
-                $("#enter-chat").css('display','none');
+
+                console.log("auth js in data =====" + data);
+                /*if(data === 0){
+                    $("#count-message").css('display', 'none');
+                }
+                else*/ if (data > 0) {
+                    $("#count-message").text(data);
+                    $("#plus").css('display', '');
+                }
+                else
+                    $("#plus").css('display', 'none');
+
+                $("#count-message").css('cursor', 'pointer');
+                $("#count-message").css('color', 'red');
+
+                /*if (data > 0) {
+                    $("#unReadMessages").text('메세지 +');
+                } else {
+                    $("#unReadMessages").text('메세지');
+                }*/
+                $("#unReadMessages").text('메세지');
+
+                $("#enter-chatRoom").css('cursor', 'pointer');
+                $("#enter-chatRoom").css('color', 'blue');
+                $('#enter-chatRoom').on('click', function (e) {
+                    e.preventDefault();
+                    location.replace("/chat/myChatRoom");
+                });
+
 
             } else {
+                $("#plus").css('display', 'none');
+
                 $("#loginVerify").text("로그인");
                 $("#loginVerify").css('cursor', 'pointer');
                 $("#loginVerify").css('color', 'blue');
@@ -361,9 +391,6 @@ function updateData() {
                     e.preventDefault();
                     location.replace("/signup")
                 });
-
-                $("#modify-board").css('display','none');
-                $("#delete-board").css('display','none');
 
             }
         },

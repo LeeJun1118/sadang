@@ -4,6 +4,7 @@ package com.market.sadang.controller;
 import com.market.sadang.config.UserRole;
 import com.market.sadang.domain.ChatRoom;
 import com.market.sadang.domain.Member;
+import com.market.sadang.domain.ReadStatus;
 import com.market.sadang.domain.Response;
 import com.market.sadang.dto.form.SignUpForm;
 import com.market.sadang.dto.member.MemberPageReponseDto;
@@ -12,6 +13,7 @@ import com.market.sadang.dto.member.MemberUpdateRequestDto;
 import com.market.sadang.dto.form.MemberForm;
 import com.market.sadang.domain.requestUser.RequestLoginUser;
 import com.market.sadang.domain.requestUser.RequestVerifyUser;
+import com.market.sadang.repository.ChatMessageRepository;
 import com.market.sadang.repository.ChatRoomRepository;
 import com.market.sadang.repository.MemberRepository;
 import com.market.sadang.service.BoardService;
@@ -55,6 +57,7 @@ public class MemberController {
     private final BoardService boardService;
     private final ChatRoomRepository chatRoomRepository;
     private final ChatRoomService chatRoomService;
+    private final ChatMessageRepository chatMessageRepository;
 
 //    private final JwtRequestFilter jwtRequestFilter;
 
@@ -383,17 +386,22 @@ public class MemberController {
 
     @GetMapping("/loginCheck")
     public int loginCheck(HttpServletRequest request) {
-        int check = 0;
+        int unReadMessages = -1;
 
+        //로그인 하지 않은 사용자라면 -1 반환
         try {
             Member member = memberService.searchMemberId(request);
-            if (member == null)
-                check = 0;
-            else
-                check = 1;
+            if (member != null){
+                //receiver = member.gerusername , receiverStatus = N
+                unReadMessages = chatMessageRepository.countAllByReceiverAndReceiverStatus(member.getUsername(), ReadStatus.N);
+                return unReadMessages;
+            }
+
         } catch (Exception e) {
+            System.out.println("/loginCheck 에서 오류 발생"+ e.getMessage());
         }
-        return check;
+        System.out.println("/loginCheck == unReadMessages : " + unReadMessages);
+        return unReadMessages;
     }
 }
 
