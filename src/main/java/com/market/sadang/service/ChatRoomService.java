@@ -79,6 +79,7 @@ public class ChatRoomService {
                 createdDateTime = chatMessageRepository.findFirstByRoomIdOrderByIdDesc(room.getRoomId()).getCreatedDate().format(formatter);
             }
             catch (Exception e){
+                createdDateTime = null;
                 System.out.println("ChatRoomService findAllRoomReadStatus error : "+e.getMessage());
             }
 

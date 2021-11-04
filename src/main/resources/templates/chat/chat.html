@@ -69,7 +69,7 @@
                                                             </div>
                                                             <div class="h6 text-muted">
                                                                 [[${room.boardTitle}]]
-                                                                <span class="float-right">[[${room.lastMessageTime}]]</span>
+                                                                <span class="float-right"  th:classappend="${room.roomId} +'lastMessageTime'">[[${room.lastMessageTime}]]</span>
                                                             </div>
 
                                                         </div>
@@ -106,7 +106,7 @@
                                                             </div>
                                                             <div class="h6 text-muted">
                                                                 [[${room.boardTitle}]]
-                                                                <span class="float-right">[[${room.lastMessageTime}]]</span>
+                                                                <span class="float-right" th:classappend="${room.roomId} +'lastMessageTime'">[[${room.lastMessageTime}]]</span>
                                                             </div>
                                                         </div>
                                                     </div>

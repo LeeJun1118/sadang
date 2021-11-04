@@ -51,6 +51,7 @@ function connect() {
                 console.log("여기 입니다. format date getHours " + format.getHours);
                 console.log("여기 입니다. format date getMinutes " + format.getMinutes);*/
 
+                $('.' + roomId + 'lastMessageTime').text('' + parse(result.createdDate));
                 if (result.roomId === roomId) {
                     console.log("여기 입니다. createdDate" + result.createdDate)
                     showGreeting(result);
