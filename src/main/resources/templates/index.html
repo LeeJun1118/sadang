@@ -34,14 +34,23 @@
                 </br>
                 <div class="row">
                     <div th:each="board, stat : ${boardList}" class="col-sm-3 p-1">
-                        <div class="card mb-3 p-0 border-0">
+                        <div class="card mb-3 p-0 border-0 align-items-center">
                             <div class="card-body cursor-pointer border-0"
                                  th:onclick="'javascript:goBoard('+ ${board.id} + ');'"
                                  th:href="@{/board/{id}(id=${board.id})}">
-                                <img class="thumbnail-image" th:src="@{/thumbnail/{id}(id=${board.thumbnailId})}">
-                                <div class="card-text font-weight-bold text-truncate" th:text="${board.title}"></div>
-                                <div class="card-text sm-font text-muted" th:text="${board.address}"></div>
-                                <div class="card-text font-weight-bold">[[${board.price}]] 원</div>
+                                <div class="container">
+                                    <div class="align-items-center">
+                                        <img class="thumbnail-image"
+                                             th:src="@{/thumbnail/{id}(id=${board.thumbnailId})}">
+                                    </div>
+                                    <div class="align-items-start">
+                                        <div class="card-text font-weight-bold text-truncate"
+                                             th:text="${board.title}"></div>
+                                        <div class="card-text sm-font text-muted"
+                                             th:text="${board.address}"></div>
+                                        <div class="card-text font-weight-bold">[[${board.price}]] 원</div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
