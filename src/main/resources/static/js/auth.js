@@ -374,6 +374,7 @@ function updateData() {
 
             } else {
                 $("#plus").css('display', 'none');
+                $("#enter-chat").attr('class', 'd-none');
 
                 $("#loginVerify").text("로그인");
                 $("#loginVerify").css('cursor', 'pointer');
