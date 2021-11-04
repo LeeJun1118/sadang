@@ -86,46 +86,24 @@ public class ChatRoomController {
         String lastMessageRoomId = null;
         // 각각의 roomId로 가장 마지막 메세지Id 불러와야함
         for (ChatRoom myRoom : roomList) {
-//        for (MessageListReadStatusDto myRoom : roomListReadStatus){
             ChatMessage message = chatMessageRepository
                     .findFirstByRoomIdOrderByIdDesc(myRoom.getRoomId());
-
             if (message != null) {
                 if (lastId < message.getId().intValue()) {
                     lastId = message.getId().intValue();
-                    lastMessageRoomId = message.getRoomId();
                 }
             }
         }
 
-        // 채팅방에 입장 시 그 방의 모든 안읽은 메세지를 읽음으로 처리
-//        List<ChatMessage> messageList = chatMessageRepository.findAllByRoomIdAndReceiverStatus(lastMessageRoomId, ReadStatus.N);
-//        List<ChatMessage> messageList = chatMessageRepository.findAllByRoomIdAndReceiverAndReceiverStatus(lastMessageRoomId, username, ReadStatus.N);
-        /*for (ChatMessage message : messageList) {
-            if (Objects.equals(username, message.getReceiver()))
-                chatMessageService.update(message.getId());
-        }*/
+
 
         //내가 입장한 모든 방 각각의 메세지들 중 sender가 내가 아닌 메세지들의 readStatus가 N 인 메세지들의 수를 같이 반환
         List<MessageListReadStatusDto> roomListReadStatus = chatRoomService.findAllRoomReadStatus(roomList, username);
 
-//        ChatRoom thisRoom = chatRoomRepository.findByRoomId(lastMessageRoomId);
-//        ChatRoom thisRoom = chatRoomService.findByRoomId(lastMessageRoomId);
 
-        List<ChatMessage> messages = chatMessageRepository.findAllByRoomId(lastMessageRoomId);
-
-        // 각 방의 안읽은 메세지 출력하기 위함
-//        int readMessage = chatMessageRepository.countByRoomIAndReadStatus()
-
-
-        //roomList 에 읽지 않은 메세지를 같이 보내자
-//        model.addAttribute("roomList", roomList);
         model.addAttribute("roomList", roomListReadStatus);
-
-//        model.addAttribute("thisRoom", thisRoom);
         model.addAttribute("username", username);
-        /*model.addAttribute("messages", messages);*/
-//        model.addAttribute("token", token);
+
         return "/chat/chat";
     }
 

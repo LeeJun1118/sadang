@@ -48,6 +48,7 @@ function showGreeting(sender, message) {
     var count = countMessages.text();
 
 
+    $("#plus").css('display', '');
     if (count === "" || !Number.isInteger(count) || count === 0)
         countMessages.text(1);
     else {
@@ -57,7 +58,6 @@ function showGreeting(sender, message) {
         countMessages.text(parseInt(count) + 1);
 
     countMessages.css('display', '');
-    $("#plus").css('display', '');
 
     toastr.success('메세지가 도착했습니다.');
     // messageSpace.scrollTop = messageSpace.scrollHeight;

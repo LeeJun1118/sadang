@@ -66,6 +66,7 @@ public class ChatRoomService {
     public List<MessageListReadStatusDto> findAllRoomReadStatus(List<ChatRoom> roomList, String username) {
         List<MessageListReadStatusDto> listDto = new ArrayList<>();
         MessageListReadStatusDto dto = null;
+        String createdDateTime = null;
         /*List<ChatMessage> messageList = new ArrayList<>();
         int sender = 0;
         int receiver = 0;*/
@@ -74,25 +75,14 @@ public class ChatRoomService {
             int countReadStatusN = chatMessageRepository.countByRoomIdAndReceiverAndReceiverStatus(room.getRoomId(), username, ReadStatus.N);
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd HH:mm");
-            String createdDateTime = chatMessageRepository.findFirstByRoomIdOrderByIdDesc(room.getRoomId()).getCreatedDate().format(formatter);
-
-
-            /*try {
-
-                messageList = chatMessageRepository.countByRoomIdAndReceiverStatus(room.getRoomId(), ReadStatus.N);
-//            dto = new MessageListReadStatusDto(room, messageList.size());
-
-                for (ChatMessage message : messageList) {
-                    if (message.getSender() == username) {
-                        receiver++;
-                    } else
-                        sender++;
-                }
-            }catch (Exception e){
-                System.out.println(e.getMessage());
+            try {
+                createdDateTime = chatMessageRepository.findFirstByRoomIdOrderByIdDesc(room.getRoomId()).getCreatedDate().format(formatter);
             }
-            dto = new MessageListReadStatusDto(room, sender, receiver);
-*/
+            catch (Exception e){
+                System.out.println("ChatRoomService findAllRoomReadStatus error : "+e.getMessage());
+            }
+
+
             dto = new MessageListReadStatusDto(room, countReadStatusN, createdDateTime);
             listDto.add(dto);
         }

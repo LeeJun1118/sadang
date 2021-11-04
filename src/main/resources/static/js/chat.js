@@ -141,6 +141,7 @@ function showGreeting(message) {
 function showToastr(alarmRoomId) {
     var alarmRoom = $('.' + alarmRoomId);
     $('.' + alarmRoomId + 'plus').text('+');
+    $("#plus").css('display', '');
     // alarmRoom.attr("class","p-1 rounded-circle bg-danger text-white");
     var count = alarmRoom.text();
 

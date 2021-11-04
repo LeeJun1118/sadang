@@ -13,8 +13,8 @@
                         <a id="myInfo" class="mr-3"></a>
                         <a id="enter-chatRoom">
                             <span id="unReadMessages"></span>
-                            <span id="plus" class="text-danger">+</span>
-                            <span id="count-message"></span>
+                            <span id="plus" class="text-danger font-weight-bold">+</span>
+                            <span id="count-message" class="font-weight-bold"></span>
                         </a>
                     </div>
                 </div>
@@ -56,12 +56,12 @@
                                                             <div class="h5 mb-3 text-dark">
                                                                 <span class="h6 text-dark">[[${room.sellerName}]]</span>
 
-                                                                <span class="unRead float-right h6 text-danger"
+                                                                <span class="unRead float-right h6 text-danger font-weight-bold"
                                                                       type="text"
                                                                       th:classappend="${room.countReadStatus} == 0 ? ${room.roomId} : ${room.roomId} + ''"
                                                                       th:text="${room.countReadStatus} == 0 ? '' : ${room.countReadStatus}">
                                                                 </span>
-                                                                <span class="unRead float-right h6 text-danger"
+                                                                <span class="unRead float-right h6 text-danger font-weight-bold"
                                                                       type="text"
                                                                       th:classappend="${room.roomId} +'plus'"
                                                                       th:text="${room.countReadStatus} == 0 ? '' : '+'">
@@ -92,12 +92,12 @@
                                                             <div class="h5 mb-3 text-dark">
                                                                 <span class="h6 mb-3 text-dark">[[${room.buyerName}]]</span>
 
-                                                                <span class="unRead float-right h6 text-danger"
+                                                                <span class="unRead float-right h6 text-danger font-weight-bold"
                                                                       type="text"
                                                                       th:classappend="${room.countReadStatus} == 0 ? ${room.roomId} : ${room.roomId} + ''"
                                                                       th:text="${room.countReadStatus} == 0 ? '' : ${room.countReadStatus}">
                                                                 </span>
-                                                                <span class="unRead float-right h6 text-danger"
+                                                                <span class="unRead float-right h6 text-danger font-weight-bold"
                                                                       type="text"
                                                                       th:classappend="${room.roomId} +'plus'"
                                                                       th:text="${room.countReadStatus} == 0 ? '' : '+'">
