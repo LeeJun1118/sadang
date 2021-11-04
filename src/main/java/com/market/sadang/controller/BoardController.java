@@ -91,7 +91,12 @@ public class BoardController {
         //게시글 첨부파일 id 담을 List 객체 생성
         List<Long> myFileIdList = new ArrayList<>();
 
-        String username = memberService.searchMemberId(request).getUsername();
+        String username = null;
+        try {
+            username = memberService.searchMemberId(request).getUsername();
+        }catch (Exception e){
+
+        }
 
         for (MyFileResponseDto myFileResponseDto : myFileResponseDtoList) {
             myFileIdList.add(myFileResponseDto.getFileId());

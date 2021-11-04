@@ -41,15 +41,6 @@ function connect() {
                 console.log("roomIdList[i].roomId === " + $(value).val());
 
                 const result = JSON.parse(message.body);
-               /* const time = result.createdDate;
-
-
-
-                console.log("여기 입니다. format date format " + format);
-                console.log("여기 입니다. format date getMonth " + format.getMonth);
-                console.log("여기 입니다. format date getDay " + format.getDay);
-                console.log("여기 입니다. format date getHours " + format.getHours);
-                console.log("여기 입니다. format date getMinutes " + format.getMinutes);*/
 
                 $('.' + roomId + 'lastMessageTime').text('' + parse(result.createdDate));
                 if (result.roomId === roomId) {

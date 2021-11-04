@@ -7,12 +7,15 @@ import org.apache.commons.io.IOUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.*;
 
@@ -76,5 +79,29 @@ public class MyFileController {
         imageStream.close();
 
         return new ResponseEntity<>(imageByteArray, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/myimages/{id}")
+    public ModelAndView goImage(@PathVariable Long id, ModelAndView modelAndView){
+        modelAndView.addObject("image",id);
+        modelAndView.setViewName("board/image");
+        return modelAndView;
+    }
+
+    @CrossOrigin
+    //하나의 게시글이 가지고 있는 파일 리스트
+    @GetMapping(value = "/image/{id}",
+            produces = {MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_JPEG_VALUE})
+    public void getImageList(@PathVariable Long id,
+                                     HttpServletResponse response) throws IOException {
+
+        MyFileDto myFileDto = myFileService.findByFileId(id);
+
+        String absolutePath = new File("").getAbsolutePath() + File.separator + File.separator;
+        String path = myFileDto.getFilePath();
+
+        InputStream imageStream = new FileInputStream(absolutePath + path);
+        IOUtils.copy(imageStream,response.getOutputStream());
+
     }
 }

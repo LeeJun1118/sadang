@@ -26,7 +26,8 @@
 
                     <div th:if="${not #lists.isEmpty(board.fileIdList)}" class="bxslider">
                         <div class="slide" th:each="file : ${board.fileIdList}">
-                            <a th:href="@{/images/{id}(id=${file})}">
+                            <!--                            <a th:href="@{/images/{id}(id=${file})}">-->
+                            <a th:href="@{/myimages/{id}(id=${file})}">
                                 <img class="center-cropped img-fluid" th:src="@{/images/{id}(id=${file})}">
                             </a>
                         </div>

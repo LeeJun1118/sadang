@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/header :: header"></head>
+    <body class="h-100 justify-content-center bg-dark">
+        <div>
+            <a type="button" class="float-right btn-close btn-close-white mr-lg-5 mt-5 pr-lg-5 h3 text-white"
+               aria-label="Close" href="javascript:history.back()">X</a>
+        </div>
+        <table class="h-auto w-100">
+            <tbody>
+                <tr>
+                    <td class="align-middle">
+                        <img class="center-cropped img-fluid" th:src="@{/image/{id}(id=${image})}">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </body>
+</html>
