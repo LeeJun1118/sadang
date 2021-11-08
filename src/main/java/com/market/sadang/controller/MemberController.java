@@ -2,12 +2,9 @@ package com.market.sadang.controller;
 
 
 import com.market.sadang.config.UserRole;
-import com.market.sadang.domain.ChatRoom;
-import com.market.sadang.domain.Member;
-import com.market.sadang.domain.ReadStatus;
-import com.market.sadang.domain.Response;
+import com.market.sadang.domain.*;
 import com.market.sadang.dto.form.SignUpForm;
-import com.market.sadang.dto.member.MemberPageReponseDto;
+import com.market.sadang.dto.member.MemberPageResponseDto;
 import com.market.sadang.dto.member.MemberResponseDto;
 import com.market.sadang.dto.member.MemberUpdateRequestDto;
 import com.market.sadang.dto.form.MemberForm;
@@ -336,15 +333,16 @@ public class MemberController {
     @GetMapping("/myPage")
     public ModelAndView myPageForm(ModelAndView modelAndView, HttpServletRequest request) {
         Member member = memberService.searchMemberId(request);
-        int countBoard = boardService.countAllByMemberSell(member);
+        int countSellBoard = boardService.countAllByMemberBoardStatus(member, BoardStatus.sell);
+        int countSoldBoard = boardService.countAllByMemberBoardStatus(member, BoardStatus.sold);
         int countChatRoom = chatRoomRepository.countChatRoomBySellerNameOrBuyerName(member.getUsername(), member.getUsername());
 
-        MemberPageReponseDto memberPageReponseDto = new MemberPageReponseDto(member, countBoard);
+        MemberPageResponseDto memberPageResponseDto = new MemberPageResponseDto(member, countSellBoard, countSoldBoard);
 
         List<ChatRoom> roomList = chatRoomService.findRoomList(request);
         modelAndView.addObject("roomIdList", roomList);
 
-        modelAndView.addObject("member", memberPageReponseDto);
+        modelAndView.addObject("member", memberPageResponseDto);
         modelAndView.addObject("countChatRoom", countChatRoom);
         modelAndView.setViewName("member/myPage");
         return modelAndView;

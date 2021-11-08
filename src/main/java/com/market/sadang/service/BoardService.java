@@ -180,8 +180,8 @@ public class BoardService {
     }
 
     // 해당 사용자가 팔고 있는 모든 게시글의 수
-    public int countAllByMemberSell(Member member) {
-        return findByMemberAndBoardStatus(member,BoardStatus.sell).size();
+    public int countAllByMemberBoardStatus(Member member, BoardStatus status) {
+        return findByMemberAndBoardStatus(member,status).size();
     }
 
     // 사용자와 BoardStatus 로 모든 게시글 찾기

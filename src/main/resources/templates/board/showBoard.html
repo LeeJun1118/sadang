@@ -54,6 +54,8 @@
 
                     <ul class="nav justify-content-end">
                         <li class="nav-item">
+                            <a id="sold-board" class="btn" th:href="@{/board/sold/{id}(id=${board.id})}"
+                               th:classappend="${board.member == username ? '' : 'd-none'}">거래 완료</a>
                             <a id="modify-board" class="btn" th:href="@{/board/update/{id}(id=${board.id})}"
                                th:classappend="${board.member == username ? '' : 'd-none'}">글 수정</a>
                             <a id="delete-board" class="btn" data-toggle="modal" data-target="#deletePost"

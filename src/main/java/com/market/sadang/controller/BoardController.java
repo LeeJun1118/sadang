@@ -302,7 +302,7 @@ public class BoardController {
     }
 
 
-    /*@GetMapping("/board/buy/{id}")
+    @GetMapping("/board/buy/{id}")
     public ModelAndView bought(@PathVariable Long id,
                              ModelAndView modelAndView) {
 
@@ -310,5 +310,5 @@ public class BoardController {
 
         modelAndView.setViewName("redirect:/buy");
         return modelAndView;
-    }*/
+    }
 }
