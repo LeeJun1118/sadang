@@ -4,14 +4,12 @@ import com.market.sadang.config.UserRole;
 import com.market.sadang.domain.Member;
 import com.market.sadang.domain.Salt;
 import com.market.sadang.repository.MemberRepository;
-import com.market.sadang.service.authUtil.AuthService;
-import com.market.sadang.service.authUtil.EmailService;
-import com.market.sadang.service.authUtil.RedisUtil;
-import com.market.sadang.service.authUtil.SaltUtil;
+import com.market.sadang.service.authUtil.*;
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.crypto.SecretKey;
 import javax.transaction.Transactional;
 import java.util.UUID;
 
@@ -110,10 +108,16 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public void sendVerificationMail(Member member) throws NotFoundException {
+    public void sendVerificationMail(Member member) throws Exception {
         String VERIFICATION_LINK = "http://localhost:8080/verify/";
         if (member == null)
             throw new NotFoundException("사용자가 조회되지 않습니다.");
+
+        String verify = ""+ member.getId();
+        SecretKey key = AESCryptoUtil.getKey();
+
+
+
 
         //중복 없이 id 생성
         UUID uuid = UUID.randomUUID();
@@ -123,6 +127,9 @@ public class AuthServiceImpl implements AuthService {
 
         //메일 보냄
         emailService.sendMail(member.getEmail(), "SADANG 인증 메일입니다.",VERIFICATION_LINK + uuid.toString());
+
+
+//        emailService.sendMail(member.getEmail(), "SADANG 인증 메일입니다.",VERIFICATION_LINK + uuid.toString());
 
     }
 
