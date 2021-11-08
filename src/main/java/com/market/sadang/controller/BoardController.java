@@ -2,6 +2,7 @@ package com.market.sadang.controller;
 
 
 import com.market.sadang.domain.Board;
+import com.market.sadang.domain.BoardStatus;
 import com.market.sadang.domain.ChatRoom;
 import com.market.sadang.domain.Member;
 import com.market.sadang.dto.bord.BoardCreateRequestDto;
@@ -252,26 +253,62 @@ public class BoardController {
         return modelAndView;
     }
 
-    @GetMapping("/myboard/delete/{id}")
+    @GetMapping("/myBoard/delete/{id}")
     public ModelAndView deleteMyBoard(@PathVariable Long id,
                                ModelAndView modelAndView) {
         boardService.delete(id);
-        modelAndView.setViewName("redirect:/myBoard");
+        modelAndView.setViewName("redirect:/salesHistory");
         return modelAndView;
     }
 
-    @GetMapping("/myBoard")
-    public ModelAndView myBoard(HttpServletRequest request,
+    @GetMapping("/sell")
+    public ModelAndView sell(HttpServletRequest request,
                                 ModelAndView modelAndView) {
         Member member = memberService.searchMemberId(request);
-        List<MyBoardListResponseDto> myBoardList = boardService.findByMember(member);
+        List<MyBoardListResponseDto> boardList = boardService.boardListMemberAndBoardStatus(member, BoardStatus.sell);
 
         List<ChatRoom> roomList = chatRoomService.findRoomList(request);
         modelAndView.addObject("roomIdList", roomList);
 
-        modelAndView.addObject("myBoardList", myBoardList);
-        modelAndView.setViewName("/member/myBoard");
+        modelAndView.addObject("boardList", boardList);
+        modelAndView.setViewName("member/salesHistory");
 
         return modelAndView;
     }
+
+    @GetMapping("/sold")
+    public ModelAndView sold(HttpServletRequest request,
+                             ModelAndView modelAndView) {
+        Member member = memberService.searchMemberId(request);
+        List<MyBoardListResponseDto> boardList = boardService.boardListMemberAndBoardStatus(member, BoardStatus.sold);
+
+        List<ChatRoom> roomList = chatRoomService.findRoomList(request);
+        modelAndView.addObject("roomIdList", roomList);
+
+        modelAndView.addObject("boardList", boardList);
+        modelAndView.setViewName("member/soldHistory");
+
+        return modelAndView;
+    }
+
+    @GetMapping("/board/sold/{id}")
+    public ModelAndView sold(@PathVariable Long id,
+                             ModelAndView modelAndView) {
+
+        boardService.sellerStatus(id);
+
+        modelAndView.setViewName("redirect:/sell");
+        return modelAndView;
+    }
+
+
+    /*@GetMapping("/board/buy/{id}")
+    public ModelAndView bought(@PathVariable Long id,
+                             ModelAndView modelAndView) {
+
+        boardService.buyerStatus(id);
+
+        modelAndView.setViewName("redirect:/buy");
+        return modelAndView;
+    }*/
 }

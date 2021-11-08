@@ -1,6 +1,7 @@
 package com.market.sadang.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.market.sadang.config.UserRole;
 import lombok.*;
 
 import javax.persistence.*;
@@ -53,6 +54,14 @@ public class Board extends BaseTimeEntity {
             orphanRemoval = true)
     private List<MyFile> fileList = new ArrayList<>();
 
+    @Column
+    @Enumerated(EnumType.ORDINAL)
+    private BoardStatus sellStatus = BoardStatus.sell;
+
+
+    @Column
+    @Enumerated(EnumType.ORDINAL)
+    private BoardStatus buyStatus = BoardStatus.sell;
 
     @Builder
     public Board(Member member, String title, String price, String content, String address) {
@@ -77,5 +86,13 @@ public class Board extends BaseTimeEntity {
         if (file.getBoard() != this)
             // 파일 저장
             file.setBoard(this);
+    }
+
+    public void sellerStatus(BoardStatus status){
+        this.sellStatus = status;
+    }
+
+    public void buyerStatus(BoardStatus status){
+        this.buyStatus = status;
     }
 }

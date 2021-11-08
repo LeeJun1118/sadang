@@ -336,7 +336,7 @@ public class MemberController {
     @GetMapping("/myPage")
     public ModelAndView myPageForm(ModelAndView modelAndView, HttpServletRequest request) {
         Member member = memberService.searchMemberId(request);
-        int countBoard = boardService.searchAllByMember(member);
+        int countBoard = boardService.countAllByMemberSell(member);
         int countChatRoom = chatRoomRepository.countChatRoomBySellerNameOrBuyerName(member.getUsername(), member.getUsername());
 
         MemberPageReponseDto memberPageReponseDto = new MemberPageReponseDto(member, countBoard);

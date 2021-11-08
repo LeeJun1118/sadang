@@ -24,11 +24,11 @@
                 </h1>
                 <br/>
                 <nav class="navbar border-bottom">
-                    <h5 class="mt-3">내 글</h5>
+                    <h5 class="mt-3">판매 중</h5>
                 </nav>
                 </br>
                 <div class="row">
-                    <div th:each="board, stat : ${myBoardList}" class="col-sm-3 p-1">
+                    <div th:each="board, stat : ${boardList}" class="col-sm-3 p-1">
                         <div class="card mb-3 p-0 border-0">
                             <div class="card-body cursor-pointer border-0">
                                 <div th:onclick="'javascript:goBoard('+ ${board.id} + ');'"
@@ -43,11 +43,14 @@
 
                                 <ul class="nav justify-content-center">
                                     <li class="nav-item">
-                                        <a class="btn" th:href="@{/board/update/{id}(id=${board.id})}">글 수정</a>
+                                        <a class="btn" th:href="@{/board/sold/{id}(id=${board.id})}">거래완료</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="btn" th:href="@{/board/update/{id}(id=${board.id})}">수정</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="btn" data-toggle="modal" data-target="#deletePost" href="#">
-                                            글삭제
+                                            삭제
                                         </a>
 
                                     </li>
@@ -72,7 +75,7 @@
                                             취소
                                         </button>
                                         <button type="button"
-                                                th:onclick="'window.location.href=\'/myboard/delete/' + ${board.id} + '\''"
+                                                th:onclick="'window.location.href=\'/myBoard/delete/' + ${board.id} + '\''"
                                                 class="btn btn-primary">
                                             확인
                                         </button>

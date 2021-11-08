@@ -2,6 +2,7 @@ package com.market.sadang.service;
 
 import com.market.sadang.config.handler.FileHandler;
 import com.market.sadang.domain.Board;
+import com.market.sadang.domain.BoardStatus;
 import com.market.sadang.domain.Member;
 import com.market.sadang.domain.MyFile;
 import com.market.sadang.dto.bord.BoardCreateRequestDto;
@@ -83,6 +84,30 @@ public class BoardService {
         return id;
     }
 
+    @Transactional
+    public Long sellerStatus(Long id) {
+        Board board = boardRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
+
+        if (board.getSellStatus() == BoardStatus.sell)
+            board.sellerStatus(BoardStatus.sold);
+        else
+            board.sellerStatus(BoardStatus.sell);
+        return id;
+    }
+
+    @Transactional
+    public Long buyerStatus(Long id) {
+        Board board = boardRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
+
+        if (board.getBuyStatus() == BoardStatus.interested)
+            board.sellerStatus(BoardStatus.buy);
+        else
+            board.sellerStatus(BoardStatus.interested);
+        return id;
+    }
+
     // readonly : 트랜잭션 범위는 유지하되 기능을 조회로 제한하여 조회 속도 개선
     @Transactional(readOnly = true)
     public BoardResponseDto searchById(Long id, List<Long> fileIdList) {
@@ -93,7 +118,8 @@ public class BoardService {
 
     @Transactional(readOnly = true)
     public List<Board> searchAllDesc() {
-        return boardRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
+        return boardRepository.findAllBySellStatus(Sort.by(Sort.Direction.DESC, "id"), BoardStatus.sell);
+//        return boardRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
     }
 
     @Transactional
@@ -135,11 +161,12 @@ public class BoardService {
     }
 
     public List<Board> searchParam(String search) {
-        return boardRepository.findAllByTitleContainingOrAddressContaining(search, search);
+        return boardRepository.findAllByTitleContainingOrAddressContainingAndSellStatus(search, search, BoardStatus.sell);
+//        return boardRepository.findAllByTitleContainingOrAddressContaining(search, search);
     }
 
-    public List<MyBoardListResponseDto> findByMember(Member member) {
-        List<Board> boardList = boardRepository.findAllByMember(member);
+    public List<MyBoardListResponseDto> boardListMemberAndBoardStatus(Member member, BoardStatus status) {
+        List<Board> boardList = findByMemberAndBoardStatus(member, status);
         List<MyBoardListResponseDto> dtoList = new ArrayList<>();
 
         if (boardList != null) {
@@ -152,7 +179,13 @@ public class BoardService {
         return dtoList;
     }
 
-    public int searchAllByMember(Member member) {
-        return boardRepository.findAllByMember(member).size();
+    // 해당 사용자가 팔고 있는 모든 게시글의 수
+    public int countAllByMemberSell(Member member) {
+        return findByMemberAndBoardStatus(member,BoardStatus.sell).size();
+    }
+
+    // 사용자와 BoardStatus 로 모든 게시글 찾기
+    public List<Board> findByMemberAndBoardStatus(Member member, BoardStatus status) {
+        return boardRepository.findAllByMemberAndSellStatus(member, status);
     }
 }
