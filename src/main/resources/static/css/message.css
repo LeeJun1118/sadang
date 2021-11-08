@@ -88,7 +88,7 @@ img{ max-width:100%;}
 .received_withd_msg { width: 57%;}
 .mesgs {
     float: left;
-    padding: 30px 15px 0 25px;
+    padding: 0px 15px 0 25px;
     width: 60%;
 }
 

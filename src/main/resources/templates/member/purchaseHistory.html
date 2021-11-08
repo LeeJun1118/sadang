@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/header :: header"></head>
+    <body>
+        <div class="container mt-5 mb-5">
+            <div class="row pr-2">
+                <div class="col-auto mr-auto"></div>
+                <div class="col-auto">
+                    <div id="loginCheck">
+                        <a id="loginVerify" class="mr-3"></a>
+                        <a id="signUp"></a>
+                        <a id="myInfo" class="mr-3"></a>
+                        <a id="enter-chatRoom">
+                            <span id="unReadMessages"></span>
+                            <span id="plus" class="text-danger font-weight-bold">+</span>
+                            <span id="count-message" class="font-weight-bold"></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="container-sm my-auto">
+                <h1 id="h1-center">
+                    <a class="text-dark" href='/'>SADANG</a>
+                </h1>
+                <br/>
+                <nav class="navbar border-bottom">
+                    <h5 class="mt-3">구매 내역</h5>
+                </nav>
+                </br>
+                <div class="row">
+                    <div th:each="board, stat : ${myBoardList}" class="col-sm-3 p-1">
+                        <div class="card mb-3 p-0 border-0">
+                            <div class="card-body cursor-pointer border-0">
+                                <div th:onclick="'javascript:goBoard('+ ${board.id} + ');'"
+                                     th:href="@{/board/{id}(id=${board.id})}">
+
+                                    <img class="thumbnail-image" th:src="@{/thumbnail/{id}(id=${board.thumbnailId})}">
+                                    <div class="card-text font-weight-bold text-truncate"
+                                         th:text="${board.title}"></div>
+                                    <div class="card-text font-weight-bold">[[${board.price}]] 원</div>
+                                </div>
+
+
+                                <ul class="nav justify-content-center">
+                                    <li class="nav-item">
+                                        <a class="btn" th:href="@{/board/buy/{id}(id=${board.id})}">구매 하기</a>
+                                    </li>
+                                </ul>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p id="roomList" th:each="roomId : ${roomIdList}" class="col-sm-3 p-1" hidden>
+                    <input type="text" class="myRoomId" th:value="${roomId.roomId}" readonly hidden/>
+                </p>
+                <footer class="my-5 pt-5"></footer>
+            </div>
+        </div>
+
+        <div th:replace="fragments/footer :: footer"></div>
+    </body>
+    <script src="/js/board.js"></script>
+</html>

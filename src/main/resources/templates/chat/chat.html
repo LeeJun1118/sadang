@@ -43,7 +43,7 @@
                                         <input type="text" class="myRoomId" th:value="${room.roomId}" readonly hidden/>
 
                                         <div th:if="${room.buyerName} == ${username}">
-<!--                                            <div class="chat_list"-->
+                                            <!--                                            <div class="chat_list"-->
                                             <div class="px-3 py-2 border-bottom"
                                                  th:classappend="${thisRoom} == ${room.roomId} ? active_chat">
                                                 <a class="enterChatRoom"
@@ -69,7 +69,8 @@
                                                             </div>
                                                             <div class="h6 text-muted">
                                                                 [[${room.boardTitle}]]
-                                                                <span class="float-right"  th:classappend="${room.roomId} +'lastMessageTime'">[[${room.lastMessageTime}]]</span>
+                                                                <span class="float-right"
+                                                                      th:classappend="${room.roomId} +'lastMessageTime'">[[${room.lastMessageTime}]]</span>
                                                             </div>
 
                                                         </div>
@@ -102,11 +103,12 @@
                                                                       th:classappend="${room.roomId} +'plus'"
                                                                       th:text="${room.countReadStatus} == 0 ? '' : '+'">
                                                                 </span>
-<!--                                                                th:classappend="${room.countReadStatus} == 0 ? ${room.roomId} : ${room.roomId} + ' bg-danger'"-->
+                                                                <!--                                                                th:classappend="${room.countReadStatus} == 0 ? ${room.roomId} : ${room.roomId} + ' bg-danger'"-->
                                                             </div>
                                                             <div class="h6 text-muted">
                                                                 [[${room.boardTitle}]]
-                                                                <span class="float-right" th:classappend="${room.roomId} +'lastMessageTime'">[[${room.lastMessageTime}]]</span>
+                                                                <span class="float-right"
+                                                                      th:classappend="${room.roomId} +'lastMessageTime'">[[${room.lastMessageTime}]]</span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -119,6 +121,22 @@
 
                             <!--                            메세지-->
                             <div class="mesgs">
+                                <nav class="navbar navbar-light light-blue lighten-4">
+                                    <!-- Navbar brand -->
+                                    <a class="navbar-brand" href="#"></a>
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-secondary dropdown-toggle"
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            메뉴
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <a class="dropdown-item" type="button"
+                                               th:href="@{/board/buy/{roomId}(roomId=${thisRoom})}">구매하기</a>
+                                            <a class="dropdown-item" type="button" href="#">방 삭제</a>
+                                        </div>
+                                    </div>
+                                </nav>
+
                                 <div id="message-history" class="msg_history">
                                     <div th:each="message,index : ${messages}">
                                         <!--                                    받은 메세지-->
@@ -148,22 +166,24 @@
                                 </div>
                                 <div class="type_msg">
                                     <div class="input_msg_write">
-                                        <input id="message" type="text" class="write_msg" placeholder="Type a message"/>
+                                        <input id="message" type="text" class="write_msg"
+                                               placeholder="Type a message"/>
                                         <button id="send" class="msg_send_btn" type="button" disabled="true">
                                             <i class="fa fa-paper-plane-o" aria-hidden="true"></i>
                                         </button>
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
                 <input type="text" id="nickname" class="form-inline" th:value="${username}"
                        readonly hidden>
 
-<!--                <div th:if="${not #strings.isEmpty(thisRoom)}">-->
-                    <input th:value="${thisRoom} == '' ? '' : ${thisRoom}" id="roomId" class="form-inline" readonly hidden>
-<!--                </div>-->
+                <!--                <div th:if="${not #strings.isEmpty(thisRoom)}">-->
+                <input th:value="${thisRoom} == '' ? '' : ${thisRoom}" id="roomId" class="form-inline" readonly hidden>
+                <!--                </div>-->
                 <div th:replace="fragments/roomFooter :: footer"></div>
             </div>
         </div>

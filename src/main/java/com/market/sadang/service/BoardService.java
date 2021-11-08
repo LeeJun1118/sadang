@@ -85,7 +85,7 @@ public class BoardService {
     }
 
     @Transactional
-    public Long sellerStatus(Long id) {
+    public void sellerStatus(Long id) {
         Board board = boardRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
 
@@ -93,19 +93,25 @@ public class BoardService {
             board.sellerStatus(BoardStatus.sold);
         else
             board.sellerStatus(BoardStatus.sell);
-        return id;
     }
 
     @Transactional
-    public Long buyerStatus(Long id) {
+    public void buyerStatus(Long id, HttpServletRequest request) {
         Board board = boardRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
 
-        if (board.getBuyStatus() == BoardStatus.interested)
-            board.sellerStatus(BoardStatus.buy);
-        else
-            board.sellerStatus(BoardStatus.interested);
-        return id;
+        Member member = memberService.searchMemberId(request);
+
+        if (Objects.equals(member.getUsername(), board.getMember().getUsername()))
+            return;
+    }
+
+    @Transactional
+    public void interested(Long id) {
+        Board board = boardRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
+
+        board.sellerStatus(BoardStatus.interested);
     }
 
     // readonly : 트랜잭션 범위는 유지하되 기능을 조회로 제한하여 조회 속도 개선
@@ -174,21 +180,32 @@ public class BoardService {
                 dtoList.add(new MyBoardListResponseDto(board));
             }
         }
-
-
         return dtoList;
     }
 
+    /*public List<MyBoardListResponseDto> boardListBuyerAndBoardStatus(Member buyer, BoardStatus status) {
+        List<Board> boardList = findByBuyerAndBoardStatus(buyer, status);
+        List<MyBoardListResponseDto> dtoList = new ArrayList<>();
+
+        if (boardList != null) {
+            for (Board board : boardList) {
+                dtoList.add(new MyBoardListResponseDto(board));
+            }
+        }
+        return dtoList;
+    }*/
+
+
     // 해당 사용자가 팔고 있는 모든 게시글의 수
     public int countAllByMemberBoardStatus(Member member, BoardStatus status) {
-        return findByMemberAndBoardStatus(member,status).size();
+        return findByMemberAndBoardStatus(member, status).size();
     }
 
 
     // 사용자가 구매한 모든 게시글의 수
-    public int countAllByBuyerBoardStatus(Member member, BoardStatus status) {
-        return findByBuyerAndBoardStatus(member,status).size();
-    }
+    /*public int countAllByBuyerBoardStatus(Member member, BoardStatus status) {
+        return findByBuyerAndBoardStatus(member, status).size();
+    }*/
 
     // 작성자와 BoardStatus 로 모든 게시글 찾기
     public List<Board> findByMemberAndBoardStatus(Member member, BoardStatus status) {
@@ -196,7 +213,7 @@ public class BoardService {
     }
 
     // 구매자와 BoardStatus 로 모든 게시글 찾기
-    public List<Board> findByBuyerAndBoardStatus(Member buyer, BoardStatus status) {
+    /*public List<Board> findByBuyerAndBoardStatus(Member buyer, BoardStatus status) {
         return boardRepository.findAllByBuyerAndBuyStatus(buyer, status);
-    }
+    }*/
 }

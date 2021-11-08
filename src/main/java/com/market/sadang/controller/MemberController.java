@@ -335,11 +335,11 @@ public class MemberController {
         Member member = memberService.searchMemberId(request);
         int countSellBoard = boardService.countAllByMemberBoardStatus(member, BoardStatus.sell);
         int countSoldBoard = boardService.countAllByMemberBoardStatus(member, BoardStatus.sold);
-        int countBuyBoard = boardService.countAllByBuyerBoardStatus(member, BoardStatus.buy);
-        int countInterestedBoard = boardService.countAllByBuyerBoardStatus(member, BoardStatus.interested);
+/*        int countBuyBoard = boardService.countAllByBuyerBoardStatus(member, BoardStatus.buy);
+        int countInterestedBoard = boardService.countAllByBuyerBoardStatus(member, BoardStatus.interested);*/
         int countChatRoom = chatRoomRepository.countChatRoomBySellerNameOrBuyerName(member.getUsername(), member.getUsername());
 
-        MemberPageResponseDto memberPageResponseDto = new MemberPageResponseDto(member, countSellBoard, countSoldBoard,countBuyBoard,countInterestedBoard);
+        MemberPageResponseDto memberPageResponseDto = new MemberPageResponseDto(member, countSellBoard, countSoldBoard,0,0);
 
         List<ChatRoom> roomList = chatRoomService.findRoomList(request);
         modelAndView.addObject("roomIdList", roomList);

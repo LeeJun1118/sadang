@@ -295,16 +295,32 @@ public class BoardController {
     public ModelAndView buy(HttpServletRequest request,
                              ModelAndView modelAndView) {
         Member member = memberService.searchMemberId(request);
-        List<MyBoardListResponseDto> boardList = boardService.boardListMemberAndBoardStatus(member, BoardStatus.buy);
+//        List<MyBoardListResponseDto> boardList = boardService.boardListBuyerAndBoardStatus(member, BoardStatus.buy);
 
         List<ChatRoom> roomList = chatRoomService.findRoomList(request);
         modelAndView.addObject("roomIdList", roomList);
 
-        modelAndView.addObject("boardList", boardList);
-        modelAndView.setViewName("member/soldHistory");
+//        modelAndView.addObject("boardList", boardList);
+        modelAndView.setViewName("member/purchaseHistory");
 
         return modelAndView;
     }
+
+    @GetMapping("/interested")
+    public ModelAndView interested(HttpServletRequest request,
+                            ModelAndView modelAndView) {
+        Member member = memberService.searchMemberId(request);
+//        List<MyBoardListResponseDto> boardList = boardService.boardListBuyerAndBoardStatus(member, BoardStatus.buy);
+
+        List<ChatRoom> roomList = chatRoomService.findRoomList(request);
+        modelAndView.addObject("roomIdList", roomList);
+
+//        modelAndView.addObject("boardList", boardList);
+        modelAndView.setViewName("member/interestedHistory");
+
+        return modelAndView;
+    }
+
 
     @GetMapping("/board/sold/{id}")
     public ModelAndView sold(@PathVariable Long id,
@@ -317,13 +333,26 @@ public class BoardController {
     }
 
 
-    @GetMapping("/board/buy/{id}")
-    public ModelAndView bought(@PathVariable Long id,
+    @GetMapping("/board/buy/{roomId}")
+    public ModelAndView bought(@PathVariable String roomId,
+                               HttpServletRequest request,
                              ModelAndView modelAndView) {
 
-        boardService.buyerStatus(id);
+        ChatRoom chatRoom = chatRoomService.findByRoomId(roomId);
+        System.out.println(chatRoom.getBoardId());
+        boardService.buyerStatus(chatRoom.getBoardId(),request);
 
-        modelAndView.setViewName("redirect:/buy");
+        modelAndView.setViewName("redirect:/chat/room/enter/" + roomId);
+        return modelAndView;
+    }
+
+    @GetMapping("/board/interested/{id}")
+    public ModelAndView interested(@PathVariable Long id,
+                               ModelAndView modelAndView) {
+
+        boardService.interested(id);
+
+        modelAndView.setViewName("redirect:/board/" + id);
         return modelAndView;
     }
 }

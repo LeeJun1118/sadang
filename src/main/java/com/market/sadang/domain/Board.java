@@ -46,11 +46,6 @@ public class Board extends BaseTimeEntity {
     @JsonBackReference
     private Member member;
 
-    @ManyToOne
-    @JoinColumn(updatable = false)
-    @JsonBackReference
-    private Member buyer;
-
 
     //게시글 삭제 시 첨부파일도 같이 삭제
     @OneToMany(
@@ -64,9 +59,8 @@ public class Board extends BaseTimeEntity {
     private BoardStatus sellStatus = BoardStatus.sell;
 
 
-    @Column
-    @Enumerated(EnumType.ORDINAL)
-    private BoardStatus buyStatus = BoardStatus.sell;
+    @OneToMany(mappedBy = "board", cascade = CascadeType.MERGE, orphanRemoval = true)
+    private List<BuyInterested> buyInterested = new ArrayList<>();
 
     @Builder
     public Board(Member member, String title, String price, String content, String address) {
@@ -95,9 +89,5 @@ public class Board extends BaseTimeEntity {
 
     public void sellerStatus(BoardStatus status){
         this.sellStatus = status;
-    }
-
-    public void buyerStatus(BoardStatus status){
-        this.buyStatus = status;
     }
 }

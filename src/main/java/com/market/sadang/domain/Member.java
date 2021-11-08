@@ -75,6 +75,9 @@ public class Member extends BaseTimeEntity {
     @OneToMany(mappedBy = "member", cascade = CascadeType.MERGE, orphanRemoval = true)
     private List<Board> boards = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member", cascade = CascadeType.MERGE, orphanRemoval = true)
+    private List<BuyInterested> buyInterested = new ArrayList<>();
+
     @Override
     public String toString() {
         return "User{" +
