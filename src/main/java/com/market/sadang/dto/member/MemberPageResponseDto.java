@@ -15,9 +15,11 @@ public class MemberPageResponseDto {
     String detailAddress;
     int countSellBoard;
     int countSoldBoard;
+    int countBuyBoard;
+    int countInterestedBoard;
 
     @Builder
-    public MemberPageResponseDto(Member member, int countSellBoard, int countSoldBoard) {
+    public MemberPageResponseDto(Member member, int countSellBoard, int countSoldBoard, int countBuyBoard, int countInterestedBoard) {
         this.name = member.getName();
         this.username = member.getUsername();
         this.email = member.getEmail();
@@ -25,6 +27,8 @@ public class MemberPageResponseDto {
         this.detailAddress = member.getDetailAddress();
         this.countSellBoard  = countSellBoard;
         this.countSoldBoard  = countSoldBoard;
+        this.countBuyBoard  = countBuyBoard;
+        this.countInterestedBoard  = countInterestedBoard;
     }
 }
 

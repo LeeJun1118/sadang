@@ -184,8 +184,19 @@ public class BoardService {
         return findByMemberAndBoardStatus(member,status).size();
     }
 
-    // 사용자와 BoardStatus 로 모든 게시글 찾기
+
+    // 사용자가 구매한 모든 게시글의 수
+    public int countAllByBuyerBoardStatus(Member member, BoardStatus status) {
+        return findByBuyerAndBoardStatus(member,status).size();
+    }
+
+    // 작성자와 BoardStatus 로 모든 게시글 찾기
     public List<Board> findByMemberAndBoardStatus(Member member, BoardStatus status) {
         return boardRepository.findAllByMemberAndSellStatus(member, status);
+    }
+
+    // 구매자와 BoardStatus 로 모든 게시글 찾기
+    public List<Board> findByBuyerAndBoardStatus(Member buyer, BoardStatus status) {
+        return boardRepository.findAllByBuyerAndBuyStatus(buyer, status);
     }
 }

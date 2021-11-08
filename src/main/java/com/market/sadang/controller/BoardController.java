@@ -291,6 +291,21 @@ public class BoardController {
         return modelAndView;
     }
 
+    @GetMapping("/buy")
+    public ModelAndView buy(HttpServletRequest request,
+                             ModelAndView modelAndView) {
+        Member member = memberService.searchMemberId(request);
+        List<MyBoardListResponseDto> boardList = boardService.boardListMemberAndBoardStatus(member, BoardStatus.buy);
+
+        List<ChatRoom> roomList = chatRoomService.findRoomList(request);
+        modelAndView.addObject("roomIdList", roomList);
+
+        modelAndView.addObject("boardList", boardList);
+        modelAndView.setViewName("member/soldHistory");
+
+        return modelAndView;
+    }
+
     @GetMapping("/board/sold/{id}")
     public ModelAndView sold(@PathVariable Long id,
                              ModelAndView modelAndView) {

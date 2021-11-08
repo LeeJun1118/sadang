@@ -14,6 +14,8 @@ public interface BoardRepository extends JpaRepository<Board,Long> {
 
 //    List<Board> findAllByMember(Member member);
     List<Board> findAllByMemberAndSellStatus(Member member, BoardStatus status);
+
+    List<Board> findAllByBuyerAndBuyStatus(Member member, BoardStatus status);
 //    List<Board> findAllByStatus (BoardStatus status);
     List<Board> findAllBySellStatus (Sort sort, BoardStatus status);
 }
