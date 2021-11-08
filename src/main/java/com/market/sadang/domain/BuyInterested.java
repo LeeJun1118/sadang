@@ -1,10 +1,7 @@
 package com.market.sadang.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -35,4 +32,14 @@ public class BuyInterested {
     private BoardStatus interestedStatus = BoardStatus.none;
 
 
+    @Builder
+    public BuyInterested(Member member, Board board, BoardStatus buyStatus) {
+        this.member = member;
+        this.board = board;
+        this.buyStatus = buyStatus;
+    }
+
+    public void buy(BoardStatus status){
+        this.buyStatus = status;
+    }
 }

@@ -1,16 +1,14 @@
 package com.market.sadang.service;
 
 import com.market.sadang.config.handler.FileHandler;
-import com.market.sadang.domain.Board;
-import com.market.sadang.domain.BoardStatus;
-import com.market.sadang.domain.Member;
-import com.market.sadang.domain.MyFile;
+import com.market.sadang.domain.*;
 import com.market.sadang.dto.bord.BoardCreateRequestDto;
 import com.market.sadang.dto.bord.BoardMemberDto;
 import com.market.sadang.dto.bord.BoardResponseDto;
 import com.market.sadang.dto.bord.BoardUpdateRequestDto;
 import com.market.sadang.dto.member.MyBoardListResponseDto;
 import com.market.sadang.repository.BoardRepository;
+import com.market.sadang.repository.BuyInterestedRepository;
 import com.market.sadang.repository.MemberRepository;
 import com.market.sadang.repository.MyFileRepository;
 import com.market.sadang.service.authUtil.CookieUtil;
@@ -38,6 +36,7 @@ public class BoardService {
     private final MyFileRepository fileRepository;
     private final FileHandler fileHandler;
     private final MemberService memberService;
+    private final BuyInterestedRepository buyInterestedRepository;
 
     @Transactional
     public Long create(BoardCreateRequestDto requestDto,
@@ -210,6 +209,21 @@ public class BoardService {
     // 작성자와 BoardStatus 로 모든 게시글 찾기
     public List<Board> findByMemberAndBoardStatus(Member member, BoardStatus status) {
         return boardRepository.findAllByMemberAndSellStatus(member, status);
+    }
+
+    public void buy(Long boardId, HttpServletRequest request) {
+        Member member = memberService.searchMemberId(request);
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시물이 존재하지 않습니다."));
+        BuyInterested buyInterested = buyInterestedRepository.findByMember(member);
+
+        if (buyInterested == null){
+            buyInterestedRepository.save(new BuyInterested(member, board, BoardStatus.buy));
+        }
+        else if (buyInterested.getBuyStatus() == BoardStatus.buy)
+            buyInterested.buy(BoardStatus.none);
+        else
+            buyInterested.buy(BoardStatus.buy);
     }
 
     // 구매자와 BoardStatus 로 모든 게시글 찾기

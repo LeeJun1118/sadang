@@ -340,7 +340,7 @@ public class BoardController {
 
         ChatRoom chatRoom = chatRoomService.findByRoomId(roomId);
         System.out.println(chatRoom.getBoardId());
-        boardService.buyerStatus(chatRoom.getBoardId(),request);
+        boardService.buy(chatRoom.getBoardId(),request);
 
         modelAndView.setViewName("redirect:/chat/room/enter/" + roomId);
         return modelAndView;
