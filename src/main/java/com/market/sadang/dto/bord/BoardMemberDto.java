@@ -1,6 +1,7 @@
 package com.market.sadang.dto.bord;
 
 import com.market.sadang.domain.Board;
+import com.market.sadang.domain.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -10,12 +11,12 @@ import java.util.List;
 @NoArgsConstructor
 public class BoardMemberDto {
     private Long id;
-    private String member;
+    private Member member;
     private String title;
 
     public BoardMemberDto(Board entity){
         this.id = entity.getId();
-        this.member = entity.getMember().getUsername();
+        this.member = entity.getMember();
         this.title = entity.getTitle();
     }
 }

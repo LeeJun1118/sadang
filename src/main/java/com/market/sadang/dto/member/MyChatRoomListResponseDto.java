@@ -13,15 +13,15 @@ import lombok.NoArgsConstructor;
 public class MyChatRoomListResponseDto {
     private Long id;
     private String roomId;
-    private String sellerName;
-    private String buyerName;
+    private String seller;
+    private String buyer;
     private Long boardId;
 
     @Builder
     public MyChatRoomListResponseDto(ChatRoom chatRoom) {
         this.roomId = chatRoom.getRoomId();
-        this.sellerName = chatRoom.getSellerName();
-        this.buyerName = chatRoom.getBuyerName();
+        this.seller = chatRoom.getSeller().getUsername();
+        this.buyer = chatRoom.getBuyer().getUsername();
         this.boardId = chatRoom.getBoardId();
     }
 }

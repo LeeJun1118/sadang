@@ -1,6 +1,7 @@
 package com.market.sadang.repository;
 
 import com.market.sadang.domain.ChatRoom;
+import com.market.sadang.domain.Member;
 import com.market.sadang.redis.RedisSubscriber;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -108,9 +109,11 @@ public class ChatRoomRepository {
 */
 
 public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
-    ChatRoom findByBoardIdAndSellerNameAndBuyerName (Long boardId, String SellerName, String buyerName);
-    List<ChatRoom> findBySellerNameOrBuyerName (String sellerName, String buyerName);
-    ChatRoom findByBoardIdAndBuyerName (Long id, String buyerName);
+    ChatRoom findByBoardIdAndSellerAndBuyer (Long boardId, Member seller, Member buyer);
+    List<ChatRoom> findBySellerOrBuyer (Member seller, Member buyer);
+    List<ChatRoom> findChatRoomBySellerOrBuyer (Member seller, Member buyer);
+    List<ChatRoom> findAllBySellerOrBuyer (Member seller, Member buyer);
+    ChatRoom findByBoardIdAndBuyer (Long id, Member buyer);
     ChatRoom findByRoomId (String roomId);
-    int countChatRoomBySellerNameOrBuyerName (String sellerName, String buyerName);
+    int countChatRoomBySellerOrBuyer (Member seller, Member buyer);
 }

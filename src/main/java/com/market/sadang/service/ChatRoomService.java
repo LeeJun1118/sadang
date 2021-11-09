@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -25,16 +26,17 @@ public class ChatRoomService {
 
 
     public List<ChatRoom> findRoomList(HttpServletRequest request) {
-        List<ChatRoom> roomList = null;
+
         try {
             Member member = memberService.searchMemberId(request);
-            roomList = chatRoomRepository.findBySellerNameOrBuyerName(member.getUsername(), member.getUsername());
+            System.out.println("ChatRoomService findRoomList getUsername : " + member.getUsername());
+            List<ChatRoom> roomList = chatRoomRepository.findAllBySellerOrBuyer(member, member);
+            return roomList;
 
         } catch (Exception e) {
+            System.out.println("ChatRoomService findRoomList : " + e.getMessage());
             return null;
         }
-
-        return roomList;
     }
 
     public ChatRoom findByRoomId(String roomId) {
@@ -63,7 +65,7 @@ public class ChatRoomService {
         return listDto;
     }*/
 
-    public List<MessageListReadStatusDto> findAllRoomReadStatus(List<ChatRoom> roomList, String username) {
+    public List<MessageListReadStatusDto> findAllRoomReadStatus(List<ChatRoom> roomList, Member user) {
         List<MessageListReadStatusDto> listDto = new ArrayList<>();
         MessageListReadStatusDto dto = null;
         String createdDateTime = null;
@@ -72,15 +74,16 @@ public class ChatRoomService {
         int receiver = 0;*/
         // 내가 입장해있는 채팅방들에서 sender가 내가 아닌 메세지의 readStatus 가 N인 메세지의 수를 셈
         for (ChatRoom room : roomList) {
-            int countReadStatusN = chatMessageRepository.countByRoomIdAndReceiverAndReceiverStatus(room.getRoomId(), username, ReadStatus.N);
+            int countReadStatusN = chatMessageRepository.countByRoomIdAndReceiverAndReceiverStatus(room.getRoomId(), user, ReadStatus.N);
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd HH:mm");
+            System.out.println("ChatRoomService findAllRoomReadStatus roomId : " + room.getRoomId());
+            System.out.println("ChatRoomService findFirstByRoomIdOrderByIdDesc : " + chatMessageRepository.findFirstByRoomIdOrderByIdDesc(room.getRoomId()));
             try {
                 createdDateTime = chatMessageRepository.findFirstByRoomIdOrderByIdDesc(room.getRoomId()).getCreatedDate().format(formatter);
-            }
-            catch (Exception e){
+            } catch (Exception e) {
                 createdDateTime = null;
-                System.out.println("ChatRoomService findAllRoomReadStatus error : "+e.getMessage());
+                System.out.println("ChatRoomService findAllRoomReadStatus error : " + e.getMessage());
             }
 
 

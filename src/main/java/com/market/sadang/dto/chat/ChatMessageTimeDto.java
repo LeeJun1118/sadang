@@ -27,7 +27,7 @@ public class ChatMessageTimeDto {
     @Builder
     public ChatMessageTimeDto(ChatMessage entity) {
         this.roomId = entity.getRoomId();
-        this.sender = entity.getSender();
+        this.sender = entity.getSender().getUsername();
         this.message = entity.getMessage();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd HH:mm");
         this.createdDate = entity.getCreatedDate().format(formatter);

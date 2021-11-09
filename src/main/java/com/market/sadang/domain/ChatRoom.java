@@ -7,6 +7,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -37,21 +39,29 @@ public class ChatRoom implements Serializable {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @Column
     private String roomId;
 
+    @Column
     private Long boardId;
 
-    private String sellerName;
+    @ManyToOne
+    private Member seller;
 
-    private String buyerName;
+    @ManyToOne
+    private Member buyer;
 
+    @Column
     private String boardTitle;
 
-    public ChatRoom(String roomId, Long boardId, String sellerName, String buyerName, String boardTitle) {
+    @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.MERGE, orphanRemoval = true)
+    private List<ChatMessage> chatMessage = new ArrayList<>();
+
+    public ChatRoom(String roomId, Long boardId, Member seller, Member buyer, String boardTitle) {
         this.roomId = roomId;
         this.boardId = boardId;
-        this.sellerName = sellerName;
-        this.buyerName = buyerName;
+        this.seller = seller;
+        this.buyer = buyer;
         this.boardTitle = boardTitle;
     }
 }

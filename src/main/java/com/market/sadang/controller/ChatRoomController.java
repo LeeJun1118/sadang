@@ -72,9 +72,9 @@ public class ChatRoomController {
     @GetMapping("/myChatRoom")
     public String roomDetail(Model model, HttpServletRequest request) throws Exception {
 
-        String username = null;
+        Member username = null;
         if (cookieUtil.getCookie(request, "accessToken") != null) {
-            username = memberService.searchMemberId(request).getUsername();
+            username = memberService.searchMemberId(request);
         }
 
         //내가 들어간 방 목록 불러오기
@@ -100,7 +100,7 @@ public class ChatRoomController {
 
 
         model.addAttribute("roomList", roomListReadStatus);
-        model.addAttribute("username", username);
+        model.addAttribute("username", username.getUsername());
 
         return "/chat/chat";
     }
@@ -129,26 +129,28 @@ public class ChatRoomController {
                              HttpServletRequest request,
                              Model model) {
 
+        // 글 작성자
         BoardMemberDto dto = boardService.findByIdMember(id);
-        String sellerName = dto.getMember();
+        Member seller = dto.getMember();
 
-        String buyerName = memberService.searchMemberId(request).getUsername();
+        // 구매자
+        Member buyer = memberService.searchMemberId(request);
 
-        if (sellerName == buyerName) {
+        if (seller.getUsername() == buyer.getUsername()) {
             return "redirect:/chat/myChatRoom";
         }
 
-        ChatRoom chatRoom = chatRoomRepository.findByBoardIdAndBuyerName(id, buyerName);
+        ChatRoom chatRoom = chatRoomRepository.findByBoardIdAndBuyer(id, buyer);
 
         if (chatRoom == null) {
             String roomId = UUID.randomUUID().toString();
-            chatRoom = new ChatRoom(roomId, id, sellerName, buyerName, dto.getTitle());
+            chatRoom = new ChatRoom(roomId, id, seller, buyer, dto.getTitle());
             chatRoomRepository.save(chatRoom);
         }
         //채팅한 내역 불러오기
 
         model.addAttribute("room", chatRoom);
-        model.addAttribute("username", buyerName);
+        model.addAttribute("username", buyer.getUsername());
 
         return "redirect:/chat/room/enter/" + chatRoom.getRoomId();
     }
@@ -161,8 +163,12 @@ public class ChatRoomController {
         // 내가 입장해 있는 전체 채팅 방 목록
         List<ChatRoom> roomList = chatRoomService.findRoomList(request);
 
+        for (ChatRoom room : roomList){
+            System.out.println("roomDetail : " + room.getRoomId());
+        }
+
         //사용자 이름
-        String username = memberService.searchMemberId(request).getUsername();
+        Member username = memberService.searchMemberId(request);
 
         // 현재 입장한 채팅방
         ChatRoom thisRoom = chatRoomService.findByRoomId(roomId);
@@ -185,12 +191,14 @@ public class ChatRoomController {
             messages.add(new ChatMessageListTimeDto(thisMessage));
         }
 
-
+        for (MessageListReadStatusDto dto : roomListReadStatus){
+            System.out.println("roomDetail 2 : " + dto.getRoomId());
+        }
 
         model.addAttribute("roomList", roomListReadStatus);
         model.addAttribute("thisRoom", roomId);
         model.addAttribute("buy", buy);
-        model.addAttribute("username", username);
+        model.addAttribute("username", username.getUsername());
         model.addAttribute("messages", messages);
         return "/chat/chat";
     }
@@ -201,11 +209,11 @@ public class ChatRoomController {
     public int unReadMessage(@PathVariable String roomId, HttpServletRequest request) throws Exception {
 
         //사용자 이름
-        String username = memberService.searchMemberId(request).getUsername();
+        Member user = memberService.searchMemberId(request);
 
-        List<ChatMessage> messageList = chatMessageRepository.findAllByRoomIdAndReceiverAndReceiverStatus(roomId, username, ReadStatus.N);
+        List<ChatMessage> messageList = chatMessageRepository.findAllByRoomIdAndReceiverAndReceiverStatus(roomId, user, ReadStatus.N);
         for (ChatMessage message : messageList) {
-            if (Objects.equals(username, message.getReceiver()))
+            if (Objects.equals(user, message.getReceiver()))
                 chatMessageService.update(message.getId());
         }
         return 0;

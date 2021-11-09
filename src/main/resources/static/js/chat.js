@@ -42,7 +42,7 @@ function connect() {
 
                 const result = JSON.parse(message.body);
 
-                $('.' + roomId + 'lastMessageTime').text('' + parse(result.createdDate));
+                $('.' + roomId + 'lastMessageTime').text('' + result.createdDate);
                 if (result.roomId === roomId) {
                     console.log("여기 입니다. createdDate" + result.createdDate)
                     showGreeting(result);
@@ -105,7 +105,7 @@ function showGreeting(message) {
             "<div class=\"outgoing_msg mb-3\">\n" +
             "   <div class=\"sent_msg\">\n" +
             "       <p>" + message.message + "</p>\n" +
-            "       <span class=\"time_date\">" + parse(message.createdDate) + "</span>\n" +
+            "       <span class=\"time_date\">" + message.createdDate + "</span>\n" +
             "   </div>\n" +
             "</div>\n";
     } else {
@@ -118,7 +118,7 @@ function showGreeting(message) {
             "   <div class=\"received_msg\">\n" +
             "       <div class=\"received_withd_msg\">\n" +
             "           <p>" + message.message + "</p>\n" +
-            "               <span class=\"time_date\">" + parse(message.createdDate) + "</span>\n" +
+            "               <span class=\"time_date\">" + message.createdDate + "</span>\n" +
             "       </div>\n" +
             "   </div>\n" +
             "</div>";
@@ -177,7 +177,7 @@ function send() {
         'senderStatus' : 'Y',
         'receiverStatus' : 'N'
     };
-    stompClient.send("/pub/chat/message", {'roomId' : roomId, 'username' :$("#nickname").val() }, JSON.stringify(data));
+    stompClient.send("/pub/chat/message", {/*'roomId' : roomId, 'username' :$("#nickname").val() */}, JSON.stringify(data));
     console.log(JSON.stringify(data))
 
     /* var alarmRoom = $('.' + roomId);

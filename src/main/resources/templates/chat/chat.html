@@ -42,7 +42,7 @@
                                         <!--                                        알람 보냄-->
                                         <input type="text" class="myRoomId" th:value="${room.roomId}" readonly hidden/>
 
-                                        <div th:if="${room.buyerName} == ${username}">
+                                        <div th:if="${room.buyer} == ${username}">
                                             <!--                                            <div class="chat_list"-->
                                             <div class="px-3 py-2 border-bottom"
                                                  th:classappend="${thisRoom} == ${room.roomId} ? active_chat">
@@ -54,7 +54,7 @@
                                                         </div>
                                                         <div class="chat_ib">
                                                             <div class="h5 mb-3 text-dark">
-                                                                <span class="h6 text-dark">[[${room.sellerName}]]</span>
+                                                                <span class="h6 text-dark">[[${room.seller}]]</span>
 
                                                                 <span class="unRead float-right h6 text-danger font-weight-bold"
                                                                       type="text"
@@ -79,7 +79,7 @@
                                             </div>
                                         </div>
 
-                                        <div th:if="${room.sellerName} == ${username}">
+                                        <div th:if="${room.seller} == ${username}">
                                             <!--                                            <div class="chat_list"-->
                                             <div class="px-3 py-2 border-bottom"
                                                  th:classappend="${thisRoom} == ${room.roomId} ? active_chat">
@@ -91,7 +91,7 @@
                                                         </div>
                                                         <div class="chat_ib">
                                                             <div class="h5 mb-3 text-dark">
-                                                                <span class="h6 mb-3 text-dark">[[${room.buyerName}]]</span>
+                                                                <span class="h6 mb-3 text-dark">[[${room.buyer}]]</span>
 
                                                                 <span class="unRead float-right h6 text-danger font-weight-bold"
                                                                       type="text"
@@ -154,7 +154,6 @@
                                                 <div class="received_withd_msg">
                                                     <p>[[${message.message}]]</p>
                                                     <span class="time_date"> [[${message.createdDate}]]</span>
-                                                    <!--                                                    <span class="time_date"> [[${message.createdDate}]]   |    June 9</span>-->
                                                 </div>
                                             </div>
                                         </div>
@@ -164,7 +163,6 @@
                                             <div class="sent_msg">
                                                 <p>[[${message.message}]]</p>
                                                 <span class="time_date"> [[${message.createdDate}]]</span>
-                                                <!--                                                <span class="time_date"> [[${message.createdDate}]]   |    June 9</span>-->
                                             </div>
                                         </div>
                                     </div>

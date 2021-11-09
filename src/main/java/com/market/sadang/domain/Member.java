@@ -78,6 +78,18 @@ public class Member extends BaseTimeEntity {
     @OneToMany(mappedBy = "member", cascade = CascadeType.MERGE, orphanRemoval = true)
     private List<BuyInterested> buyInterested = new ArrayList<>();
 
+    @OneToMany(mappedBy = "sender", cascade = CascadeType.MERGE, orphanRemoval = true)
+    private List<ChatMessage> sender = new ArrayList<>();
+
+    @OneToMany(mappedBy = "receiver", cascade = CascadeType.MERGE, orphanRemoval = true)
+    private List<ChatMessage> receiver = new ArrayList<>();
+
+    @OneToMany(mappedBy = "seller", cascade = CascadeType.MERGE, orphanRemoval = true)
+    private List<ChatRoom> seller = new ArrayList<>();
+
+    @OneToMany(mappedBy = "buyer", cascade = CascadeType.MERGE, orphanRemoval = true)
+    private List<ChatRoom> buyer = new ArrayList<>();
+
     @Override
     public String toString() {
         return "User{" +

@@ -3,7 +3,9 @@ package com.market.sadang.controller;
 import com.google.gson.Gson;
 import com.market.sadang.domain.ChatMessage;
 import com.market.sadang.domain.ChatRoom;
+import com.market.sadang.domain.Member;
 import com.market.sadang.domain.ReadStatus;
+import com.market.sadang.dto.chat.ChatMessageDto;
 import com.market.sadang.repository.ChatMessageRepository;
 import com.market.sadang.repository.ChatRoomRepository;
 import com.market.sadang.repository.MemberRepository;
@@ -41,7 +43,7 @@ public class ChatController {
 
     // websocket "/pub/chat/message"로 들어오는 메시징을 처리
     @MessageMapping("/chat/message")
-    public void message(ChatMessage message, @Header("roomId") String roomId,  @Header("username") String username) {
+    public void message(ChatMessageDto messageDto/*, @Header("roomId") String roomId,  @Header("username") String username*/) {
 
         //토큰 유효성 검사
 //        String memberId = jwtUtil.getUsername(token);
@@ -54,24 +56,27 @@ public class ChatController {
 
         // json으로 log 출력
         Gson gson = new Gson();
-        System.out.println("message=======" + gson.toJson(message));
+        System.out.println("message=======" + gson.toJson(messageDto));
 
        /* if (Objects.equals(roomId, message.getRoomId()))
             message.setReceiverStatus(ReadStatus.Y);*/
 
-        ChatRoom chatRoom = chatRoomRepository.findByRoomId(message.getRoomId());
-        String receiverName = null;
+        ChatRoom chatRoom = chatRoomRepository.findByRoomId(messageDto.getRoomId());
+        Member receiver = null;
+        Member sender = null;
 
 
         // ChatRoom 에는 Buyer, Seller 둘이 있는데
         // 둘 중 Sender 가 아닌 사람이 receiver 가 된다.
-        if (Objects.equals(message.getSender(), chatRoom.getBuyerName())){
-            receiverName = chatRoom.getSellerName();
+        if (Objects.equals(messageDto.getSender(), chatRoom.getBuyer().getUsername())){
+            receiver = chatRoom.getSeller();
+            sender =  chatRoom.getBuyer();
         }
         else{
-            receiverName = chatRoom.getBuyerName();
+            receiver = chatRoom.getBuyer();
+            sender = chatRoom.getSeller();
         }
-        message.setReceiver(receiverName);
+        messageDto.setReceiver(receiver.getUsername());
 
         //현재 사용자가 위치한 채팅방이 메세지가 온
       /*  if (Objects.equals(roomId, message.getRoomId())){
@@ -79,12 +84,12 @@ public class ChatController {
         }*/
 
 
-        ChatMessage chatMessage = chatMessageRepository.save(new ChatMessage(message));
+        ChatMessage chatMessage = chatMessageRepository.save(new ChatMessage(messageDto,sender,receiver));
+        ChatMessageDto dto = new ChatMessageDto(chatMessage);
 
-        System.out.println("chatMessage=======" + gson.toJson(chatMessage));
         try {
 
-        messagingTemplate.convertAndSend("/sub/chat/room/" + message.getRoomId(), chatMessage);
+        messagingTemplate.convertAndSend("/sub/chat/room/" + messageDto.getRoomId(), dto);
         }
         catch (Exception ignored){}
     }

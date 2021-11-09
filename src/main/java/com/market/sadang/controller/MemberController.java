@@ -339,7 +339,7 @@ public class MemberController {
         int countSoldBoard = boardService.countAllByMemberBoardStatus(member, BoardStatus.sold);
         int countBuyBoard = buyInterestedService.findByMemberAndBuyStatusOrInterestedStatus(member, BoardStatus.buy).size();
         int countInterestedBoard = buyInterestedService.findByMemberAndBuyStatusOrInterestedStatus(member, BoardStatus.interested).size();
-        int countChatRoom = chatRoomRepository.countChatRoomBySellerNameOrBuyerName(member.getUsername(), member.getUsername());
+        int countChatRoom = chatRoomRepository.countChatRoomBySellerOrBuyer(member, member);
 
 
         MemberPageResponseDto memberPageResponseDto = new MemberPageResponseDto(member, countSellBoard, countSoldBoard, countBuyBoard, countInterestedBoard);
@@ -396,7 +396,7 @@ public class MemberController {
             Member member = memberService.searchMemberId(request);
             if (member != null) {
                 //receiver = member.gerusername , receiverStatus = N
-                unReadMessages = chatMessageRepository.countAllByReceiverAndReceiverStatus(member.getUsername(), ReadStatus.N);
+                unReadMessages = chatMessageRepository.countAllByReceiverAndReceiverStatus(member, ReadStatus.N);
                 return unReadMessages;
             }
 

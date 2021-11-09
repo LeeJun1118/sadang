@@ -45,8 +45,8 @@
                             <tr class='table-row' th:each="chatRoom,index : ${myChatRoomList}">
                                 <td scope="row" th:text="${chatRoom.boardId}"
                                     th:href="@{/chat/room/enter/{roomId}(roomId=${chatRoom.roomId})}"></td>
-                                <td class="col-6" th:text="${chatRoom.buyerName}"></td>
-                                <td class="col-3" th:text="${chatRoom.sellerName}"></td>
+                                <td class="col-6" th:text="${chatRoom.buyer}"></td>
+                                <td class="col-3" th:text="${chatRoom.seller}"></td>
                                 <td class="col-3" th:text="${chatRoom.roomId}"></td>
                             </tr>
                         </tbody>

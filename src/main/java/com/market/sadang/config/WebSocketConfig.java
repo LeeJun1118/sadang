@@ -1,6 +1,6 @@
 package com.market.sadang.config;
 
-import com.market.sadang.config.handler.StompHandler;
+//import com.market.sadang.config.handler.StompHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.ChannelRegistration;
@@ -13,7 +13,7 @@ import org.springframework.web.socket.config.annotation.*;
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
-    private final StompHandler stompHandler;
+//    private final StompHandler stompHandler;
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {

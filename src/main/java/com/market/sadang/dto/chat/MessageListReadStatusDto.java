@@ -11,8 +11,8 @@ import lombok.Setter;
 public class MessageListReadStatusDto {
 
     private String roomId;
-    private String buyerName;
-    private String sellerName;
+    private String buyer;
+    private String seller;
     private String boardTitle;
     private int countReadStatus;
     private String lastMessageTime;
@@ -23,8 +23,8 @@ public class MessageListReadStatusDto {
     @Builder
     public MessageListReadStatusDto(ChatRoom entity, int countReadStatus, String lastMessageTime) {
         this.roomId = entity.getRoomId();
-        this.buyerName = entity.getBuyerName();
-        this.sellerName = entity.getSellerName();
+        this.buyer = entity.getBuyer().getUsername();
+        this.seller = entity.getSeller().getUsername();
         this.boardTitle = entity.getBoardTitle();
         this.countReadStatus = countReadStatus;
         this.lastMessageTime = lastMessageTime;
