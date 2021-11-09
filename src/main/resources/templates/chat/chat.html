@@ -121,7 +121,8 @@
 
                             <!--                            메세지-->
                             <div class="mesgs">
-                                <nav class="navbar navbar-light light-blue lighten-4">
+                                <nav class="navbar navbar-light light-blue lighten-4"
+                                     th:if="${not #strings.isEmpty(thisRoom)}">
                                     <!-- Navbar brand -->
                                     <a class="navbar-brand" href="#"></a>
                                     <div class="btn-group">
