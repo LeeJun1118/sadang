@@ -30,9 +30,28 @@ public class BuyInterestedService {
         return buyInterestedRepository.findAllByMemberAndInterestedStatus(member, interested);
     }
 
-    public String findByBoardId(Long boardId) {
+    public String findByBoardIdBuyStatus(Long boardId) {
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
-        return ""+buyInterestedRepository.findByBoard(board).getBuyStatus();
+        String status = null;
+        try {
+            status = "" + buyInterestedRepository.findByBoard(board).getBuyStatus();
+            return status;
+        } catch (Exception e) {
+            return "none";
+        }
+
+    }
+
+    public String findByBoardIdInterestedStatus(Long boardId) {
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
+        String status = null;
+        try {
+            status = "" + buyInterestedRepository.findByBoard(board).getInterestedStatus();
+            return status;
+        } catch (Exception e) {
+            return "none";
+        }
     }
 }

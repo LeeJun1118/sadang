@@ -14,10 +14,7 @@ import com.market.sadang.dto.member.MyBoardListResponseDto;
 import com.market.sadang.dto.myFile.MyFileDto;
 import com.market.sadang.dto.myFile.MyFileResponseDto;
 import com.market.sadang.repository.ChatRoomRepository;
-import com.market.sadang.service.BoardService;
-import com.market.sadang.service.ChatRoomService;
-import com.market.sadang.service.MemberService;
-import com.market.sadang.service.MyFileService;
+import com.market.sadang.service.*;
 import com.market.sadang.service.authUtil.CookieUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -46,6 +43,7 @@ public class BoardController {
     private final ChatRoomRepository chatRoomRepository;
     private final CookieUtil cookieUtil;
     private final ChatRoomService chatRoomService;
+    private final BuyInterestedService buyInterestedService;
 
     // 글 쓰기 폼
     @GetMapping("/board/new")
@@ -105,9 +103,12 @@ public class BoardController {
 
         BoardResponseDto boardResponseDto = boardService.searchById(id, myFileIdList);
 
+        String interested = buyInterestedService.findByBoardIdInterestedStatus(id);
+
         List<ChatRoom> roomList = chatRoomService.findRoomList(request);
         modelAndView.addObject("roomIdList", roomList);
         modelAndView.addObject("username", username);
+        modelAndView.addObject("interested", interested);
 
         modelAndView.addObject("board", boardResponseDto);
         modelAndView.setViewName("board/showBoard");

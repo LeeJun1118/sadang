@@ -167,7 +167,7 @@ public class ChatRoomController {
         // 현재 입장한 채팅방
         ChatRoom thisRoom = chatRoomService.findByRoomId(roomId);
 
-        String buy = buyInterestedService.findByBoardId(thisRoom.getBoardId());
+        String buy = buyInterestedService.findByBoardIdBuyStatus(thisRoom.getBoardId());
 
 
         // 채팅방에 입장 시 그 방의 모든 안읽은 메세지를 읽음으로 처리

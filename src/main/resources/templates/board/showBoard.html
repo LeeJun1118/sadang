@@ -54,6 +54,13 @@
 
                     <ul class="nav justify-content-end">
                         <li class="nav-item">
+                            <span th:classappend="${board.member == username ? 'd-none' : ''}">
+                                <a id="interested" class="btn" th:href="@{/board/interested/{id}(id=${board.id})}"
+                                   th:classappend="${interested == 'none' ? '' : 'd-none'}">찜하기</a>
+                                <a id="interested-cancle" class="btn" th:href="@{/board/interested/{id}(id=${board.id})}"
+                                   th:classappend="${interested == 'interested' ? '' : 'd-none'}">찜 취소하기</a>
+                            </span>
+
                             <a id="sold-board" class="btn" th:href="@{/board/sold/{id}(id=${board.id})}"
                                th:classappend="${board.member == username ? '' : 'd-none'}">거래 완료</a>
                             <a id="modify-board" class="btn" th:href="@{/board/update/{id}(id=${board.id})}"
