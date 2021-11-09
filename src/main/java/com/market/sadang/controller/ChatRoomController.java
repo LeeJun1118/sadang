@@ -11,10 +11,7 @@ import com.market.sadang.dto.member.MyChatRoomListResponseDto;
 import com.market.sadang.repository.BoardRepository;
 import com.market.sadang.repository.ChatMessageRepository;
 import com.market.sadang.repository.ChatRoomRepository;
-import com.market.sadang.service.BoardService;
-import com.market.sadang.service.ChatMessageService;
-import com.market.sadang.service.ChatRoomService;
-import com.market.sadang.service.MemberService;
+import com.market.sadang.service.*;
 import com.market.sadang.service.authUtil.CookieUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
@@ -38,6 +35,7 @@ public class ChatRoomController {
     private final ChatMessageRepository chatMessageRepository;
     private final ChatRoomService chatRoomService;
     private final ChatMessageService chatMessageService;
+    private final BuyInterestedService buyInterestedService;
 
     //*
     // 채팅 리스트 화면
@@ -169,6 +167,9 @@ public class ChatRoomController {
         // 현재 입장한 채팅방
         ChatRoom thisRoom = chatRoomService.findByRoomId(roomId);
 
+        String buy = buyInterestedService.findByBoardId(thisRoom.getBoardId());
+
+
         // 채팅방에 입장 시 그 방의 모든 안읽은 메세지를 읽음으로 처리
         List<ChatMessage> messageList = chatMessageRepository.findAllByRoomIdAndReceiverAndReceiverStatus(roomId, username, ReadStatus.N);
         for (ChatMessage message : messageList) {
@@ -184,9 +185,11 @@ public class ChatRoomController {
             messages.add(new ChatMessageListTimeDto(thisMessage));
         }
 
-        model.addAttribute("roomList", roomListReadStatus);
 
+
+        model.addAttribute("roomList", roomListReadStatus);
         model.addAttribute("thisRoom", roomId);
+        model.addAttribute("buy", buy);
         model.addAttribute("username", username);
         model.addAttribute("messages", messages);
         return "/chat/chat";
@@ -205,7 +208,6 @@ public class ChatRoomController {
             if (Objects.equals(username, message.getReceiver()))
                 chatMessageService.update(message.getId());
         }
-        System.out.println("또 어디가 문제냐");
         return 0;
     }
 }

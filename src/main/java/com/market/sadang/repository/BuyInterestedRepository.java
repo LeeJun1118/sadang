@@ -1,5 +1,6 @@
 package com.market.sadang.repository;
 
+import com.market.sadang.domain.Board;
 import com.market.sadang.domain.BoardStatus;
 import com.market.sadang.domain.BuyInterested;
 import com.market.sadang.domain.Member;
@@ -13,4 +14,6 @@ public interface BuyInterestedRepository extends JpaRepository<BuyInterested, Lo
     List<BuyInterested> findAllByMemberAndBuyStatus(Member member, BoardStatus buy);
 
     List<BuyInterested> findAllByMemberAndInterestedStatus(Member member, BoardStatus interested);
+
+    BuyInterested findByBoard(Board board);
 }

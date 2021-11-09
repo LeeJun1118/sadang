@@ -130,9 +130,14 @@
                                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             메뉴
                                         </button>
+
                                         <div class="dropdown-menu dropdown-menu-right">
                                             <a class="dropdown-item" type="button"
+                                               th:if="${buy == 'none'}"
                                                th:href="@{/board/buy/{roomId}(roomId=${thisRoom})}">구매하기</a>
+                                            <a class="dropdown-item" type="button"
+                                               th:if="${buy == 'buy'}"
+                                               th:href="@{/board/buy/{roomId}(roomId=${thisRoom})}">구매 취소하기</a>
                                             <a class="dropdown-item" type="button" href="#">방 삭제</a>
                                         </div>
                                     </div>
