@@ -22,12 +22,11 @@ public class BuyInterestedService {
         return buyInterestedRepository.findByMember(member);
     }
 
-    public List<BuyInterested> findByMemberAndBuyStatus(Member member, BoardStatus buy) {
-        return buyInterestedRepository.findAllByMemberAndBuyStatus(member, buy);
-    }
-
-    public List<BuyInterested> findByMemberAndInterestedStatus(Member member, BoardStatus interested) {
-        return buyInterestedRepository.findAllByMemberAndInterestedStatus(member, interested);
+    public List<BuyInterested> findByMemberAndBuyStatusOrInterestedStatus(Member member, BoardStatus status) {
+        if (status == BoardStatus.buy)
+        return buyInterestedRepository.findAllByMemberAndBuyStatus(member, status);
+        else
+            return buyInterestedRepository.findAllByMemberAndInterestedStatus(member, status);
     }
 
     public String findByBoardIdBuyStatus(Long boardId) {

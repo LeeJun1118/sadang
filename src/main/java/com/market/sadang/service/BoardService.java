@@ -215,13 +215,7 @@ public class BoardService {
         Board board;
 
         // status 로 구매 리스트, 관심 리스트 정함
-        if (status == BoardStatus.buy) {
-            buyOrInterestedList = buyInterestedService.findByMemberAndBuyStatus(member, status);
-        }
-        if (status == BoardStatus.interested) {
-            buyOrInterestedList = buyInterestedService.findByMemberAndInterestedStatus(member, status);
-        }
-
+        buyOrInterestedList = buyInterestedService.findByMemberAndBuyStatusOrInterestedStatus(member, status);
 
         if (buyOrInterestedList == null)
             return null;

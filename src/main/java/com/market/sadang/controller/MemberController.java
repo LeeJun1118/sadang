@@ -14,6 +14,7 @@ import com.market.sadang.repository.ChatMessageRepository;
 import com.market.sadang.repository.ChatRoomRepository;
 import com.market.sadang.repository.MemberRepository;
 import com.market.sadang.service.BoardService;
+import com.market.sadang.service.BuyInterestedService;
 import com.market.sadang.service.ChatRoomService;
 import com.market.sadang.service.MemberService;
 import com.market.sadang.service.authUtil.AuthService;
@@ -55,6 +56,7 @@ public class MemberController {
     private final ChatRoomRepository chatRoomRepository;
     private final ChatRoomService chatRoomService;
     private final ChatMessageRepository chatMessageRepository;
+    private final BuyInterestedService buyInterestedService;
 
 //    private final JwtRequestFilter jwtRequestFilter;
 
@@ -335,11 +337,12 @@ public class MemberController {
         Member member = memberService.searchMemberId(request);
         int countSellBoard = boardService.countAllByMemberBoardStatus(member, BoardStatus.sell);
         int countSoldBoard = boardService.countAllByMemberBoardStatus(member, BoardStatus.sold);
-/*        int countBuyBoard = boardService.countAllByBuyerBoardStatus(member, BoardStatus.buy);
-        int countInterestedBoard = boardService.countAllByBuyerBoardStatus(member, BoardStatus.interested);*/
+        int countBuyBoard = buyInterestedService.findByMemberAndBuyStatusOrInterestedStatus(member, BoardStatus.buy).size();
+        int countInterestedBoard = buyInterestedService.findByMemberAndBuyStatusOrInterestedStatus(member, BoardStatus.interested).size();
         int countChatRoom = chatRoomRepository.countChatRoomBySellerNameOrBuyerName(member.getUsername(), member.getUsername());
 
-        MemberPageResponseDto memberPageResponseDto = new MemberPageResponseDto(member, countSellBoard, countSoldBoard,0,0);
+
+        MemberPageResponseDto memberPageResponseDto = new MemberPageResponseDto(member, countSellBoard, countSoldBoard, countBuyBoard, countInterestedBoard);
 
         List<ChatRoom> roomList = chatRoomService.findRoomList(request);
         modelAndView.addObject("roomIdList", roomList);
@@ -391,14 +394,14 @@ public class MemberController {
         //로그인 하지 않은 사용자라면 -1 반환
         try {
             Member member = memberService.searchMemberId(request);
-            if (member != null){
+            if (member != null) {
                 //receiver = member.gerusername , receiverStatus = N
                 unReadMessages = chatMessageRepository.countAllByReceiverAndReceiverStatus(member.getUsername(), ReadStatus.N);
                 return unReadMessages;
             }
 
         } catch (Exception e) {
-            System.out.println("/loginCheck 에서 오류 발생"+ e.getMessage());
+            System.out.println("/loginCheck 에서 오류 발생" + e.getMessage());
         }
         System.out.println("/loginCheck == unReadMessages : " + unReadMessages);
         return unReadMessages;
