@@ -28,7 +28,7 @@
                 </nav>
                 </br>
                 <div class="row">
-                    <div th:each="board, stat : ${myBoardList}" class="col-sm-3 p-1">
+                    <div th:each="board, stat : ${boardList}" class="col-sm-3 p-1">
                         <div class="card mb-3 p-0 border-0">
                             <div class="card-body cursor-pointer border-0">
                                 <div th:onclick="'javascript:goBoard('+ ${board.id} + ');'"
@@ -43,7 +43,7 @@
 
                                 <ul class="nav justify-content-center">
                                     <li class="nav-item">
-                                        <a class="btn" th:href="@{/board/buy/{id}(id=${board.id})}">구매 하기</a>
+                                        <a class="btn" th:href="@{/board/buy/{id}(id=${board.id})}">삭제하기</a>
                                     </li>
                                 </ul>
 

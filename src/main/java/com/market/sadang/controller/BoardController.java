@@ -84,7 +84,7 @@ public class BoardController {
 
     // 게시글 보기
     @GetMapping("/board/{id}")
-    public ModelAndView searchById(@PathVariable Long id, ModelAndView modelAndView,HttpServletRequest request) {
+    public ModelAndView searchById(@PathVariable Long id, ModelAndView modelAndView, HttpServletRequest request) {
 
         //게시글 id로 해당 글의 첨부파일 전체 조회
         List<MyFileResponseDto> myFileResponseDtoList = myFileService.findAllByBoard(id);
@@ -95,7 +95,7 @@ public class BoardController {
         String username = null;
         try {
             username = memberService.searchMemberId(request).getUsername();
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
 
@@ -255,7 +255,7 @@ public class BoardController {
 
     @GetMapping("/myBoard/delete/{id}")
     public ModelAndView deleteMyBoard(@PathVariable Long id,
-                               ModelAndView modelAndView) {
+                                      ModelAndView modelAndView) {
         boardService.delete(id);
         modelAndView.setViewName("redirect:/salesHistory");
         return modelAndView;
@@ -263,7 +263,7 @@ public class BoardController {
 
     @GetMapping("/sell")
     public ModelAndView sell(HttpServletRequest request,
-                                ModelAndView modelAndView) {
+                             ModelAndView modelAndView) {
         Member member = memberService.searchMemberId(request);
         List<MyBoardListResponseDto> boardList = boardService.boardListMemberAndBoardStatus(member, BoardStatus.sell);
 
@@ -293,14 +293,14 @@ public class BoardController {
 
     @GetMapping("/buy")
     public ModelAndView buy(HttpServletRequest request,
-                             ModelAndView modelAndView) {
-        Member member = memberService.searchMemberId(request);
-//        List<MyBoardListResponseDto> boardList = boardService.boardListBuyerAndBoardStatus(member, BoardStatus.buy);
+                            ModelAndView modelAndView) {
+        List<MyBoardListResponseDto> boardList =
+                boardService.findBoardListByMemberAndBuyStatusOrInterestedStatus(request, BoardStatus.buy);
 
         List<ChatRoom> roomList = chatRoomService.findRoomList(request);
         modelAndView.addObject("roomIdList", roomList);
 
-//        modelAndView.addObject("boardList", boardList);
+        modelAndView.addObject("boardList", boardList);
         modelAndView.setViewName("member/purchaseHistory");
 
         return modelAndView;
@@ -308,14 +308,14 @@ public class BoardController {
 
     @GetMapping("/interested")
     public ModelAndView interested(HttpServletRequest request,
-                            ModelAndView modelAndView) {
-        Member member = memberService.searchMemberId(request);
-//        List<MyBoardListResponseDto> boardList = boardService.boardListBuyerAndBoardStatus(member, BoardStatus.buy);
+                                   ModelAndView modelAndView) {
+        List<MyBoardListResponseDto> boardList =
+                boardService.findBoardListByMemberAndBuyStatusOrInterestedStatus(request, BoardStatus.interested);
 
         List<ChatRoom> roomList = chatRoomService.findRoomList(request);
         modelAndView.addObject("roomIdList", roomList);
 
-//        modelAndView.addObject("boardList", boardList);
+        modelAndView.addObject("boardList", boardList);
         modelAndView.setViewName("member/interestedHistory");
 
         return modelAndView;
@@ -336,11 +336,11 @@ public class BoardController {
     @GetMapping("/board/buy/{roomId}")
     public ModelAndView bought(@PathVariable String roomId,
                                HttpServletRequest request,
-                             ModelAndView modelAndView) {
+                               ModelAndView modelAndView) {
 
         ChatRoom chatRoom = chatRoomService.findByRoomId(roomId);
         System.out.println(chatRoom.getBoardId());
-        boardService.buy(chatRoom.getBoardId(),request);
+        boardService.buy(chatRoom.getBoardId(), request);
 
         modelAndView.setViewName("redirect:/chat/room/enter/" + roomId);
         return modelAndView;
@@ -348,9 +348,10 @@ public class BoardController {
 
     @GetMapping("/board/interested/{id}")
     public ModelAndView interested(@PathVariable Long id,
-                               ModelAndView modelAndView) {
+                                   HttpServletRequest request,
+                                   ModelAndView modelAndView) {
 
-        boardService.interested(id);
+        boardService.interested(id, request);
 
         modelAndView.setViewName("redirect:/board/" + id);
         return modelAndView;

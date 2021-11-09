@@ -37,6 +37,8 @@ public class BoardService {
     private final FileHandler fileHandler;
     private final MemberService memberService;
     private final BuyInterestedRepository buyInterestedRepository;
+    private final BuyInterestedService buyInterestedService;
+
 
     @Transactional
     public Long create(BoardCreateRequestDto requestDto,
@@ -94,24 +96,16 @@ public class BoardService {
             board.sellerStatus(BoardStatus.sell);
     }
 
-    @Transactional
+/*    @Transactional
     public void buyerStatus(Long id, HttpServletRequest request) {
         Board board = boardRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
-
         Member member = memberService.searchMemberId(request);
 
         if (Objects.equals(member.getUsername(), board.getMember().getUsername()))
             return;
-    }
+    }*/
 
-    @Transactional
-    public void interested(Long id) {
-        Board board = boardRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
-
-        board.sellerStatus(BoardStatus.interested);
-    }
 
     // readonly : 트랜잭션 범위는 유지하되 기능을 조회로 제한하여 조회 속도 개선
     @Transactional(readOnly = true)
@@ -211,19 +205,72 @@ public class BoardService {
         return boardRepository.findAllByMemberAndSellStatus(member, status);
     }
 
+    @Transactional
     public void buy(Long boardId, HttpServletRequest request) {
         Member member = memberService.searchMemberId(request);
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시물이 존재하지 않습니다."));
         BuyInterested buyInterested = buyInterestedRepository.findByMember(member);
 
-        if (buyInterested == null){
-            buyInterestedRepository.save(new BuyInterested(member, board, BoardStatus.buy));
+        if (buyInterested != null) {
+            if (buyInterested.getBuyStatus() == BoardStatus.buy)
+                buyInterested.buy(BoardStatus.none);
+            else
+                buyInterested.buy(BoardStatus.buy);
+        } else
+            buyInterestedRepository.save(new BuyInterested(member, board, BoardStatus.buy, BoardStatus.none));
+
+    }
+
+    @Transactional
+    public void interested(Long id, HttpServletRequest request) {
+        Board board = boardRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
+        Member member = memberService.searchMemberId(request);
+        BuyInterested buyInterested = buyInterestedService.findByMember(member);
+
+        if (buyInterested == null) {
+            buyInterestedRepository.save(new BuyInterested(member, board, BoardStatus.none, BoardStatus.interested));
+        } else {
+            if (buyInterested.getInterestedStatus() == BoardStatus.interested)
+                buyInterested.interested(BoardStatus.none);
+            else
+                buyInterested.interested(BoardStatus.interested);
         }
-        else if (buyInterested.getBuyStatus() == BoardStatus.buy)
-            buyInterested.buy(BoardStatus.none);
-        else
-            buyInterested.buy(BoardStatus.buy);
+    }
+
+    public List<MyBoardListResponseDto> findBoardListByMemberAndBuyStatusOrInterestedStatus(HttpServletRequest request, BoardStatus status) {
+        Member member = memberService.searchMemberId(request);
+        List<BuyInterested> buyOrInterestedList = null;
+        List<MyBoardListResponseDto> dtoList = new ArrayList<>();
+        Board board;
+
+        System.out.println("findBoardListByMemberAndBuyStatusOrInterestedStatus status : " + status);
+        System.out.println("findBoardListByMemberAndBuyStatusOrInterestedStatus BoardStatus : " + BoardStatus.buy);
+
+        if (status == BoardStatus.buy) {
+            buyOrInterestedList = buyInterestedService.findByMemberAndBuyStatus(member, status);
+        }
+        if (status == BoardStatus.interested) {
+            buyOrInterestedList = buyInterestedService.findByMemberAndInterestedStatus(member, status);
+        }
+
+
+        if (buyOrInterestedList == null)
+            return null;
+        else {
+            for (BuyInterested buyBoard : buyOrInterestedList) {
+                board = boardRepository.findById(buyBoard.getBoard().getId())
+                        .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
+                System.out.println("buyBoard.getBoard().getId() : "+buyBoard.getBoard().getId());
+                dtoList.add(new MyBoardListResponseDto(board));
+            }
+        }
+
+
+
+
+        return dtoList;
     }
 
     // 구매자와 BoardStatus 로 모든 게시글 찾기

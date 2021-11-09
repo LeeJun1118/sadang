@@ -28,18 +28,28 @@ public class BuyInterested {
     @JsonBackReference
     private Board board;
 
+    @Column
+    @Enumerated(EnumType.STRING)
     private BoardStatus buyStatus = BoardStatus.none;
+
+    @Column
+    @Enumerated(EnumType.STRING)
     private BoardStatus interestedStatus = BoardStatus.none;
 
 
     @Builder
-    public BuyInterested(Member member, Board board, BoardStatus buyStatus) {
+    public BuyInterested(Member member, Board board, BoardStatus buyStatus, BoardStatus interestedStatus) {
         this.member = member;
         this.board = board;
         this.buyStatus = buyStatus;
+        this.interestedStatus = interestedStatus;
     }
 
     public void buy(BoardStatus status){
         this.buyStatus = status;
+    }
+
+    public void interested(BoardStatus status){
+        this.interestedStatus = status;
     }
 }
