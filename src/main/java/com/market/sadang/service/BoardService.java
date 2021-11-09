@@ -30,9 +30,6 @@ import java.util.Objects;
 public class BoardService {
 
     private final BoardRepository boardRepository;
-    private final MemberRepository memberRepository;
-    private final JwtUtil jwtUtil;
-    private final CookieUtil cookieUtil;
     private final MyFileRepository fileRepository;
     private final FileHandler fileHandler;
     private final MemberService memberService;
@@ -96,17 +93,6 @@ public class BoardService {
             board.sellerStatus(BoardStatus.sell);
     }
 
-/*    @Transactional
-    public void buyerStatus(Long id, HttpServletRequest request) {
-        Board board = boardRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
-        Member member = memberService.searchMemberId(request);
-
-        if (Objects.equals(member.getUsername(), board.getMember().getUsername()))
-            return;
-    }*/
-
-
     // readonly : 트랜잭션 범위는 유지하되 기능을 조회로 제한하여 조회 속도 개선
     @Transactional(readOnly = true)
     public BoardResponseDto searchById(Long id, List<Long> fileIdList) {
@@ -118,7 +104,6 @@ public class BoardService {
     @Transactional(readOnly = true)
     public List<Board> searchAllDesc() {
         return boardRepository.findAllBySellStatus(Sort.by(Sort.Direction.DESC, "id"), BoardStatus.sell);
-//        return boardRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
     }
 
     @Transactional
@@ -161,7 +146,6 @@ public class BoardService {
 
     public List<Board> searchParam(String search) {
         return boardRepository.findAllByTitleContainingOrAddressContainingAndSellStatus(search, search, BoardStatus.sell);
-//        return boardRepository.findAllByTitleContainingOrAddressContaining(search, search);
     }
 
     public List<MyBoardListResponseDto> boardListMemberAndBoardStatus(Member member, BoardStatus status) {
@@ -176,35 +160,18 @@ public class BoardService {
         return dtoList;
     }
 
-    /*public List<MyBoardListResponseDto> boardListBuyerAndBoardStatus(Member buyer, BoardStatus status) {
-        List<Board> boardList = findByBuyerAndBoardStatus(buyer, status);
-        List<MyBoardListResponseDto> dtoList = new ArrayList<>();
-
-        if (boardList != null) {
-            for (Board board : boardList) {
-                dtoList.add(new MyBoardListResponseDto(board));
-            }
-        }
-        return dtoList;
-    }*/
-
-
     // 해당 사용자가 팔고 있는 모든 게시글의 수
     public int countAllByMemberBoardStatus(Member member, BoardStatus status) {
         return findByMemberAndBoardStatus(member, status).size();
     }
 
 
-    // 사용자가 구매한 모든 게시글의 수
-    /*public int countAllByBuyerBoardStatus(Member member, BoardStatus status) {
-        return findByBuyerAndBoardStatus(member, status).size();
-    }*/
-
     // 작성자와 BoardStatus 로 모든 게시글 찾기
     public List<Board> findByMemberAndBoardStatus(Member member, BoardStatus status) {
         return boardRepository.findAllByMemberAndSellStatus(member, status);
     }
 
+    // 구매 상품 등록, 해제
     @Transactional
     public void buy(Long boardId, HttpServletRequest request) {
         Member member = memberService.searchMemberId(request);
@@ -222,6 +189,7 @@ public class BoardService {
 
     }
 
+    // 관심 상품 등록, 해제
     @Transactional
     public void interested(Long id, HttpServletRequest request) {
         Board board = boardRepository.findById(id)
@@ -239,15 +207,14 @@ public class BoardService {
         }
     }
 
+    // 사용자의 구매리스트 또는 관심 리스트
     public List<MyBoardListResponseDto> findBoardListByMemberAndBuyStatusOrInterestedStatus(HttpServletRequest request, BoardStatus status) {
         Member member = memberService.searchMemberId(request);
         List<BuyInterested> buyOrInterestedList = null;
         List<MyBoardListResponseDto> dtoList = new ArrayList<>();
         Board board;
 
-        System.out.println("findBoardListByMemberAndBuyStatusOrInterestedStatus status : " + status);
-        System.out.println("findBoardListByMemberAndBuyStatusOrInterestedStatus BoardStatus : " + BoardStatus.buy);
-
+        // status 로 구매 리스트, 관심 리스트 정함
         if (status == BoardStatus.buy) {
             buyOrInterestedList = buyInterestedService.findByMemberAndBuyStatus(member, status);
         }
@@ -259,22 +226,12 @@ public class BoardService {
         if (buyOrInterestedList == null)
             return null;
         else {
-            for (BuyInterested buyBoard : buyOrInterestedList) {
-                board = boardRepository.findById(buyBoard.getBoard().getId())
+            for (BuyInterested buyInterested : buyOrInterestedList) {
+                board = boardRepository.findById(buyInterested.getBoard().getId())
                         .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
-                System.out.println("buyBoard.getBoard().getId() : "+buyBoard.getBoard().getId());
                 dtoList.add(new MyBoardListResponseDto(board));
             }
+            return dtoList;
         }
-
-
-
-
-        return dtoList;
     }
-
-    // 구매자와 BoardStatus 로 모든 게시글 찾기
-    /*public List<Board> findByBuyerAndBoardStatus(Member buyer, BoardStatus status) {
-        return boardRepository.findAllByBuyerAndBuyStatus(buyer, status);
-    }*/
 }

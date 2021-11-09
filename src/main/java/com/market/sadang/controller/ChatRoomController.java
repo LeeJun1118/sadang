@@ -141,7 +141,6 @@ public class ChatRoomController {
         }
 
         ChatRoom chatRoom = chatRoomRepository.findByBoardIdAndBuyerName(id, buyerName);
-//        String token = cookieUtil.getCookie(request, "accessToken").getValue();
 
         if (chatRoom == null) {
             String roomId = UUID.randomUUID().toString();
@@ -152,7 +151,6 @@ public class ChatRoomController {
 
         model.addAttribute("room", chatRoom);
         model.addAttribute("username", buyerName);
-//        model.addAttribute("token", token);
 
         return "redirect:/chat/room/enter/" + chatRoom.getRoomId();
     }
@@ -173,7 +171,6 @@ public class ChatRoomController {
 
         // 채팅방에 입장 시 그 방의 모든 안읽은 메세지를 읽음으로 처리
         List<ChatMessage> messageList = chatMessageRepository.findAllByRoomIdAndReceiverAndReceiverStatus(roomId, username, ReadStatus.N);
-//        List<ChatMessage> messageList = chatMessageRepository.findAllByRoomIdAndReceiverAndReceiverStatus(roomId, username, ReadStatus.N);
         for (ChatMessage message : messageList) {
             if (Objects.equals(username, message.getReceiver()))
                 chatMessageService.update(message.getId());
@@ -192,7 +189,6 @@ public class ChatRoomController {
         model.addAttribute("thisRoom", roomId);
         model.addAttribute("username", username);
         model.addAttribute("messages", messages);
-//        model.addAttribute("token", token);
         return "/chat/chat";
     }
 
@@ -212,35 +208,4 @@ public class ChatRoomController {
         System.out.println("또 어디가 문제냐");
         return 0;
     }
-
-    // 특정 채팅방 조회
-    /*@GetMapping("/room/{roomId}")
-    @ResponseBody
-    public ChatRoom roomInfo(@PathVariable String roomId) {
-        return chatRoomRepository.findRoomById(roomId);
-    }*/
-
-    /*@GetMapping("/myChatRoom")
-    public ModelAndView myChatRoom(HttpServletRequest request,
-                                   ModelAndView modelAndView) {
-        Member member = memberService.searchMemberId(request);
-        List<ChatRoom> chatRoomList = chatRoomRepository
-                .findBySellerNameOrBuyerName(member.getUsername(), member.getUsername());
-
-        List<MyChatRoomListResponseDto> dtoList = new ArrayList<>();
-
-        if (chatRoomList != null) {
-            for (ChatRoom chatRoom : chatRoomList) {
-                dtoList.add(new MyChatRoomListResponseDto(chatRoom));
-            }
-        }
-
-        List<ChatRoom> roomList = chatRoomService.findRoomList(request);
-        modelAndView.addObject("roomIdList", roomList);
-
-        modelAndView.addObject("myChatRoomList", dtoList);
-        modelAndView.setViewName("/member/myChatRoom");
-
-        return modelAndView;
-    }*/
 }
