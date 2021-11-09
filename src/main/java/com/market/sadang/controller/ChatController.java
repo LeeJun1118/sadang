@@ -84,7 +84,7 @@ public class ChatController {
         }*/
 
 
-        ChatMessage chatMessage = chatMessageRepository.save(new ChatMessage(messageDto,sender,receiver));
+        ChatMessage chatMessage = chatMessageRepository.save(new ChatMessage(messageDto,chatRoom,sender,receiver));
         ChatMessageDto dto = new ChatMessageDto(chatMessage);
 
         try {

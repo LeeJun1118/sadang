@@ -29,18 +29,15 @@ public class ChatMessage extends BaseTimeEntity{
     private MessageType type; // 메시지 타입
 
     @ManyToOne
-    @JsonIdentityInfo(generator= ObjectIdGenerators.IntSequenceGenerator.class, property="@id")
     private ChatRoom chatRoom;
 
     @Column
     private String roomId; // 방번호
 
     @ManyToOne
-    @JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class, property="@id")
     private Member sender; // 메시지 보낸사람
 
     @ManyToOne
-    @JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class, property="@id")
     private Member receiver; // 메시지 받는 사람
 
     @Column
@@ -52,21 +49,10 @@ public class ChatMessage extends BaseTimeEntity{
     @Enumerated(EnumType.STRING)
     private ReadStatus receiverStatus;
 
-
     @Builder
-    public ChatMessage(ChatMessage entity) {
-        this.type = entity.getType();
-        this.roomId = entity.getRoomId();
-        this.sender = entity.getSender();
-        this.receiver = entity.getReceiver();
-        this.message = entity.getMessage();
-        this.senderStatus = entity.getSenderStatus();
-        this.receiverStatus = entity.getReceiverStatus();
-    }
-
-    @Builder
-    public ChatMessage(ChatMessageDto dto,Member sender, Member receiver) {
+    public ChatMessage(ChatMessageDto dto,ChatRoom chatRoom,Member sender, Member receiver) {
         this.type = dto.getType();
+        this.chatRoom = chatRoom;
         this.roomId = dto.getRoomId();
         this.sender = sender;
         this.receiver = receiver;

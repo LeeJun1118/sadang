@@ -54,7 +54,7 @@ public class ChatRoom implements Serializable {
     @Column
     private String boardTitle;
 
-    @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.MERGE, orphanRemoval = true)
+    @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ChatMessage> chatMessage = new ArrayList<>();
 
     public ChatRoom(String roomId, Long boardId, Member seller, Member buyer, String boardTitle) {
@@ -63,5 +63,13 @@ public class ChatRoom implements Serializable {
         this.seller = seller;
         this.buyer = buyer;
         this.boardTitle = boardTitle;
+    }
+
+    public void deleteSeller(){
+        this.seller = null;
+    }
+
+    public void deleteBuyer(){
+        this.buyer = null;
     }
 }

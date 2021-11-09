@@ -9,12 +9,14 @@ import com.market.sadang.repository.ChatMessageRepository;
 import com.market.sadang.repository.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 @RequiredArgsConstructor
 @Service
@@ -92,5 +94,24 @@ public class ChatRoomService {
         }
 
         return listDto;
+    }
+
+    @Transactional
+    public void delete(String roomId, HttpServletRequest request) {
+
+        Member user = memberService.searchMemberId(request);
+        ChatRoom chatRoom = findByRoomId(roomId);
+
+        if (chatRoom.getBuyer() == null || chatRoom.getSeller() == null)
+            chatRoomRepository.delete(chatRoom);
+        else {
+
+            if (Objects.equals(chatRoom.getBuyer().getUsername(), user.getUsername())) {
+                chatRoom.deleteBuyer();
+            } else
+                chatRoom.deleteSeller();
+        }
+
+
     }
 }

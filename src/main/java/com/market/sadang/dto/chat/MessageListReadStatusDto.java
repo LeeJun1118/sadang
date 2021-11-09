@@ -22,12 +22,22 @@ public class MessageListReadStatusDto {
 
     @Builder
     public MessageListReadStatusDto(ChatRoom entity, int countReadStatus, String lastMessageTime) {
+
         this.roomId = entity.getRoomId();
-        this.buyer = entity.getBuyer().getUsername();
-        this.seller = entity.getSeller().getUsername();
         this.boardTitle = entity.getBoardTitle();
         this.countReadStatus = countReadStatus;
         this.lastMessageTime = lastMessageTime;
+
+        if (entity.getBuyer() == null)
+            this.buyer = null;
+        else
+            this.buyer = entity.getBuyer().getUsername();
+
+        if (entity.getSeller() == null)
+            this.seller = null;
+        else
+            this.seller = entity.getSeller().getUsername();
+
        /* this.countSenderReadStatus = countSenderReadStatus;
         this.countReceiverReadStatus = countReceiverReadStatus;*/
     }

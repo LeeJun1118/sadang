@@ -94,7 +94,6 @@ public class ChatRoomController {
         }
 
 
-
         //내가 입장한 모든 방 각각의 메세지들 중 sender가 내가 아닌 메세지들의 readStatus가 N 인 메세지들의 수를 같이 반환
         List<MessageListReadStatusDto> roomListReadStatus = chatRoomService.findAllRoomReadStatus(roomList, username);
 
@@ -163,7 +162,7 @@ public class ChatRoomController {
         // 내가 입장해 있는 전체 채팅 방 목록
         List<ChatRoom> roomList = chatRoomService.findRoomList(request);
 
-        for (ChatRoom room : roomList){
+        for (ChatRoom room : roomList) {
             System.out.println("roomDetail : " + room.getRoomId());
         }
 
@@ -187,11 +186,11 @@ public class ChatRoomController {
         List<MessageListReadStatusDto> roomListReadStatus = chatRoomService.findAllRoomReadStatus(roomList, username);
         List<ChatMessage> roomMessageList = chatMessageRepository.findAllByRoomId(thisRoom.getRoomId());
         List<ChatMessageListTimeDto> messages = new ArrayList<>();
-        for (ChatMessage thisMessage : roomMessageList){
+        for (ChatMessage thisMessage : roomMessageList) {
             messages.add(new ChatMessageListTimeDto(thisMessage));
         }
 
-        for (MessageListReadStatusDto dto : roomListReadStatus){
+        for (MessageListReadStatusDto dto : roomListReadStatus) {
             System.out.println("roomDetail 2 : " + dto.getRoomId());
         }
 
@@ -217,5 +216,14 @@ public class ChatRoomController {
                 chatMessageService.update(message.getId());
         }
         return 0;
+    }
+
+    @GetMapping("/room/delete/{roomId}")
+    public String deleteChatRoom(@PathVariable String roomId, HttpServletRequest request) {
+        //사용자 이름
+        chatRoomService.delete(roomId,request);
+
+
+        return "redirect:/chat/myChatRoom";
     }
 }
