@@ -357,4 +357,15 @@ public class BoardController {
         modelAndView.setViewName("redirect:/board/" + id);
         return modelAndView;
     }
+
+    @GetMapping("/myBoard/interested/{id}")
+    public ModelAndView myInterested(@PathVariable Long id,
+                                   HttpServletRequest request,
+                                   ModelAndView modelAndView) {
+
+        boardService.interested(id, request);
+
+        modelAndView.setViewName("redirect:/interested");
+        return modelAndView;
+    }
 }
