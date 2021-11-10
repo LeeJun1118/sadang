@@ -11,7 +11,10 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -21,15 +24,17 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FileHandler {
 
+    private static final int Thumbnail_Width = 240;
+    private static final int Thumbnail_Height = 240;
     private final MyFileService myFileService;
     private final MyFileRepository myFileRepository;
 
-    public List<MyFile> parseFileInfo(Board board, List<MultipartFile> multipartFiles) throws Exception{
+    public List<MyFile> parseFileInfo(Board board, List<MultipartFile> multipartFiles) throws Exception {
         //반환할 파일 리스트
         List<MyFile> fileList = new ArrayList<>();
 
         //전달되어 온 파일이 존재할 경우
-        if(!CollectionUtils.isEmpty(multipartFiles)){
+        if (!CollectionUtils.isEmpty(multipartFiles)) {
             //파일명을 업로드 한 날짜로 변환하여 저장
             LocalDateTime now = LocalDateTime.now();
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
@@ -52,7 +57,51 @@ public class FileHandler {
                     System.out.println("file: was not successful");
             }
 
-            for (MultipartFile multipartFile : multipartFiles){
+            // 썸네일 만들기
+            if (!multipartFiles.get(0).isEmpty()) {
+                File thumbnailFile;
+                String thumbnailContentType = multipartFiles.get(0).getContentType();
+                String thumbnailOriginalFileExtension = null;
+
+                //확장자명이 존재하지 않을 경우 처리 안함
+                if (ObjectUtils.isEmpty(thumbnailContentType)) {
+                } else {
+                    if (thumbnailContentType.contains("image/jpeg"))
+                        thumbnailOriginalFileExtension = ".jpg";
+                    else if (thumbnailContentType.contains("image/png"))
+                        thumbnailOriginalFileExtension = ".png";
+                }
+                String thumbnailFileName = "thumbnail_"  + System.nanoTime() + thumbnailOriginalFileExtension;
+
+                thumbnailFile = new File(absolutePath + path + File.separator + thumbnailFileName);
+                thumbnailFile.createNewFile();
+                FileOutputStream fos = new FileOutputStream(thumbnailFile);
+
+                // 썸네일 크기로 파일 자르기
+                BufferedImage bufferedImage = ImageIO.read(multipartFiles.get(0).getInputStream());
+                byte[] imageByteArray = myFileService.resizeImage(bufferedImage,Thumbnail_Width,Thumbnail_Height);
+                fos.write(imageByteArray);
+                fos.close();
+
+                MyFileDto myFileDto = MyFileDto.builder()
+                        .originFileName(multipartFiles.get(0).getOriginalFilename())
+                        .filePath(path + File.separator + thumbnailFileName)
+                        .fileSize((long) imageByteArray.length)
+                        .build();
+
+                MyFile uploadFile = new MyFile(
+                        myFileDto.getOriginFileName(),
+                        myFileDto.getFilePath(),
+                        myFileDto.getFileSize()
+                );
+
+                if (board.getId() != null)
+                    uploadFile.setBoard(board);
+
+                fileList.add(uploadFile);
+            }
+
+            for (MultipartFile multipartFile : multipartFiles) {
                 //파일의 확장자 추출
                 String contentType = multipartFile.getContentType();
                 String originalFileExtension;

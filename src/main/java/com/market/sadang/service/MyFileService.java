@@ -25,7 +25,9 @@ public class MyFileService {
     public List<MyFileResponseDto> findAllByBoard(Long boardId) {
         List<MyFile> myFiles = fileRepository.findAllByBoardId(boardId);
 
+        // 파일 경로 중 thumbnail_ 을 포함하지 않는 파일 리스트 반환
         return myFiles.stream()
+                .filter(f -> !f.getFilePath().contains("thumbnail_"))
                 .map(MyFileResponseDto::new)
                 .collect(Collectors.toList());
     }
