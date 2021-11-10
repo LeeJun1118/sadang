@@ -51,6 +51,8 @@ public class MyFileService {
     //썸네일 크기 조절
     public byte[] resizeImage(BufferedImage resizeImg, int Image_Width, int Image_Height) throws IOException {
 
+        System.out.println("Resize Image ~~ !");
+
         //원본 크기
         int originWidth = resizeImg.getWidth();
         int originHeight = resizeImg.getHeight();

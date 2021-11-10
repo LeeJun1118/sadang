@@ -51,8 +51,13 @@ public class MyFileController {
             path = "files" + File.separator + "thumbnail" + File.separator + "thumbnail.png";
         }
 
-        BufferedImage resizeThumbnail = ImageIO.read(new File(absolutePath + path));
-        byte[] imageByteArray = myFileService.resizeImage(resizeThumbnail,Thumbnail_Width,Thumbnail_Height);
+//        BufferedImage resizeThumbnail = ImageIO.read(new File(absolutePath + path));
+//        byte[] imageByteArray = myFileService.resizeImage(resizeThumbnail,Thumbnail_Width,Thumbnail_Height);
+
+        InputStream imageStream = new FileInputStream(absolutePath + path);
+        byte[] imageByteArray = IOUtils.toByteArray(imageStream);
+        imageStream.close();
+
 
         return new ResponseEntity<>(imageByteArray, HttpStatus.OK);
     }
