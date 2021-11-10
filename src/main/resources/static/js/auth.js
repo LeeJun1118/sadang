@@ -5,6 +5,25 @@ $(document).ready(function () {
 
     $(".next").click(function () {
 
+        // 입력 값 NULL 체크
+        var valid = true;
+        var stepForm, inForm;
+
+        stepForm = document.getElementsByClassName("step-form");
+        inForm = stepForm[0].getElementsByTagName("input");
+
+        for (i = 0; i < inForm.length; i++) {
+            if (inForm[i].value == "") {
+                inForm[i].className += " invalid";
+                valid = false;
+            }
+        }
+
+        // 입력 값이 Null 이면 false 반환
+        if (valid === false)
+            return valid;
+
+
         current_fs = $(this).parent();
         next_fs = $(this).parent().next();
 
@@ -285,6 +304,7 @@ function sample6_execDaumPostcode() {
             // 우편번호와 주소 정보를 해당 필드에 넣는다.
             document.getElementById('address').value = data.zonecode;
             document.getElementById("address").value = addr;
+            $("#address").attr('class','');
             // 커서를 상세주소 필드로 이동한다.
             // document.getElementById("sample6_detailAddress").focus();
         }

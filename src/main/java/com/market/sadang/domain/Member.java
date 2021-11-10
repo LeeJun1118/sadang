@@ -1,6 +1,7 @@
 package com.market.sadang.domain;
 
 import com.market.sadang.config.UserRole;
+import com.market.sadang.dto.form.SignUpForm;
 import com.market.sadang.init.Address;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -89,6 +90,15 @@ public class Member extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "buyer", cascade = CascadeType.MERGE, orphanRemoval = true)
     private List<ChatRoom> buyer = new ArrayList<>();
+
+    public Member(SignUpForm signUpForm) {
+        this.name = signUpForm.getName();
+        this.username = signUpForm.getUsername();
+        this.password = signUpForm.getPassword();
+        this.email = signUpForm.getEmail();
+        this.address = signUpForm.getAddress();
+        this.detailAddress = signUpForm.getDetailAddress();
+    }
 
     @Override
     public String toString() {

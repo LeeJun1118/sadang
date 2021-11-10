@@ -23,11 +23,11 @@
                                         <div class="form-card">
                                             <h3 class="fs-title">메일 인증</h3>
                                             </br>
-                                            <input type="hidden" name="name" th:field="*{name}">
-                                            <input type="hidden" name="username" th:field="*{username}">
-                                            <input type="hidden" name="password" th:field="*{password}">
-                                            <input type="hidden" name="address" th:field="*{address}">
-                                            <input type="hidden" name="detailAddress" th:field="*{detailAddress}">
+                                            <input class="d-none" type="hidden" name="name" th:field="*{name}">
+                                            <input class="d-none" type="hidden" name="username" th:field="*{username}">
+                                            <input class="d-none" type="hidden" name="password" th:field="*{password}">
+                                            <input class="d-none" type="hidden" name="address" th:field="*{address}">
+                                            <input class="d-none" type="hidden" name="detailAddress" th:field="*{detailAddress}">
                                             <input id="email" type="email" class="input-form" name="email"
                                                    th:field="*{email}" placeholder="메일을 입력해주세요."/>
                                         </div>
