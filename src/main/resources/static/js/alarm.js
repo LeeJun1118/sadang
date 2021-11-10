@@ -38,17 +38,12 @@ function connect() {
 
 
 function showGreeting(sender, message) {
-    /*$.each(get_input, function (index, value) {
-        if ($(value).val() == roomId){
-            $(value).innerHTML = $(value).innerHTML +
-                "<div>"
-        }
-    }*/
+
     var countMessages = $("#count-message");
     var count = countMessages.text();
 
 
-    $("#plus").css('display', '');
+    $("#plus").text('+');
     if (count === "" || !Number.isInteger(count) || count === 0)
         countMessages.text(1);
     else {

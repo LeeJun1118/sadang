@@ -24,9 +24,14 @@ public class MemberService {
     public Member searchMemberId(HttpServletRequest request) {
         Cookie jwtToken = cookieUtil.getCookie(request, "accessToken");
 
-        String memberId = jwtUtil.getUsername(jwtToken.getValue());
+        try {
+            String memberId = jwtUtil.getUsername(jwtToken.getValue());
+            return memberRepository.findByUsername(memberId);
 
-        return memberRepository.findByUsername(memberId);
+        } catch (Exception e) {
+            System.out.println("searchMemberId() ERROR : " + e.getMessage());
+            return null;
+        }
     }
 
     @Transactional

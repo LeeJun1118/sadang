@@ -49,9 +49,12 @@ public class BoardController {
     @GetMapping("/board/new")
     public ModelAndView boardForm(ModelAndView modelAndView, HttpServletRequest request) {
 
+        Member member = memberService.searchMemberId(request);
+
         List<ChatRoom> roomList = chatRoomService.findRoomList(request);
         modelAndView.addObject("roomIdList", roomList);
 
+        modelAndView.addObject("username", member.getUsername());
         modelAndView.addObject("boardForm", new BoardForm());
         modelAndView.setViewName("board/boardForm");
         return modelAndView;
@@ -139,7 +142,15 @@ public class BoardController {
         modelAndView.addObject("boardList", responseDtoList);
 
         List<ChatRoom> roomList = chatRoomService.findRoomList(request);
+
+        Member member = memberService.searchMemberId(request);
+        String username = null;
+        if (member != null)
+            username = member.getUsername();
+
+
         modelAndView.addObject("roomIdList", roomList);
+        modelAndView.addObject("username", username);
 
         modelAndView.setViewName("index");
         return modelAndView;
@@ -148,10 +159,12 @@ public class BoardController {
     @GetMapping("/board/update/{id}")
     public ModelAndView updateForm(@PathVariable Long id, ModelAndView modelAndView, HttpServletRequest request) {
         BoardUpdateRequestDto board = boardService.findById(id);
+        Member member = memberService.searchMemberId(request);
 
         List<ChatRoom> roomList = chatRoomService.findRoomList(request);
         modelAndView.addObject("roomIdList", roomList);
 
+        modelAndView.addObject("username", member.getUsername());
         modelAndView.addObject("boardForm", board);
         modelAndView.addObject("id", id);
         modelAndView.setViewName("board/updateBoard");
@@ -272,6 +285,7 @@ public class BoardController {
         modelAndView.addObject("roomIdList", roomList);
 
         modelAndView.addObject("boardList", boardList);
+        modelAndView.addObject("username", member.getUsername());
         modelAndView.setViewName("member/salesHistory");
 
         return modelAndView;
@@ -287,6 +301,7 @@ public class BoardController {
         modelAndView.addObject("roomIdList", roomList);
 
         modelAndView.addObject("boardList", boardList);
+        modelAndView.addObject("username", member.getUsername());
         modelAndView.setViewName("member/soldHistory");
 
         return modelAndView;
@@ -297,11 +312,13 @@ public class BoardController {
                             ModelAndView modelAndView) {
         List<MyBoardListResponseDto> boardList =
                 boardService.findBoardListByMemberAndBuyStatusOrInterestedStatus(request, BoardStatus.buy);
+        Member member = memberService.searchMemberId(request);
 
         List<ChatRoom> roomList = chatRoomService.findRoomList(request);
         modelAndView.addObject("roomIdList", roomList);
 
         modelAndView.addObject("boardList", boardList);
+        modelAndView.addObject("username", member.getUsername());
         modelAndView.setViewName("member/purchaseHistory");
 
         return modelAndView;
@@ -313,9 +330,12 @@ public class BoardController {
         List<MyBoardListResponseDto> boardList =
                 boardService.findBoardListByMemberAndBuyStatusOrInterestedStatus(request, BoardStatus.interested);
 
+        Member member = memberService.searchMemberId(request);
+
+
         List<ChatRoom> roomList = chatRoomService.findRoomList(request);
         modelAndView.addObject("roomIdList", roomList);
-
+        modelAndView.addObject("username", member.getUsername());
         modelAndView.addObject("boardList", boardList);
         modelAndView.setViewName("member/interestedHistory");
 

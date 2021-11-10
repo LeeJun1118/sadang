@@ -133,16 +133,13 @@ function showGreeting(message) {
 function showToastr(alarmRoomId) {
     var alarmRoom = $('.' + alarmRoomId);
     $('.' + alarmRoomId + 'plus').text('+');
-    $("#plus").css('display', '');
-    // alarmRoom.attr("class","p-1 rounded-circle bg-danger text-white");
+    $("#plus").text('+');
     var count = alarmRoom.text();
 
     alarmRoom.text(parseInt(count) + 1);
-    // alarmRoom.attr("class","p-1 rounded-circle bg-danger text-white float-right h6 " + alarmRoomId);
 
     if (count === "")
         alarmRoom.text(1);
-    // console.log("alarmRoomId==================" + alarmRoomId);
 
 
 
@@ -180,19 +177,13 @@ function send() {
     stompClient.send("/pub/chat/message", {/*'roomId' : roomId, 'username' :$("#nickname").val() */}, JSON.stringify(data));
     console.log(JSON.stringify(data))
 
-    /* var alarmRoom = $('.' + roomId);
-     var count = alarmRoom.text();
-     alarmRoom.text(parseInt(count) + 1);*/
 
     $("#message").val('');
 }
 
 
 
-
-// $(document).ready(function ($) {
 function alarmMessage() {
-    // $('.enterChatRoom').on('click', function (event) {
 
     $.ajax({
         type: "POST",
@@ -202,17 +193,6 @@ function alarmMessage() {
         contentType: "application/json",
         success: function (data) {
             console.log("JSON.parse Data===" + JSON.parse(data))
-
-          /*  unReads = $('.unRead');
-
-            values = data.alarmList;*/
-           /* $.each(values, function (index, value) {
-                console.log("#######alarm[" + index + "] : " + value.boardTitle)
-                $('.' + value.roomId).text(value.countReadStatus)
-
-            });*/
-
-            console.log("일단 연결은 됐나?")
         },
         error: function (request, status, error, jqXHR, textStatus, errorThrown) {
             alert("수정 중 문제 발생!!")

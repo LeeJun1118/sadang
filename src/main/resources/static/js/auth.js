@@ -293,16 +293,6 @@ function sample6_execDaumPostcode() {
 
 var timerID;
 
-/*$(document).ready(function () {
-    $('#loginCheck').on('click',function(e){
-        e.preventDefault();
-        updateData();
-    });
-
-    window.onload = function() {
-        document.getElementById('loginCheck').click();
-    }
-});*/
 
 var i = 1;
 if (i === 1)
@@ -326,79 +316,15 @@ function updateData() {
         cache: false,
         success: function (data) {
             if (JSON.parse(data) != -1) {
-                $("#loginVerify").text("로그아웃");
-                $("#loginVerify").css('cursor', 'pointer');
-                $("#loginVerify").css('color', '#008ae8');
-                $("#loginVerify").css('font-weight', 'bolder');
-                // $("#loginVerify").attr("href","/user/out");
-                $('#loginVerify').on('click', function (e) {
-                    e.preventDefault();
-                    location.replace("/user/out")
-                });
-
-                $("#myInfo").text("내 정보");
-                $("#myInfo").css('cursor', 'pointer');
-                $("#myInfo").css('color', '#008ae8');
-                $("#myInfo").css('font-weight', 'bolder');
-                $('#myInfo').on('click', function (e) {
-                    e.preventDefault();
-                    location.replace("/myPage")
-                });
-
                 console.log("auth js in data =====" + data);
-                /*if(data === 0){
-                    $("#count-message").css('display', 'none');
-                }
-                else*/ if (data > 0) {
+                if (data > 0) {
                     $("#count-message").text(data);
-                    $("#plus").css('display', '');
-                    $("#plus").css('font-weight', 'bolder');
-                }
-                else
-                    $("#plus").css('display', 'none');
-
-                $("#count-message").css('cursor', 'pointer');
-                $("#count-message").css('color', 'red');
-                $("#count-message").css('font-weight', 'bolder');
-
-                /*if (data > 0) {
-                    $("#unReadMessages").text('메세지 +');
-                } else {
-                    $("#unReadMessages").text('메세지');
-                }*/
-                $("#unReadMessages").text('메세지');
-
-                $("#enter-chatRoom").css('cursor', 'pointer');
-                $("#enter-chatRoom").css('color', '#008ae8');
-                $("#enter-chatRoom").css('font-weight', 'bolder');
-                $('#enter-chatRoom').on('click', function (e) {
-                    e.preventDefault();
-                    location.replace("/chat/myChatRoom");
-                });
-
-
+                    $("#plus").text('+');
+                } else
+                    $("#plus").text('');
             } else {
-                $("#plus").css('display', 'none');
+                $("#plus").text('');
                 $("#enter-chat").attr('class', 'd-none');
-
-                $("#loginVerify").text("로그인");
-                $("#loginVerify").css('cursor', 'pointer');
-                $("#loginVerify").css('color', '#008ae8');
-                $("#loginVerify").css('font-weight', 'bolder');
-                // $("#loginVerify").attr("href","/login");
-                $('#loginVerify').on('click', function (e) {
-                    e.preventDefault();
-                    location.replace("/login")
-                });
-
-                $("#signUp").text("회원가입");
-                $("#signUp").css('cursor', 'pointer');
-                $("#signUp").css('color', '#008ae8');
-                $("#signUp").css('font-weight', 'bolder');
-                $('#signUp').on('click', function (e) {
-                    e.preventDefault();
-                    location.replace("/signup")
-                });
 
             }
         },

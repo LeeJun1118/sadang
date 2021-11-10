@@ -8,13 +8,19 @@
                 <div class="col-auto mr-auto"></div>
                 <div class="col-auto">
                     <div id="loginCheck">
-                        <a id="loginVerify" class="mr-3"></a>
-                        <a id="signUp"></a>
-                        <a id="myInfo" class="mr-3"></a>
-                        <a id="enter-chatRoom">
-                            <span id="unReadMessages"></span>
-                            <span id="plus" class="text-danger font-weight-bold">+</span>
-                            <span id="count-message" class="font-weight-bold"></span>
+                        <a class="btn font-weight-bold mr-2" href="/login"
+                           th:if="${#strings.isEmpty(username)}">로그인</a>
+                        <a class="btn font-weight-bold mr-2" href="/user/out"
+                           th:if="${not #strings.isEmpty(username)}">로그아웃</a>
+                        <a class="btn font-weight-bold mr-w" href="/signup"
+                           th:if="${#strings.isEmpty(username)}">회원가입</a>
+                        <a class="btn font-weight-bold mr-2" href="/myPage"
+                           th:if="${not #strings.isEmpty(username)}">내 정보</a>
+                        <a class="btn font-weight-bold" href="/chat/myChatRoom"
+                           th:if="${not #strings.isEmpty(username)}">
+                            <span>메세지</span>
+                            <span id="plus" class="text-danger font-weight-bold"></span>
+                            <span id="count-message" class="text-danger font-weight-bold"></span>
                         </a>
                     </div>
                 </div>

@@ -348,6 +348,7 @@ public class MemberController {
         modelAndView.addObject("roomIdList", roomList);
 
         modelAndView.addObject("member", memberPageResponseDto);
+        modelAndView.addObject("username", member.getUsername());
         modelAndView.addObject("countChatRoom", countChatRoom);
         modelAndView.setViewName("member/myPage");
         return modelAndView;
@@ -361,6 +362,7 @@ public class MemberController {
         modelAndView.addObject("roomIdList", roomList);
 
         modelAndView.addObject("member", new MemberResponseDto(member));
+        modelAndView.addObject("username", new MemberResponseDto(member).getUsername());
         modelAndView.setViewName("member/updateInfo");
         return modelAndView;
     }
