@@ -113,6 +113,8 @@ public class AuthServiceImpl implements AuthService {
         if (member == null)
             throw new NotFoundException("사용자가 조회되지 않습니다.");
 
+
+        // Redis 를 쓰지 않기 위해 인증 메일 안의 URL에 넣을 UUID 생성해야함..
         String verify = ""+ member.getId();
         SecretKey key = AESCryptoUtil.getKey();
 
