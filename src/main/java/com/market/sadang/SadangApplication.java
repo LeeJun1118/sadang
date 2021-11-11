@@ -11,5 +11,4 @@ public class SadangApplication {
     public static void main(String[] args) {
         SpringApplication.run(SadangApplication.class, args);
     }
-//branch test
 }
