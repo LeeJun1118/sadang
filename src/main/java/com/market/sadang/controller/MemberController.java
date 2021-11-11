@@ -216,7 +216,7 @@ public class MemberController {
 
         int sendReq = 0;
 
-        Member member = authService.findByUserId(name);
+        Member member = authService.findByUsername(name);
 
         System.out.println(member.getUsername());
         if (member.getUsername() != null && member.getRole() == UserRole.ROLE_USER) {
