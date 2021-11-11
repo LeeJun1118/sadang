@@ -28,6 +28,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
@@ -110,6 +111,11 @@ public class MemberController {
 
         try {
             final Member member = authService.loginUser(user.getUsername(), user.getPassword());
+
+            HttpSession session = req.getSession();
+            session.setAttribute("userId", member.getId());
+
+
             final String token = jwtUtil.generateToken(member);
             final String refreshJwt = jwtUtil.generateRefreshToken(member);
 
@@ -120,8 +126,8 @@ public class MemberController {
             res.addCookie(accessToken);
             res.addCookie(refreshToken);
 
-            modelAndView.setViewName("redirect:");
-            response = new Response("success", "로그인 성공", token);
+            modelAndView.setViewName("redirect:/");
+            response = new Response("success", "로그인 성공", null);
 
         } catch (Exception e) {
             modelAndView.setViewName("auth/loginPage");

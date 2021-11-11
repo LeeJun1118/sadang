@@ -26,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -144,6 +145,12 @@ public class BoardController {
         List<ChatRoom> roomList = chatRoomService.findRoomList(request);
 
         Member member = memberService.searchMemberId(request);
+
+        HttpSession session = request.getSession();
+        Long userId = (Long) session.getAttribute("userId");
+        Member user = memberService.findById(userId);
+        System.out.println("BoardController user name"+user.getUsername());
+
         String username = null;
         if (member != null)
             username = member.getUsername();

@@ -25,7 +25,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()// rest api를 고려하여 기본 설정 해제
                 // 토큰 기반 인증이므로 세션 사용 안함
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 .and()
                 .httpBasic()
                 //로그인 안한 사람이 접근시 설정
@@ -51,7 +52,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
         // 모든 요청에 토큰을 검증하는 필터를 추가한다.
-        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+//        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
 /*

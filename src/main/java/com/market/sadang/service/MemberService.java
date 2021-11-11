@@ -46,4 +46,9 @@ public class MemberService {
                 , requestDto.getAddress()
                 , requestDto.getDetailAddress());
     }
+
+    public Member findById(Long userId) {
+        return memberRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
+    }
 }
