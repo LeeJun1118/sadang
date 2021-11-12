@@ -1,6 +1,7 @@
 package com.market.sadang.config;
 
 import com.market.sadang.domain.Member;
+import com.market.sadang.service.MemberService;
 import com.market.sadang.service.authUtil.CookieUtil;
 import com.market.sadang.service.authUtil.JwtUtil;
 import com.market.sadang.service.authUtil.MyUserDetailService;
@@ -20,6 +21,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @Slf4j
@@ -28,6 +30,7 @@ import java.io.IOException;
 public class JwtRequestFilter extends OncePerRequestFilter {
 
     private final MyUserDetailService userDetailService;
+    private final MemberService memberService;
     private final JwtUtil jwtUtil;
     private final CookieUtil cookieUtil;
     private final RedisUtil redisUtil;
@@ -38,6 +41,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         final Cookie jwtToken = cookieUtil.getCookie(request, JwtUtil.ACCESS_TOKEN_NAME);
 
+        HttpSession session = request.getSession();
+
+
         String username = null;
         String jwt = null;
         String refreshJwt = null;
@@ -45,32 +51,35 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         //ACCESS_TOKEN 토큰 검증
         try {
-            if (jwtToken != null) {
-                jwt = jwtToken.getValue();
-                username = jwtUtil.getUsername(jwt);
+//            if (jwtToken != null) {
+            if (session != null) {
+                Member member = memberService.findByMemberRequest(request);
+//                jwt = jwtToken.getValue();
+//                username = jwtUtil.getUsername(jwt);
+                username = member.getUsername();
             }
             if (username != null) {
                 UserDetails userDetails = userDetailService.loadUserByUsername(username);
 
-                if (jwtUtil.validateToken(jwt, userDetails)) {
+//                if (jwtUtil.validateToken(jwt, userDetails)) {
                     UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken
                             = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                     usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-                }
+//                }
             }
         }
         //ACCESS_TOKEN 토큰 만료 시 REFRESH_TOKEN 받아옴
-        catch (ExpiredJwtException e) {
+        /*catch (ExpiredJwtException e) {
             Cookie refreshToken = cookieUtil.getCookie(request, JwtUtil.REFRESH_TOKEN_NAME);
             if (refreshToken != null) {
                 refreshJwt = refreshToken.getValue();
             }
-        } catch (Exception e) {
+        } */catch (Exception e) {
 
         }
 
-        try {
+      /*  try {
             // REFRESH_TOKEN 이 있다면
             if (refreshJwt != null) {
                 // Redis 에서 REFRESH_TOKEN 으로 사용자 이름 받아옴
@@ -108,7 +117,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
         filterChain.doFilter(request, response);
     }
 }

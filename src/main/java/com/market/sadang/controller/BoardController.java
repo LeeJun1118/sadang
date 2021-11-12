@@ -50,12 +50,15 @@ public class BoardController {
     @GetMapping("/board/new")
     public ModelAndView boardForm(ModelAndView modelAndView, HttpServletRequest request) {
 
+        String username = null;
         Member member = memberService.findByMemberRequest(request);
+        if (member != null)
+            username = member.getUsername();
 
         List<ChatRoom> roomList = chatRoomService.findRoomList(request);
         modelAndView.addObject("roomIdList", roomList);
 
-        modelAndView.addObject("username", member.getUsername());
+        modelAndView.addObject("username", username);
         modelAndView.addObject("boardForm", new BoardForm());
         modelAndView.setViewName("board/boardForm");
         return modelAndView;
