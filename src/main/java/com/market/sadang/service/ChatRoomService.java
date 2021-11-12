@@ -30,7 +30,7 @@ public class ChatRoomService {
     public List<ChatRoom> findRoomList(HttpServletRequest request) {
 
         try {
-            Member member = memberService.searchMemberId(request);
+            Member member = memberService.findByMemberRequest(request);
             System.out.println("ChatRoomService findRoomList getUsername : " + member.getUsername());
             List<ChatRoom> roomList = chatRoomRepository.findAllBySellerOrBuyer(member, member);
             return roomList;
@@ -54,7 +54,7 @@ public class ChatRoomService {
         List<ChatRoom> roomList = null;
         List<MessageListReadStatusDto> listDto = new ArrayList<>();
 
-        Member member = memberService.searchMemberId(request);
+        Member member = memberService.findByMemberRequest(request);
         roomList = chatRoomRepository.findBySellerNameOrBuyerName(member.getUsername(), member.getUsername());
 
         // 내가 입장해있는 채팅방들에서 sender가 내가 아닌 메세지의 readStatus 가 N인 메세지의 수를 셈
@@ -99,7 +99,7 @@ public class ChatRoomService {
     @Transactional
     public void delete(String roomId, HttpServletRequest request) {
 
-        Member user = memberService.searchMemberId(request);
+        Member user = memberService.findByMemberRequest(request);
         ChatRoom chatRoom = findByRoomId(roomId);
 
         if (chatRoom.getBuyer() == null || chatRoom.getSeller() == null)

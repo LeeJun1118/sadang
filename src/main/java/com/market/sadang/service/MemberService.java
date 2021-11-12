@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @RequiredArgsConstructor
 @Service
@@ -21,15 +22,18 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
     //사용자 찾기
-    public Member searchMemberId(HttpServletRequest request) {
-        Cookie jwtToken = cookieUtil.getCookie(request, "accessToken");
+    public Member findByMemberRequest(HttpServletRequest request) {
+//        Cookie jwtToken = cookieUtil.getCookie(request, "accessToken");
 
         try {
-            String memberId = jwtUtil.getUsername(jwtToken.getValue());
-            return memberRepository.findByUsername(memberId);
+            HttpSession session = request.getSession();
+            Long userId = (long) session.getAttribute("userId");
+//            String memberId = jwtUtil.getUsername(jwtToken.getValue());
+//            return memberRepository.findByUsername(memberId);
+            return findById(userId);
 
         } catch (Exception e) {
-            System.out.println("searchMemberId() ERROR : " + e.getMessage());
+            System.out.println("findByMemberRequest() ERROR : " + e.getMessage());
             return null;
         }
     }
@@ -48,7 +52,11 @@ public class MemberService {
     }
 
     public Member findById(Long userId) {
-        return memberRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
+        try {
+            return memberRepository.findById(userId)
+                    .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

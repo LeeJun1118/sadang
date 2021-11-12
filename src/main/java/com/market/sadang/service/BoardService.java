@@ -115,7 +115,7 @@ public class BoardService {
     public Board verifyWriter(Long id, HttpServletRequest request) {
         Board board = boardRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시물이 존재하지 않습니다"));
-        String memberId = memberService.searchMemberId(request).getUsername();
+        String memberId = memberService.findByMemberRequest(request).getUsername();
         if (Objects.equals(board.getMember().getUsername(), memberId)) {
             return board;
         } else return null;
@@ -174,7 +174,7 @@ public class BoardService {
     // 구매 상품 등록, 해제
     @Transactional
     public void buy(Long boardId, HttpServletRequest request) {
-        Member member = memberService.searchMemberId(request);
+        Member member = memberService.findByMemberRequest(request);
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시물이 존재하지 않습니다."));
         BuyInterested buyInterested = buyInterestedRepository.findByMember(member);
@@ -194,7 +194,7 @@ public class BoardService {
     public void interested(Long id, HttpServletRequest request) {
         Board board = boardRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
-        Member member = memberService.searchMemberId(request);
+        Member member = memberService.findByMemberRequest(request);
         BuyInterested buyInterested = buyInterestedService.findByMember(member);
 
         if (buyInterested == null) {
@@ -209,7 +209,7 @@ public class BoardService {
 
     // 사용자의 구매리스트 또는 관심 리스트
     public List<MyBoardListResponseDto> findBoardListByMemberAndBuyStatusOrInterestedStatus(HttpServletRequest request, BoardStatus status) {
-        Member member = memberService.searchMemberId(request);
+        Member member = memberService.findByMemberRequest(request);
         List<BuyInterested> buyOrInterestedList = null;
         List<MyBoardListResponseDto> dtoList = new ArrayList<>();
         Board board;

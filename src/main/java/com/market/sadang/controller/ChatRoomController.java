@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.*;
 
 @RequiredArgsConstructor
@@ -51,7 +52,7 @@ public class ChatRoomController {
 
         String username = null;
         if ( cookieUtil.getCookie(request, "accessToken") != null) {
-            username = memberService.searchMemberId(request).getUsername();
+            username = memberService.findByMemberRequest(request).getUsername();
         }
 
         List<ChatRoom> roomList = chatRoomService.findRoomList(request);
@@ -72,10 +73,11 @@ public class ChatRoomController {
     @GetMapping("/myChatRoom")
     public String roomDetail(Model model, HttpServletRequest request) throws Exception {
 
-        Member username = null;
-        if (cookieUtil.getCookie(request, "accessToken") != null) {
-            username = memberService.searchMemberId(request);
-        }
+        String username = null;
+
+        Member member = memberService.findByMemberRequest(request);
+        if (member != null)
+            username = member.getUsername();
 
         //내가 들어간 방 목록 불러오기
         List<ChatRoom> roomList = chatRoomService.findRoomList(request);
@@ -93,13 +95,11 @@ public class ChatRoomController {
             }
         }
 
-
         //내가 입장한 모든 방 각각의 메세지들 중 sender가 내가 아닌 메세지들의 readStatus가 N 인 메세지들의 수를 같이 반환
-        List<MessageListReadStatusDto> roomListReadStatus = chatRoomService.findAllRoomReadStatus(roomList, username);
-
+        List<MessageListReadStatusDto> roomListReadStatus = chatRoomService.findAllRoomReadStatus(roomList, member);
 
         model.addAttribute("roomList", roomListReadStatus);
-        model.addAttribute("username", username.getUsername());
+        model.addAttribute("username", username);
 
         return "/chat/chat";
     }
@@ -133,7 +133,7 @@ public class ChatRoomController {
         Member seller = dto.getMember();
 
         // 구매자
-        Member buyer = memberService.searchMemberId(request);
+        Member buyer = memberService.findByMemberRequest(request);
 
         if (seller.getUsername() == buyer.getUsername()) {
             return "redirect:/chat/myChatRoom";
@@ -167,7 +167,7 @@ public class ChatRoomController {
         }
 
         //사용자 이름
-        Member username = memberService.searchMemberId(request);
+        Member username = memberService.findByMemberRequest(request);
 
         // 현재 입장한 채팅방
         ChatRoom thisRoom = chatRoomService.findByRoomId(roomId);
@@ -208,7 +208,7 @@ public class ChatRoomController {
     public int unReadMessage(@PathVariable String roomId, HttpServletRequest request) throws Exception {
 
         //사용자 이름
-        Member user = memberService.searchMemberId(request);
+        Member user = memberService.findByMemberRequest(request);
 
         List<ChatMessage> messageList = chatMessageRepository.findAllByRoomIdAndReceiverAndReceiverStatus(roomId, user, ReadStatus.N);
         for (ChatMessage message : messageList) {

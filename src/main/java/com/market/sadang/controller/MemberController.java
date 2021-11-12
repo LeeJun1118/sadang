@@ -84,7 +84,7 @@ public class MemberController {
 
     @PostMapping("/updateIdCheck")
     public int updateIdCheck(@RequestBody RequestVerifyUser user, HttpServletRequest request) {
-        Member member = memberService.searchMemberId(request);
+        Member member = memberService.findByMemberRequest(request);
         int count = 0;
         int distinctCount = memberRepository.countByUsername(user.getUsername());
 
@@ -116,7 +116,7 @@ public class MemberController {
             session.setAttribute("userId", member.getId());
 
 
-            final String token = jwtUtil.generateToken(member);
+            /*final String token = jwtUtil.generateToken(member);
             final String refreshJwt = jwtUtil.generateRefreshToken(member);
 
             Cookie accessToken = cookieUtil.createCookie(JwtUtil.ACCESS_TOKEN_NAME, token);
@@ -124,7 +124,7 @@ public class MemberController {
 
             redisUtil.setDataExpire(refreshJwt, member.getUsername(), JwtUtil.REFRESH_TOKEN_VALIDATION_SECOND);
             res.addCookie(accessToken);
-            res.addCookie(refreshToken);
+            res.addCookie(refreshToken);*/
 
             modelAndView.setViewName("redirect:/");
             response = new Response("success", "로그인 성공", null);
@@ -145,7 +145,9 @@ public class MemberController {
                                HttpServletResponse res) {
 
         try {
-            Cookie accessToken = cookieUtil.getCookie(req, "accessToken");
+            HttpSession session = req.getSession();
+            session.removeAttribute("userId");
+            /*Cookie accessToken = cookieUtil.getCookie(req, "accessToken");
             redisUtil.deleteData(accessToken.getValue());
 
 
@@ -163,7 +165,7 @@ public class MemberController {
             resRefreshToken.setPath("/");
 
             res.addCookie(resAccessToken);
-            res.addCookie(resRefreshToken);
+            res.addCookie(resRefreshToken);*/
 
         } catch (Exception ignored) {
         }
@@ -249,7 +251,7 @@ public class MemberController {
     // My Page
     @GetMapping("/myPage")
     public ModelAndView myPageForm(ModelAndView modelAndView, HttpServletRequest request) {
-        Member member = memberService.searchMemberId(request);
+        Member member = memberService.findByMemberRequest(request);
         int countSellBoard = boardService.countAllByMemberBoardStatus(member, BoardStatus.sell);
         int countSoldBoard = boardService.countAllByMemberBoardStatus(member, BoardStatus.sold);
         int countBuyBoard = buyInterestedService.findByMemberAndBuyStatusOrInterestedStatus(member, BoardStatus.buy).size();
@@ -271,7 +273,7 @@ public class MemberController {
 
     @GetMapping("/myPage/update")
     public ModelAndView updateInfoForm(ModelAndView modelAndView, HttpServletRequest request) {
-        Member member = memberService.searchMemberId(request);
+        Member member = memberService.findByMemberRequest(request);
 
         List<ChatRoom> roomList = chatRoomService.findRoomList(request);
         modelAndView.addObject("roomIdList", roomList);
@@ -295,7 +297,7 @@ public class MemberController {
                 .detailAddress(memberForm.getDetailAddress())
                 .build();
 
-        Member member = memberService.searchMemberId(request);
+        Member member = memberService.findByMemberRequest(request);
         memberService.update(requestDto, member.getId());
 
         modelAndView.setViewName("redirect:/");
@@ -310,7 +312,7 @@ public class MemberController {
 
         //로그인 하지 않은 사용자라면 -1 반환
         try {
-            Member member = memberService.searchMemberId(request);
+            Member member = memberService.findByMemberRequest(request);
             if (member != null) {
                 //receiver = member.gerusername , receiverStatus = N
                 unReadMessages = chatMessageRepository.countAllByReceiverAndReceiverStatus(member, ReadStatus.N);
