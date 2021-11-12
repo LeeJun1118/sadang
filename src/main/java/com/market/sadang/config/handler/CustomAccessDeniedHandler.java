@@ -39,10 +39,6 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 //            res.setMessage("사용자 인증메일을 받지 않았습니다.");
             response.sendRedirect("/signup");
         }
-
-        /*PrintWriter out = response.getWriter();
-        String jsonResponse = objectMapper.writeValueAsString(res);
-        out.print(jsonResponse);*/
     }
 
     private boolean hasRole(Collection<GrantedAuthority> authorities, String role) {

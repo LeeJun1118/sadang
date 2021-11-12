@@ -2,7 +2,6 @@ package com.market.sadang.repository;
 
 import com.market.sadang.domain.ChatRoom;
 import com.market.sadang.domain.Member;
-import com.market.sadang.redis.RedisSubscriber;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.redis.core.HashOperations;

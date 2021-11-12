@@ -3,7 +3,10 @@ package com.market.sadang.service.authUtil.impl;
 import com.market.sadang.config.UserRole;
 import com.market.sadang.domain.Member;
 import com.market.sadang.domain.Salt;
+import com.market.sadang.domain.SignUp;
 import com.market.sadang.repository.MemberRepository;
+import com.market.sadang.repository.SignUpRepository;
+import com.market.sadang.service.MemberService;
 import com.market.sadang.service.authUtil.*;
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -18,9 +21,10 @@ import java.util.UUID;
 public class AuthServiceImpl implements AuthService {
 
     private final MemberRepository memberRepository;
+    private final MemberService memberService;
     private final SaltUtil saltUtil;
-    private final RedisUtil redisUtil;
     private final EmailService emailService;
+    private final SignUpRepository signUpRepository;
 
     @Override
     @Transactional //begin,commit 자동수행, 예외 발생 시 rollback 자동 수행
@@ -52,8 +56,9 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public void verifyEmail(String key) throws NotFoundException {
         //key 받아서 사용자 찾음
-        String memberId = redisUtil.getData(key);
-        Member member = memberRepository.findByUsername(memberId);
+//        String memberId = redisUtil.getData(key);
+        SignUp signUp = signUpRepository.findByUuid(key);
+        Member member = memberService.findById(signUp.getUserId());
 
         if (member == null)
             throw new NotFoundException("사용자가 조회되지 않습니다.");
@@ -62,7 +67,7 @@ public class AuthServiceImpl implements AuthService {
         modifyUserRole(member, UserRole.ROLE_USER);
 
         //redis에 해당 키 삭제
-        redisUtil.deleteData(key);
+        signUpRepository.delete(signUp);
     }
 
     @Override
@@ -89,8 +94,10 @@ public class AuthServiceImpl implements AuthService {
         //중복 없이 id 생성
         UUID uuid = UUID.randomUUID();
 
+        signUpRepository.save(new SignUp(member.getId(),uuid.toString()));
+
         //uuid 만료시간
-        redisUtil.setDataExpire(uuid.toString(), member.getUsername(), 60 * 30L);
+//        redisUtil.setDataExpire(uuid.toString(), member.getUsername(), 60 * 30L);
 
         //메일 보냄
         emailService.sendMail(member.getEmail(), "SADANG 인증 메일입니다.", VERIFICATION_LINK + uuid.toString());

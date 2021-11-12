@@ -18,9 +18,7 @@ import com.market.sadang.service.BuyInterestedService;
 import com.market.sadang.service.ChatRoomService;
 import com.market.sadang.service.MemberService;
 import com.market.sadang.service.authUtil.AuthService;
-import com.market.sadang.service.authUtil.CookieUtil;
 import com.market.sadang.service.authUtil.JwtUtil;
-import com.market.sadang.service.authUtil.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -48,8 +46,6 @@ public class MemberController {
     private final AuthService authService;
     private final MemberRepository memberRepository;
     private final JwtUtil jwtUtil;
-    private final CookieUtil cookieUtil;
-    private final RedisUtil redisUtil;
     private final MemberService memberService;
     private final BoardService boardService;
     private final ChatRoomRepository chatRoomRepository;

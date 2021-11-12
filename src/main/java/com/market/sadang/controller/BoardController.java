@@ -15,7 +15,6 @@ import com.market.sadang.dto.myFile.MyFileDto;
 import com.market.sadang.dto.myFile.MyFileResponseDto;
 import com.market.sadang.repository.ChatRoomRepository;
 import com.market.sadang.service.*;
-import com.market.sadang.service.authUtil.CookieUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -42,7 +41,6 @@ public class BoardController {
     private final MemberService memberService;
     private final MyFileService myFileService;
     private final ChatRoomRepository chatRoomRepository;
-    private final CookieUtil cookieUtil;
     private final ChatRoomService chatRoomService;
     private final BuyInterestedService buyInterestedService;
 
@@ -52,15 +50,17 @@ public class BoardController {
 
         String username = null;
         Member member = memberService.findByMemberRequest(request);
-        if (member != null)
+        if (member == null) {
+            modelAndView.setViewName("redirect:/login");
+        } else {
+            List<ChatRoom> roomList = chatRoomService.findRoomList(request);
+            modelAndView.addObject("roomIdList", roomList);
+
             username = member.getUsername();
-
-        List<ChatRoom> roomList = chatRoomService.findRoomList(request);
-        modelAndView.addObject("roomIdList", roomList);
-
-        modelAndView.addObject("username", username);
-        modelAndView.addObject("boardForm", new BoardForm());
-        modelAndView.setViewName("board/boardForm");
+            modelAndView.addObject("username", username);
+            modelAndView.addObject("boardForm", new BoardForm());
+            modelAndView.setViewName("board/boardForm");
+        }
         return modelAndView;
     }
 
@@ -390,8 +390,8 @@ public class BoardController {
 
     @GetMapping("/myBoard/interested/{id}")
     public ModelAndView myInterested(@PathVariable Long id,
-                                   HttpServletRequest request,
-                                   ModelAndView modelAndView) {
+                                     HttpServletRequest request,
+                                     ModelAndView modelAndView) {
 
         boardService.interested(id, request);
 

@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.market.sadang.domain.ChatMessage;
 import com.market.sadang.domain.ChatRoom;
 import com.market.sadang.domain.Member;
-import com.market.sadang.domain.ReadStatus;
 import com.market.sadang.dto.chat.ChatMessageDto;
 import com.market.sadang.repository.ChatMessageRepository;
 import com.market.sadang.repository.ChatRoomRepository;
@@ -12,16 +11,10 @@ import com.market.sadang.repository.MemberRepository;
 import com.market.sadang.service.authUtil.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.listener.ChannelTopic;
-import org.springframework.messaging.converter.MessageConversionException;
-import org.springframework.messaging.handler.annotation.Header;
-import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
+
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RestController;
-
 import java.util.Objects;
 
 
@@ -30,11 +23,8 @@ import java.util.Objects;
 @Controller
 public class ChatController {
 
-    //    private final RedisPublisher redisPublisher;
     private final ChatRoomRepository chatRoomRepository;
     private final JwtUtil jwtUtil;
-    private final RedisTemplate<String, Object> redisTemplate;
-    private final ChannelTopic channelTopic;
     private final MemberRepository memberRepository;
     private final ChatMessageRepository chatMessageRepository;
 

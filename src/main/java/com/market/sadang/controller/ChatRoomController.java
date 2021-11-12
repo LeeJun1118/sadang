@@ -12,7 +12,6 @@ import com.market.sadang.repository.BoardRepository;
 import com.market.sadang.repository.ChatMessageRepository;
 import com.market.sadang.repository.ChatRoomRepository;
 import com.market.sadang.service.*;
-import com.market.sadang.service.authUtil.CookieUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
@@ -31,7 +30,6 @@ public class ChatRoomController {
 
     private final ChatRoomRepository chatRoomRepository;
     private final MemberService memberService;
-    private final CookieUtil cookieUtil;
     private final BoardService boardService;
     private final ChatMessageRepository chatMessageRepository;
     private final ChatRoomService chatRoomService;

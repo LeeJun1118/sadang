@@ -11,7 +11,6 @@ import com.market.sadang.repository.BoardRepository;
 import com.market.sadang.repository.BuyInterestedRepository;
 import com.market.sadang.repository.MemberRepository;
 import com.market.sadang.repository.MyFileRepository;
-import com.market.sadang.service.authUtil.CookieUtil;
 import com.market.sadang.service.authUtil.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
