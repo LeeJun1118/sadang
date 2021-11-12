@@ -19,7 +19,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private MyUserDetailService myUserDetailService;
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
-    private final JwtRequestFilter jwtRequestFilter;
+    private final SessionRequestFilter sessionRequestFilter;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -48,7 +48,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
         // 모든 요청에 토큰을 검증하는 필터를 추가한다.
-        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(sessionRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
 

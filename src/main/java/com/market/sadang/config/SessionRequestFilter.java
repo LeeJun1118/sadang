@@ -23,7 +23,7 @@ import java.io.IOException;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class JwtRequestFilter extends OncePerRequestFilter {
+public class SessionRequestFilter extends OncePerRequestFilter {
 
     private final MyUserDetailService userDetailService;
     private final MemberService memberService;
@@ -51,8 +51,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
             SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
         } catch (Exception e) {
-            System.out.println("JwtRequest Filter Error : " + username);
-
         }
         filterChain.doFilter(request, response);
     }
