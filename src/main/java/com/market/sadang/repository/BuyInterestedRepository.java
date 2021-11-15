@@ -16,4 +16,6 @@ public interface BuyInterestedRepository extends JpaRepository<BuyInterested, Lo
     List<BuyInterested> findAllByMemberAndInterestedStatus(Member member, BoardStatus interested);
 
     BuyInterested findByBoard(Board board);
+
+    BuyInterested findByBoardAndMember (Board board, Member member);
 }

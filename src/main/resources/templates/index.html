@@ -7,20 +7,11 @@
                 <div class="col-auto mr-auto"></div>
                 <div class="col-auto">
                     <div id="loginCheck">
-                        <!--
-                        익명의 사용자일때
-                        <a sec:authorize="isAnonymous()" th:href="@{/user/login}">로그인</a>
-                        인증된 사용자일때
-                        <a sec:authorize="isAuthenticated()" th:href="@{/user/logout}">로그아웃</a>
-                        <a sec:authorize="isAnonymous()" th:href="@{/user/signup}">회원가입</a>
-                        특정 롤을 가진 사용자일 때
-                        <a sec:authorize="hasRole('ROLE_MEMBER')" th:href="@{/user/info}">내정보</a>
-                        <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin}">어드민</a>-->
 
-                        <a sec:authorize="isAnonymous()" th:href="@{/user/login}"
-                           class="btn font-weight-bold mr-2">로그인</a>
-                        <a sec:authorize="isAuthenticated()" th:href="@{/user/out}"
-                           class="btn font-weight-bold mr-2">로그아웃</a>
+                        <a class="btn font-weight-bold mr-2" href="/user/login"
+                           th:if="${#strings.isEmpty(username)}">로그인</a>
+                        <a class="btn font-weight-bold mr-2" href="/user/out"
+                           th:if="${not #strings.isEmpty(username)}">로그아웃</a>
 
                         <a class="btn font-weight-bold mr-w" href="/signup"
                            th:if="${#strings.isEmpty(username)}">회원가입</a>

@@ -19,7 +19,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
     //사용자 찾기
-    public Member findByMemberRequest(HttpServletRequest request) {
+    public Member findByMemberRequest() {
 
         try {
             Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();

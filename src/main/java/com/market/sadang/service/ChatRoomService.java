@@ -1,9 +1,6 @@
 package com.market.sadang.service;
 
-import com.market.sadang.domain.ChatMessage;
-import com.market.sadang.domain.ChatRoom;
-import com.market.sadang.domain.Member;
-import com.market.sadang.domain.ReadStatus;
+import com.market.sadang.domain.*;
 import com.market.sadang.dto.chat.MessageListReadStatusDto;
 import com.market.sadang.repository.ChatMessageRepository;
 import com.market.sadang.repository.ChatRoomRepository;
@@ -30,10 +27,19 @@ public class ChatRoomService {
     public List<ChatRoom> findRoomList(HttpServletRequest request) {
 
         try {
-            Member member = memberService.findByMemberRequest(request);
+            Member member = memberService.findByMemberRequest();
             System.out.println("ChatRoomService findRoomList getUsername : " + member.getUsername());
             List<ChatRoom> roomList = chatRoomRepository.findAllBySellerOrBuyer(member, member);
-            return roomList;
+            List<ChatRoom> myRooms = new ArrayList<>();
+            for (ChatRoom room : roomList) {
+                if (Objects.equals(room.getSeller().getId(), member.getId()) && room.getSellerStatus() == EnterStatus.Y) {
+                    myRooms.add(room);
+                } else if (Objects.equals(room.getBuyer().getId(), member.getId()) && room.getBuyerStatus() == EnterStatus.Y) {
+                    myRooms.add(room);
+                }
+            }
+
+            return myRooms;
 
         } catch (Exception e) {
             System.out.println("ChatRoomService findRoomList : " + e.getMessage());
@@ -54,7 +60,7 @@ public class ChatRoomService {
         List<ChatRoom> roomList = null;
         List<MessageListReadStatusDto> listDto = new ArrayList<>();
 
-        Member member = memberService.findByMemberRequest(request);
+        Member member = memberService.findByMemberRequest();
         roomList = chatRoomRepository.findBySellerNameOrBuyerName(member.getUsername(), member.getUsername());
 
         // 내가 입장해있는 채팅방들에서 sender가 내가 아닌 메세지의 readStatus 가 N인 메세지의 수를 셈
@@ -97,19 +103,22 @@ public class ChatRoomService {
     }
 
     @Transactional
-    public void delete(String roomId, HttpServletRequest request) {
+    public void delete(String roomId) {
 
-        Member user = memberService.findByMemberRequest(request);
+        Member user = memberService.findByMemberRequest();
         ChatRoom chatRoom = findByRoomId(roomId);
 
-        if (chatRoom.getBuyer() == null || chatRoom.getSeller() == null)
-            chatRoomRepository.delete(chatRoom);
-        else {
+        try {
+            String buyer = chatRoom.getBuyer().getUsername();
+            String seller = chatRoom.getSeller().getUsername();
 
-            if (Objects.equals(chatRoom.getBuyer().getUsername(), user.getUsername())) {
-                chatRoom.deleteBuyer();
+            if (Objects.equals(buyer, user.getUsername())) {
+                chatRoom.updateBuyerEnterStatus(EnterStatus.N);
             } else
-                chatRoom.deleteSeller();
+                chatRoom.updateSellerEnterStatus(EnterStatus.N);
+
+        } catch (Exception e) {
+            chatRoomRepository.delete(chatRoom);
         }
 
 

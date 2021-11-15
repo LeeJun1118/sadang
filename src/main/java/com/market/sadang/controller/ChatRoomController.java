@@ -21,6 +21,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @RequiredArgsConstructor
@@ -73,7 +75,7 @@ public class ChatRoomController {
 
         String username = null;
 
-        Member member = memberService.findByMemberRequest(request);
+        Member member = memberService.findByMemberRequest();
         if (member != null)
             username = member.getUsername();
 
@@ -131,7 +133,7 @@ public class ChatRoomController {
         Member seller = dto.getMember();
 
         // 구매자
-        Member buyer = memberService.findByMemberRequest(request);
+        Member buyer = memberService.findByMemberRequest();
 
         if (seller.getUsername() == buyer.getUsername()) {
             return "redirect:/chat/myChatRoom";
@@ -165,7 +167,7 @@ public class ChatRoomController {
         }
 
         //사용자 이름
-        Member username = memberService.findByMemberRequest(request);
+        Member member = memberService.findByMemberRequest();
 
         // 현재 입장한 채팅방
         ChatRoom thisRoom = chatRoomService.findByRoomId(roomId);
@@ -174,28 +176,36 @@ public class ChatRoomController {
 
 
         // 채팅방에 입장 시 그 방의 모든 안읽은 메세지를 읽음으로 처리
-        List<ChatMessage> messageList = chatMessageRepository.findAllByRoomIdAndReceiverAndReceiverStatus(roomId, username, ReadStatus.N);
+        List<ChatMessage> messageList = chatMessageRepository.findAllByRoomIdAndReceiverAndReceiverStatus(roomId, member, ReadStatus.N);
         for (ChatMessage message : messageList) {
-            if (Objects.equals(username, message.getReceiver()))
+            if (Objects.equals(member, message.getReceiver()))
                 chatMessageService.update(message.getId());
         }
 
         //내가 입장한 모든 방 각각의 메세지들 중 sender가 내가 아닌 메세지들의 readStatus가 N 인 메세지들의 수를 같이 반환
-        List<MessageListReadStatusDto> roomListReadStatus = chatRoomService.findAllRoomReadStatus(roomList, username);
+        List<MessageListReadStatusDto> roomListReadStatus = chatRoomService.findAllRoomReadStatus(roomList, member);
+
+        //RoomId 로 모든 메세지 찾기
         List<ChatMessage> roomMessageList = chatMessageRepository.findAllByRoomId(thisRoom.getRoomId());
         List<ChatMessageListTimeDto> messages = new ArrayList<>();
-        for (ChatMessage thisMessage : roomMessageList) {
-            messages.add(new ChatMessageListTimeDto(thisMessage));
-        }
 
-        for (MessageListReadStatusDto dto : roomListReadStatus) {
-            System.out.println("roomDetail 2 : " + dto.getRoomId());
+        LocalDateTime enterTime;
+
+        if (member.getId() == thisRoom.getSeller().getId()){
+            enterTime = thisRoom.getSellerEnterDate();
+        }
+        else{
+            enterTime = thisRoom.getBuyerEnterDate();
+        }
+        for (ChatMessage thisMessage : roomMessageList) {
+            if (thisMessage.getCreatedDate().isAfter(enterTime))
+            messages.add(new ChatMessageListTimeDto(thisMessage));
         }
 
         model.addAttribute("roomList", roomListReadStatus);
         model.addAttribute("thisRoom", roomId);
         model.addAttribute("buy", buy);
-        model.addAttribute("username", username.getUsername());
+        model.addAttribute("username", member.getUsername());
         model.addAttribute("messages", messages);
         return "/chat/chat";
     }
@@ -206,7 +216,7 @@ public class ChatRoomController {
     public int unReadMessage(@PathVariable String roomId, HttpServletRequest request) throws Exception {
 
         //사용자 이름
-        Member user = memberService.findByMemberRequest(request);
+        Member user = memberService.findByMemberRequest();
 
         List<ChatMessage> messageList = chatMessageRepository.findAllByRoomIdAndReceiverAndReceiverStatus(roomId, user, ReadStatus.N);
         for (ChatMessage message : messageList) {
@@ -217,9 +227,9 @@ public class ChatRoomController {
     }
 
     @GetMapping("/room/delete/{roomId}")
-    public String deleteChatRoom(@PathVariable String roomId, HttpServletRequest request) {
+    public String deleteChatRoom(@PathVariable String roomId) {
         //사용자 이름
-        chatRoomService.delete(roomId,request);
+        chatRoomService.delete(roomId);
 
 
         return "redirect:/chat/myChatRoom";

@@ -3,6 +3,7 @@ package com.market.sadang.controller;
 import com.google.gson.Gson;
 import com.market.sadang.domain.ChatMessage;
 import com.market.sadang.domain.ChatRoom;
+import com.market.sadang.domain.EnterStatus;
 import com.market.sadang.domain.Member;
 import com.market.sadang.dto.chat.ChatMessageDto;
 import com.market.sadang.repository.ChatMessageRepository;
@@ -14,6 +15,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
+
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 
@@ -38,12 +41,23 @@ public class ChatController {
         Gson gson = new Gson();
         System.out.println("message=======" + gson.toJson(messageDto));
 
-       /* if (Objects.equals(roomId, message.getRoomId()))
-            message.setReceiverStatus(ReadStatus.Y);*/
 
         ChatRoom chatRoom = chatRoomRepository.findByRoomId(messageDto.getRoomId());
-        Member receiver = null;
-        Member sender = null;
+        Member receiver;
+        Member sender;
+
+        // 채팅방에서 둘 중 한명이 나갔다면 다시 입장
+        if (chatRoom.getSellerStatus() == EnterStatus.N){
+            chatRoom.setSellerStatus(EnterStatus.Y);
+            chatRoom.setSellerEnterDate(LocalDateTime.now());
+            chatRoomRepository.save(chatRoom);
+        }
+        else if(chatRoom.getBuyerStatus() == EnterStatus.N){
+            chatRoom.setBuyerStatus(EnterStatus.Y);
+            chatRoom.setBuyerEnterDate(LocalDateTime.now());
+            chatRoomRepository.save(chatRoom);
+        }
+
 
 
         // ChatRoom 에는 Buyer, Seller 둘이 있는데

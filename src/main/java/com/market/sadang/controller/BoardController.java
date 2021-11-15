@@ -51,7 +51,7 @@ public class BoardController {
     public ModelAndView boardForm(ModelAndView modelAndView, HttpServletRequest request) {
 
         String username = null;
-        Member member = memberService.findByMemberRequest(request);
+        Member member = memberService.findByMemberRequest();
         if (member == null) {
             modelAndView.setViewName("redirect:/login");
         } else {
@@ -76,7 +76,7 @@ public class BoardController {
         if (result.hasErrors()) {
             return "board/boardForm";
         } else {
-            Member member = memberService.findByMemberRequest(request);
+            Member member = memberService.findByMemberRequest();
             BoardCreateRequestDto requestDto =
                     BoardCreateRequestDto.builder()
                             .member(member)
@@ -100,7 +100,7 @@ public class BoardController {
 
         String username = null;
         try {
-            username = memberService.findByMemberRequest(request).getUsername();
+            username = memberService.findByMemberRequest().getUsername();
         } catch (Exception e) {
 
         }
@@ -144,22 +144,17 @@ public class BoardController {
             responseDtoList.add(responseDto);
         }
 
-        modelAndView.addObject("boardList", responseDtoList);
 
         List<ChatRoom> roomList = chatRoomService.findRoomList(request);
 
-        Member member = memberService.findByMemberRequest(request);
-
-        HttpSession session = request.getSession();
-        Long userId = (Long) session.getAttribute("userId");
-        Member user = memberService.findById(userId);
-//        System.out.println("BoardController user name"+user.getUsername());
+        Member member = memberService.findByMemberRequest();
 
         String username = null;
         if (member != null)
             username = member.getUsername();
 
 
+        modelAndView.addObject("boardList", responseDtoList);
         modelAndView.addObject("roomIdList", roomList);
         modelAndView.addObject("username", username);
 
@@ -170,7 +165,7 @@ public class BoardController {
     @GetMapping("/board/update/{id}")
     public ModelAndView updateForm(@PathVariable Long id, ModelAndView modelAndView, HttpServletRequest request) {
         BoardUpdateRequestDto board = boardService.findById(id);
-        Member member = memberService.findByMemberRequest(request);
+        Member member = memberService.findByMemberRequest();
 
         List<ChatRoom> roomList = chatRoomService.findRoomList(request);
         modelAndView.addObject("roomIdList", roomList);
@@ -289,7 +284,7 @@ public class BoardController {
     @GetMapping("/sell")
     public ModelAndView sell(HttpServletRequest request,
                              ModelAndView modelAndView) {
-        Member member = memberService.findByMemberRequest(request);
+        Member member = memberService.findByMemberRequest();
         List<MyBoardListResponseDto> boardList = boardService.boardListMemberAndBoardStatus(member, BoardStatus.sell);
 
         List<ChatRoom> roomList = chatRoomService.findRoomList(request);
@@ -305,7 +300,7 @@ public class BoardController {
     @GetMapping("/sold")
     public ModelAndView sold(HttpServletRequest request,
                              ModelAndView modelAndView) {
-        Member member = memberService.findByMemberRequest(request);
+        Member member = memberService.findByMemberRequest();
         List<MyBoardListResponseDto> boardList = boardService.boardListMemberAndBoardStatus(member, BoardStatus.sold);
 
         List<ChatRoom> roomList = chatRoomService.findRoomList(request);
@@ -323,7 +318,7 @@ public class BoardController {
                             ModelAndView modelAndView) {
         List<MyBoardListResponseDto> boardList =
                 boardService.findBoardListByMemberAndBuyStatusOrInterestedStatus(request, BoardStatus.buy);
-        Member member = memberService.findByMemberRequest(request);
+        Member member = memberService.findByMemberRequest();
 
         List<ChatRoom> roomList = chatRoomService.findRoomList(request);
         modelAndView.addObject("roomIdList", roomList);
@@ -341,7 +336,7 @@ public class BoardController {
         List<MyBoardListResponseDto> boardList =
                 boardService.findBoardListByMemberAndBuyStatusOrInterestedStatus(request, BoardStatus.interested);
 
-        Member member = memberService.findByMemberRequest(request);
+        Member member = memberService.findByMemberRequest();
 
 
         List<ChatRoom> roomList = chatRoomService.findRoomList(request);

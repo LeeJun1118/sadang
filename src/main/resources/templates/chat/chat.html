@@ -8,7 +8,7 @@
                 <div class="col-auto mr-auto"></div>
                 <div class="col-auto">
                     <div id="loginCheck">
-                        <a class="btn font-weight-bold mr-2" href="/login"
+                        <a class="btn font-weight-bold mr-2" href="/user/login"
                            th:if="${#strings.isEmpty(username)}">로그인</a>
                         <a class="btn font-weight-bold mr-2" href="/user/out"
                            th:if="${not #strings.isEmpty(username)}">로그아웃</a>
@@ -131,22 +131,15 @@
                                      th:if="${not #strings.isEmpty(thisRoom)}">
                                     <!-- Navbar brand -->
                                     <a class="navbar-brand" href="#"></a>
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-secondary dropdown-toggle"
-                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            메뉴
-                                        </button>
-
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                            <a class="dropdown-item" type="button"
-                                               th:if="${buy == 'none'}"
-                                               th:href="@{/board/buy/{roomId}(roomId=${thisRoom})}">구매하기</a>
-                                            <a class="dropdown-item" type="button"
-                                               th:if="${buy == 'buy'}"
-                                               th:href="@{/board/buy/{roomId}(roomId=${thisRoom})}">구매 취소하기</a>
-                                            <a class="dropdown-item" type="button"
-                                               th:href="@{/chat/room/delete/{roomId}(roomId=${thisRoom})}">방 삭제</a>
-                                        </div>
+                                    <div class="float-right">
+                                        <a class="btn btn-primary" type="button"
+                                           th:if="${buy == 'none'}"
+                                           th:href="@{/board/buy/{roomId}(roomId=${thisRoom})}">구매하기</a>
+                                        <a class="btn btn-warning" type="button"
+                                           th:if="${buy == 'buy'}"
+                                           th:href="@{/board/buy/{roomId}(roomId=${thisRoom})}">구매 취소하기</a>
+                                        <a class="btn btn-danger" type="button"
+                                           th:href="@{/chat/room/delete/{roomId}(roomId=${thisRoom})}">방 삭제</a>
                                     </div>
                                 </nav>
 
