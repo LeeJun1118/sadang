@@ -133,6 +133,12 @@ public class BoardService {
     }
 
     @Transactional
+    public Board findByIdBoard(Long id) {
+        return boardRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시물이 존재하지 않습니다."));
+    }
+
+    @Transactional
     public BoardMemberDto findByIdMember(Long id) {
         Board board = boardRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시물이 존재하지 않습니다."));

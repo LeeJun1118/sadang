@@ -132,12 +132,22 @@
                                     <!-- Navbar brand -->
                                     <a class="navbar-brand" href="#"></a>
                                     <div class="float-right">
-                                        <a class="btn btn-primary" type="button"
-                                           th:if="${buy == 'none'}"
-                                           th:href="@{/board/buy/{roomId}(roomId=${thisRoom})}">구매하기</a>
-                                        <a class="btn btn-warning" type="button"
-                                           th:if="${buy == 'buy'}"
-                                           th:href="@{/board/buy/{roomId}(roomId=${thisRoom})}">구매 취소하기</a>
+                                        <span th:if="${owner == 'none'}">
+                                            <a class="btn btn-primary" type="button"
+                                               th:if="${buy == 'none'}"
+                                               th:href="@{/board/buy/{roomId}(roomId=${thisRoom})}">구매하기</a>
+                                            <a class="btn btn-warning" type="button"
+                                               th:if="${buy == 'buy'}"
+                                               th:href="@{/board/buy/{roomId}(roomId=${thisRoom})}">구매 취소하기</a>
+                                        </span>
+                                        <span th:if="${owner != 'none'}">
+                                            <a class="btn btn-primary"
+                                               th:if="${sold == 'none'}"
+                                               th:href="@{/chat/board/sold/{id}/{roomId}(id=${boardId}, roomId=${thisRoom})}">거래 완료</a>
+                                            <a class="btn btn-primary"
+                                               th:if="${sold != 'none'}"
+                                               th:href="@{/chat/board/sold/{id}/{roomId}(id=${boardId}, roomId=${thisRoom})}">거래 완료 취소</a>
+                                        </span>
                                         <a class="btn btn-danger" type="button"
                                            th:href="@{/chat/room/delete/{roomId}(roomId=${thisRoom})}">방 삭제</a>
                                     </div>

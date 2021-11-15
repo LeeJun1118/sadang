@@ -154,7 +154,13 @@ public class ChatRoomController {
         return "redirect:/chat/room/enter/" + chatRoom.getRoomId();
     }
 
+    @GetMapping("/board/sold/{id}/{roomId}")
+    public String soldout(@PathVariable Long id, @PathVariable String roomId){
+        boardService.sellerStatus(id);
+        System.out.println("RoomID~~~~~~~~~~: " + roomId);
 
+        return "redirect:/chat/room/enter/" + roomId;
+    }
     // 채팅방 입장 화면
     @GetMapping("/room/enter/{roomId}")
     public String roomDetail(Model model, @PathVariable String roomId, HttpServletRequest request) throws Exception {
@@ -171,6 +177,20 @@ public class ChatRoomController {
 
         // 현재 입장한 채팅방
         ChatRoom thisRoom = chatRoomService.findByRoomId(roomId);
+
+        Board board = boardService.findByIdBoard(thisRoom.getBoardId());
+        String sold = "none";
+        if (board.getSellStatus() == BoardStatus.sold)
+            sold = BoardStatus.sold.name();
+        Member writer = memberService.findById(board.getMember().getId());
+
+        String owner = "none";
+        try {
+            if (Objects.equals(writer.getUsername(), member.getUsername())) {
+                owner = writer.getUsername();
+            }
+        }catch (Exception e){
+        }
 
         String buy = buyInterestedService.findByBoardIdBuyStatus(thisRoom.getBoardId());
 
@@ -191,20 +211,22 @@ public class ChatRoomController {
 
         LocalDateTime enterTime;
 
-        if (member.getId() == thisRoom.getSeller().getId()){
+        if (member.getId() == thisRoom.getSeller().getId()) {
             enterTime = thisRoom.getSellerEnterDate();
-        }
-        else{
+        } else {
             enterTime = thisRoom.getBuyerEnterDate();
         }
         for (ChatMessage thisMessage : roomMessageList) {
             if (thisMessage.getCreatedDate().isAfter(enterTime))
-            messages.add(new ChatMessageListTimeDto(thisMessage));
+                messages.add(new ChatMessageListTimeDto(thisMessage));
         }
 
         model.addAttribute("roomList", roomListReadStatus);
+        model.addAttribute("owner", owner);
+        model.addAttribute("boardId", board.getId());
         model.addAttribute("thisRoom", roomId);
         model.addAttribute("buy", buy);
+        model.addAttribute("sold", sold);
         model.addAttribute("username", member.getUsername());
         model.addAttribute("messages", messages);
         return "/chat/chat";
