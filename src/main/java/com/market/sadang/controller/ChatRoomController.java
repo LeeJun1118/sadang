@@ -154,12 +154,12 @@ public class ChatRoomController {
         return "redirect:/chat/room/enter/" + chatRoom.getRoomId();
     }
 
-    @GetMapping("/board/sold/{id}/{roomId}")
-    public String soldout(@PathVariable Long id, @PathVariable String roomId){
+    @GetMapping("/board/sold/{id}")
+    public String soldout(@PathVariable Long id, HttpServletRequest request){
         boardService.sellerStatus(id);
-        System.out.println("RoomID~~~~~~~~~~: " + roomId);
 
-        return "redirect:/chat/room/enter/" + roomId;
+        String referer = request.getHeader("Referer");
+        return "redirect:"+ referer;
     }
     // 채팅방 입장 화면
     @GetMapping("/room/enter/{roomId}")

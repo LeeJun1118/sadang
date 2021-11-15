@@ -25,6 +25,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -350,13 +351,13 @@ public class BoardController {
 
 
     @GetMapping("/board/sold/{id}")
-    public ModelAndView sold(@PathVariable Long id,
-                             ModelAndView modelAndView) {
+    public String sold(@PathVariable Long id,
+                             HttpServletRequest request) {
 
         boardService.sellerStatus(id);
 
-        modelAndView.setViewName("redirect:/sell");
-        return modelAndView;
+        String referer = request.getHeader("Referer");
+        return "redirect:"+ referer;
     }
 
 
