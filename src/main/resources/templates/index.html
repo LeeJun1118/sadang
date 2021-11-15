@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
     <head th:replace="fragments/header :: header"></head>
     <body>
         <div class="container mt-5 mb-5">
@@ -7,10 +7,11 @@
                 <div class="col-auto mr-auto"></div>
                 <div class="col-auto">
                     <div id="loginCheck">
-                        <a class="btn font-weight-bold mr-2" href="/login"
-                           th:if="${#strings.isEmpty(username)}">로그인</a>
-                        <a class="btn font-weight-bold mr-2" href="/user/out"
-                           th:if="${not #strings.isEmpty(username)}">로그아웃</a>
+                        <a sec:authorize="isAnonymous()" th:href="@{/user/login}"
+                           class="btn font-weight-bold mr-2">로그인</a>
+                        <a sec:authorize="isAuthenticated()" th:href="@{/user/logout}"
+                           class="btn font-weight-bold mr-2">로그아웃</a>
+
                         <a class="btn font-weight-bold mr-w" href="/signup"
                            th:if="${#strings.isEmpty(username)}">회원가입</a>
                         <a class="btn font-weight-bold mr-2" href="/myPage"

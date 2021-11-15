@@ -24,12 +24,12 @@ public class BoardCreateRequestDto {
     private String address;
 
     @Builder
-    public BoardCreateRequestDto(Member member, String title, String price, String content, String address) {
+    public BoardCreateRequestDto(Member member, String title, String price, String content) {
         this.member = member;
         this.title = title;
         this.price = price;
         this.content = content;
-        this.address = address;
+        this.address = member.getAddress();
     }
 
     public Board toEntity(){

@@ -2,9 +2,7 @@ package com.market.sadang.init;
 
 import com.market.sadang.config.UserRole;
 import com.market.sadang.domain.Member;
-import com.market.sadang.domain.Salt;
 import com.market.sadang.repository.MemberRepository;
-import com.market.sadang.service.authUtil.SaltUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -12,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -85,25 +82,19 @@ public class InitMember {
 
             String detailAddress = " 상세 주소 Example";
 
-            String password = "1234";
-            SaltUtil saltUtil = new SaltUtil();
-            String salt = saltUtil.genSalt();
-            Salt mySalt = new Salt(salt);
-
             Member member = getMember(
                     randomNames[i-1],
                     randomUsernames[i-1],
-                    saltUtil.encodePassword(salt,password),
+                    bCryptPasswordEncoder.encode("1234"),
                     randomEmails.get(i-1),
                     address,
-                    detailAddress,
-                    mySalt
+                    detailAddress
 
             );
             em.persist(member);
         }
 
-        private Member getMember(String name, String username, String password, String email, Address address1, String detailAddress, Salt salt) {
+        private Member getMember(String name, String username, String password, String email, Address address1, String detailAddress) {
             return new Member(
                     name,
                     username,
@@ -111,7 +102,6 @@ public class InitMember {
                     email,
                     address1.getCity() + " " + address1.getStreet1(),
                     detailAddress,
-                    salt,
                     UserRole.ROLE_USER
             );
         }

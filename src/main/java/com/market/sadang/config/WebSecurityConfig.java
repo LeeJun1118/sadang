@@ -1,60 +1,63 @@
 package com.market.sadang.config;
 
-import com.market.sadang.config.handler.CustomAccessDeniedHandler;
 import com.market.sadang.service.authUtil.MyUserDetailService;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-
+@Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private MyUserDetailService myUserDetailService;
-    private final CustomAccessDeniedHandler customAccessDeniedHandler;
-    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
-    private final SessionRequestFilter sessionRequestFilter;
+    private MyUserDetailService memberService;
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Override
+    public void configure(WebSecurity web) throws Exception
+    {
+        // static 디렉터리의 하위 파일 목록은 인증 무시 ( = 항상통과 )
+        web.ignoring().antMatchers("/css/**", "/js/**", "/img/**", "/lib/**");
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()// rest api를 고려하여 기본 설정 해제
-                // 토큰 기반 인증이므로 세션 사용 안함
-//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-                .and()
-                .httpBasic()
-                //로그인 안한 사람이 접근시 설정
-                .authenticationEntryPoint(customAuthenticationEntryPoint)
-                .and()
-                //메일 인증을 안한 사람이 접근시 설정
-                .exceptionHandling().accessDeniedHandler(customAccessDeniedHandler)
-                .and()
+        http.csrf().disable()
                 .authorizeRequests()
-
-                .antMatchers("/board/new").hasRole("USER")
-                .antMatchers("/myPage").hasRole("USER")
+                // 페이지 권한 설정
                 .antMatchers("/chat/**").hasRole("USER")
-                .antMatchers("/test/**").hasRole("USER")
-                .anyRequest()
-                .permitAll();
-
-
-
-
-        // 모든 요청에 토큰을 검증하는 필터를 추가한다.
-        http.addFilterBefore(sessionRequestFilter, UsernamePasswordAuthenticationFilter.class);
+                .antMatchers("/myPage").hasRole("USER")
+                .antMatchers("/board/new").hasRole("USER")
+                .antMatchers("/**").permitAll()
+                .and() // 로그인 설정
+                .formLogin()
+                .loginPage("/user/login")
+                .defaultSuccessUrl("/")
+                .permitAll()
+                .and() // 로그아웃 설정
+                .logout()
+                .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
+                .logoutSuccessUrl("/")
+                .invalidateHttpSession(true)
+                .and()
+                // 403 예외처리 핸들링
+                .exceptionHandling().accessDeniedPage("/user/denied");
     }
 
-
-    @Bean
     @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(memberService).passwordEncoder(passwordEncoder());
     }
 }

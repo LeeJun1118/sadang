@@ -158,7 +158,7 @@ $(document).ready(function () {
             success: function (data) {
                 if (JSON.parse(data) == 1) {
                     alert('회원 가입 완료');
-                    location.replace("/login")
+                    location.replace("/user/login")
                 } else {
                     alert("메일 인증을 완료해주세요")
                 }

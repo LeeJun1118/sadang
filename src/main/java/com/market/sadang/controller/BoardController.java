@@ -16,6 +16,8 @@ import com.market.sadang.dto.myFile.MyFileResponseDto;
 import com.market.sadang.repository.ChatRoomRepository;
 import com.market.sadang.service.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
@@ -81,7 +83,6 @@ public class BoardController {
                             .title(boardForm.getTitle())
                             .price(boardForm.getPrice())
                             .content(boardForm.getContent())
-                            .address(member.getAddress())
                             .build();
             return "redirect:/board/" + boardService.create(requestDto, files);
         }

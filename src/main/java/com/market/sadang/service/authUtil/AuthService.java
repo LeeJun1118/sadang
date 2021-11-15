@@ -5,9 +5,6 @@ import com.market.sadang.domain.Member;
 import javassist.NotFoundException;
 
 public interface AuthService {
-    Member signUpUser(Member member);
-
-    Member loginUser(String userId, String password) throws Exception;
 
     void verifyEmail(String key) throws NotFoundException;
 

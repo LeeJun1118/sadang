@@ -18,12 +18,11 @@ import com.market.sadang.service.BuyInterestedService;
 import com.market.sadang.service.ChatRoomService;
 import com.market.sadang.service.MemberService;
 import com.market.sadang.service.authUtil.AuthService;
-import com.market.sadang.service.authUtil.JwtUtil;
+import com.market.sadang.service.authUtil.MyUserDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -45,13 +44,13 @@ public class MemberController {
 
     private final AuthService authService;
     private final MemberRepository memberRepository;
-    private final JwtUtil jwtUtil;
     private final MemberService memberService;
     private final BoardService boardService;
     private final ChatRoomRepository chatRoomRepository;
     private final ChatRoomService chatRoomService;
     private final ChatMessageRepository chatMessageRepository;
     private final BuyInterestedService buyInterestedService;
+    private final MyUserDetailService myUserDetailService;
 
 //    private final JwtRequestFilter jwtRequestFilter;
 
@@ -97,78 +96,6 @@ public class MemberController {
         return count;
     }
 
-    @PostMapping("/login")
-    public ModelAndView login(RequestLoginUser user,
-                              ModelAndView modelAndView,
-                              HttpServletRequest req,
-                              HttpServletResponse res) {
-        System.out.println("userId.getUsername()=====" + user.getUsername());
-        Response response;
-
-        try {
-            final Member member = authService.loginUser(user.getUsername(), user.getPassword());
-
-            HttpSession session = req.getSession();
-            session.setAttribute("userId", member.getId());
-
-
-            /*final String token = jwtUtil.generateToken(member);
-            final String refreshJwt = jwtUtil.generateRefreshToken(member);
-
-            Cookie accessToken = cookieUtil.createCookie(JwtUtil.ACCESS_TOKEN_NAME, token);
-            Cookie refreshToken = cookieUtil.createCookie(JwtUtil.REFRESH_TOKEN_NAME, refreshJwt);
-
-            redisUtil.setDataExpire(refreshJwt, member.getUsername(), JwtUtil.REFRESH_TOKEN_VALIDATION_SECOND);
-            res.addCookie(accessToken);
-            res.addCookie(refreshToken);*/
-
-            modelAndView.setViewName("redirect:/");
-            response = new Response("success", "로그인 성공", null);
-
-        } catch (Exception e) {
-            modelAndView.setViewName("auth/loginPage");
-            System.out.println("로그인 실패 : " + e.getMessage());
-            response = new Response("error", "로그인 실패", e.getMessage());
-        }
-
-        return modelAndView;
-    }
-
-
-    @GetMapping("/user/out")
-    public ModelAndView logout(ModelAndView modelAndView,
-                               HttpServletRequest req,
-                               HttpServletResponse res) {
-
-        try {
-            HttpSession session = req.getSession();
-            session.removeAttribute("userId");
-            /*Cookie accessToken = cookieUtil.getCookie(req, "accessToken");
-            redisUtil.deleteData(accessToken.getValue());
-
-
-            Cookie resAccessToken = new Cookie("accessToken", null);
-            Cookie resRefreshToken = new Cookie("refreshToken", null);
-
-            resAccessToken.setHttpOnly(true);
-            resAccessToken.setSecure(false);
-            resAccessToken.setMaxAge(0);
-            resAccessToken.setPath("/");
-
-            resRefreshToken.setHttpOnly(true);
-            resRefreshToken.setSecure(false);
-            resRefreshToken.setMaxAge(0);
-            resRefreshToken.setPath("/");
-
-            res.addCookie(resAccessToken);
-            res.addCookie(resRefreshToken);*/
-
-        } catch (Exception ignored) {
-        }
-        modelAndView.setViewName("redirect:/");
-        return modelAndView;
-    }
-
     @PostMapping("/sendMail")
     public ModelAndView verify(SignUpForm signUpForm, ModelAndView model) {
         Response response;
@@ -176,7 +103,8 @@ public class MemberController {
         try {
             Member member = new Member(signUpForm);
             // 회원 가입
-            authService.signUpUser(member);
+//            authService.signUpUser(member);
+            myUserDetailService.signUp(member);
 
             //메일 보냄
             authService.sendVerificationMail(member);
@@ -216,10 +144,7 @@ public class MemberController {
         // ajax에서 userId=testUserId 이런식으로 받아와짐
         String name = user.getUsername().split("=")[1];
 
-//        Map<String, Object> object = new HashMap<String, Object>();
-
         int sendReq = 0;
-
         Member member = authService.findByUsername(name);
 
         System.out.println(member.getUsername());
@@ -227,17 +152,15 @@ public class MemberController {
             System.out.println("member.name()" + member.getUsername());
             System.out.println("member.getRole()=" + member.getRole());
             sendReq = 1;
-//            object.put("responseCode", "success");
         } else {
             System.out.println("member.name()" + member.getUsername());
             System.out.println("member.getRole()=" + member.getRole());
-//            object.put("responseCode", "error");
             System.out.println("메일 인증 안함");
         }
         return sendReq;
     }
 
-    @GetMapping("/login")
+    @GetMapping("/user/login")
     public ModelAndView loginPage(ModelAndView modelAndView) {
         modelAndView.setViewName("auth/loginPage");
         return modelAndView;

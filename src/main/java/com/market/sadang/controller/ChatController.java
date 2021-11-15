@@ -8,7 +8,6 @@ import com.market.sadang.dto.chat.ChatMessageDto;
 import com.market.sadang.repository.ChatMessageRepository;
 import com.market.sadang.repository.ChatRoomRepository;
 import com.market.sadang.repository.MemberRepository;
-import com.market.sadang.service.authUtil.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,7 +23,6 @@ import java.util.Objects;
 public class ChatController {
 
     private final ChatRoomRepository chatRoomRepository;
-    private final JwtUtil jwtUtil;
     private final MemberRepository memberRepository;
     private final ChatMessageRepository chatMessageRepository;
 
@@ -33,16 +31,8 @@ public class ChatController {
 
     // websocket "/pub/chat/message"로 들어오는 메시징을 처리
     @MessageMapping("/chat/message")
-    public void message(ChatMessageDto messageDto/*, @Header("roomId") String roomId,  @Header("username") String username*/) {
+    public void message(ChatMessageDto messageDto) {
 
-        //토큰 유효성 검사
-//        String memberId = jwtUtil.getUsername(token);
-//        String username = memberRepository.findByUsername(memberId).getUsername();
-
-        /*if (ChatMessage.MessageType.ENTER.equals(message.getType())) {
-            message.setSender("[알림]");
-            message.setMessage(username + "님이 입장하셨습니다.");
-        }*/
 
         // json으로 log 출력
         Gson gson = new Gson();
@@ -67,12 +57,6 @@ public class ChatController {
             sender = chatRoom.getSeller();
         }
         messageDto.setReceiver(receiver.getUsername());
-
-        //현재 사용자가 위치한 채팅방이 메세지가 온
-      /*  if (Objects.equals(roomId, message.getRoomId())){
-            message.setReceiverStatus(ReadStatus.Y);
-        }*/
-
 
         ChatMessage chatMessage = chatMessageRepository.save(new ChatMessage(messageDto,chatRoom,sender,receiver));
         ChatMessageDto dto = new ChatMessageDto(chatMessage);
