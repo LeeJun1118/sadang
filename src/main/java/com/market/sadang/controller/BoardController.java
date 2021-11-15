@@ -114,12 +114,17 @@ public class BoardController {
 
         String interested = buyInterestedService.findByBoardIdInterestedStatus(id);
 
+        String sold = "none";
+        if (boardResponseDto.getStatus() == BoardStatus.sold)
+            sold = BoardStatus.sold.name();
+
         List<ChatRoom> roomList = chatRoomService.findRoomList(request);
         modelAndView.addObject("roomIdList", roomList);
         modelAndView.addObject("username", username);
         modelAndView.addObject("interested", interested);
 
         modelAndView.addObject("board", boardResponseDto);
+        modelAndView.addObject("sold", sold);
         modelAndView.setViewName("board/showBoard");
         return modelAndView;
     }

@@ -7,7 +7,7 @@
                 <div class="col-auto mr-auto"></div>
                 <div class="col-auto">
                     <div id="loginCheck">
-                       <a class="btn font-weight-bold mr-2" href="/user/login"
+                        <a class="btn font-weight-bold mr-2" href="/user/login"
                            th:if="${#strings.isEmpty(username)}">로그인</a>
                         <a class="btn font-weight-bold mr-2" href="/user/out"
                            th:if="${not #strings.isEmpty(username)}">로그아웃</a>
@@ -60,16 +60,23 @@
 
                     <ul class="nav justify-content-end">
                         <li class="nav-item">
-                            <span   th:if="${not #strings.isEmpty(username)}"
-                                    th:classappend="${board.member == username ? 'd-none' : ''}">
+                            <span th:if="${not #strings.isEmpty(username)}"
+                                  th:classappend="${board.member == username ? 'd-none' : ''}">
                                 <a id="interested" class="btn" th:href="@{/board/interested/{id}(id=${board.id})}"
                                    th:classappend="${interested == 'none' ? '' : 'd-none'}">찜하기</a>
-                                <a id="interested-cancle" class="btn" th:href="@{/board/interested/{id}(id=${board.id})}"
+                                <a id="interested-cancle" class="btn"
+                                   th:href="@{/board/interested/{id}(id=${board.id})}"
                                    th:classappend="${interested == 'interested' ? '' : 'd-none'}">찜 취소하기</a>
                             </span>
 
-                            <a id="sold-board" class="btn" th:href="@{/board/sold/{id}(id=${board.id})}"
-                               th:classappend="${board.member == username ? '' : 'd-none'}">거래 완료</a>
+                            <a class="btn"
+                               th:if="${sold == 'none'}"
+                               th:href="@{/board/sold/{id}(id=${board.id})}">거래 완료</a>
+                            <a class="btn"
+                               th:if="${sold != 'none'}"
+                               th:href="@{/board/sold/{id}(id=${board.id})}">거래 완료 취소</a>
+                            <!--<a id="sold-board" class="btn" th:href="@{/board/sold/{id}(id=${board.id})}"
+                               th:classappend="${board.member == username ? '' : 'd-none'}">거래 완료</a>-->
                             <a id="modify-board" class="btn" th:href="@{/board/update/{id}(id=${board.id})}"
                                th:classappend="${board.member == username ? '' : 'd-none'}">글 수정</a>
                             <a id="delete-board" class="btn" data-toggle="modal" data-target="#deletePost"

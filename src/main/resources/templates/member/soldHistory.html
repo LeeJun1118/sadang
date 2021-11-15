@@ -49,6 +49,8 @@
 
                                 <ul class="nav justify-content-center">
                                     <li class="nav-item">
+                                        <a class="btn"
+                                           th:href="@{/board/sold/{id}(id=${board.id})}">거래 완료 취소</a>
                                         <a class="btn" data-toggle="modal" data-target="#deletePost" href="#">
                                             글삭제
                                         </a>
