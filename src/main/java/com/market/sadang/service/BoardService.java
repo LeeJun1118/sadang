@@ -176,11 +176,11 @@ public class BoardService {
 
     // 구매 상품 등록, 해제
     @Transactional
-    public void buy(Long boardId, HttpServletRequest request) {
+    public void buy(Long boardId) {
         Member member = memberService.findByMemberRequest();
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시물이 존재하지 않습니다."));
-        BuyInterested buyInterested = buyInterestedRepository.findByMember(member);
+        BuyInterested buyInterested = buyInterestedRepository.findByBoardAndMember(board,member);
 
         if (buyInterested != null) {
             if (buyInterested.getBuyStatus() == BoardStatus.buy)
@@ -194,7 +194,7 @@ public class BoardService {
 
     // 관심 상품 등록, 해제
     @Transactional
-    public void interested(Long id, HttpServletRequest request) {
+    public void interested(Long id) {
         Board board = boardRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
         Member member = memberService.findByMemberRequest();

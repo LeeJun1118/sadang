@@ -373,7 +373,7 @@ public class BoardController {
 
         ChatRoom chatRoom = chatRoomService.findByRoomId(roomId);
         System.out.println(chatRoom.getBoardId());
-        boardService.buy(chatRoom.getBoardId(), request);
+        boardService.buy(chatRoom.getBoardId());
 
         modelAndView.setViewName("redirect:/chat/room/enter/" + roomId);
         return modelAndView;
@@ -384,7 +384,7 @@ public class BoardController {
                                    HttpServletRequest request,
                                    ModelAndView modelAndView) {
 
-        boardService.interested(id, request);
+        boardService.interested(id);
 
         modelAndView.setViewName("redirect:/board/" + id);
         return modelAndView;
@@ -395,7 +395,7 @@ public class BoardController {
                                      HttpServletRequest request,
                                      ModelAndView modelAndView) {
 
-        boardService.interested(id, request);
+        boardService.interested(id);
 
         modelAndView.setViewName("redirect:/interested");
         return modelAndView;
