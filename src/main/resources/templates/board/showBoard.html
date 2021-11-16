@@ -69,12 +69,14 @@
                                    th:classappend="${interested == 'interested' ? '' : 'd-none'}">찜 취소하기</a>
                             </span>
 
-                            <a class="btn"
-                               th:if="${sold == 'none'}"
-                               th:href="@{/board/sold/{id}(id=${board.id})}">거래 완료</a>
-                            <a class="btn"
-                               th:if="${sold != 'none'}"
-                               th:href="@{/board/sold/{id}(id=${board.id})}">거래 완료 취소</a>
+                            <span th:classappend="${board.member == username ? '' : 'd-none'}">
+                                <a class="btn"
+                                   th:if="${sold == 'none'}"
+                                   th:href="@{/board/sold/{id}(id=${board.id})}">거래 완료</a>
+                                <a class="btn"
+                                   th:if="${sold != 'none'}"
+                                   th:href="@{/board/sold/{id}(id=${board.id})}">거래 완료 취소</a>
+                            </span>
                             <!--<a id="sold-board" class="btn" th:href="@{/board/sold/{id}(id=${board.id})}"
                                th:classappend="${board.member == username ? '' : 'd-none'}">거래 완료</a>-->
                             <a id="modify-board" class="btn" th:href="@{/board/update/{id}(id=${board.id})}"
