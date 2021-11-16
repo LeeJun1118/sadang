@@ -24,7 +24,7 @@ public class SignUp /*extends BaseTimeEntity*/{
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REMOVE)
     private Member member;
 
     private String uuid;

@@ -8,7 +8,6 @@ import com.market.sadang.dto.member.MemberPageResponseDto;
 import com.market.sadang.dto.member.MemberResponseDto;
 import com.market.sadang.dto.member.MemberUpdateRequestDto;
 import com.market.sadang.dto.form.MemberForm;
-import com.market.sadang.domain.requestUser.RequestLoginUser;
 import com.market.sadang.domain.requestUser.RequestVerifyUser;
 import com.market.sadang.repository.ChatMessageRepository;
 import com.market.sadang.repository.ChatRoomRepository;
@@ -25,14 +24,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 //final이 선언된 모든 필드를 인자값으로 하는 생성자를 대신 생성
 @RequiredArgsConstructor
@@ -59,6 +53,15 @@ public class MemberController {
     public ModelAndView signUpUser(ModelAndView model) {
         model.addObject("signUpForm", new SignUpForm());
         model.setViewName("auth/signUpPage");
+
+        List<Member> Members = memberRepository.findAllByRole(UserRole.ROLE_NOT_PERMITTED);
+        for (Member member : Members) {
+            if (LocalDateTime.now().isAfter(member.getCreatedDate().plusMinutes(3))
+                    && member.getRole() == UserRole.ROLE_NOT_PERMITTED) {
+                signUpRepository.delete(signUpRepository.findByMember(member));
+            }
+        }
+
         return model;
     }
 
@@ -161,10 +164,9 @@ public class MemberController {
             System.out.println("메일 인증 안함");
         }
 
-        if (LocalDateTime.now().isAfter(member.getCreatedDate().plusMinutes(3)) && member.getRole() == UserRole.ROLE_NOT_PERMITTED){
-            SignUp signUp = signUpRepository.findByMember(member);
-            signUpRepository.delete(signUp);
-            memberRepository.delete(member);
+        if (LocalDateTime.now().isAfter(member.getCreatedDate().plusMinutes(3))
+                && member.getRole() == UserRole.ROLE_NOT_PERMITTED) {
+            signUpRepository.delete(signUpRepository.findByMember(member));
             sendReq = -1;
         }
 
