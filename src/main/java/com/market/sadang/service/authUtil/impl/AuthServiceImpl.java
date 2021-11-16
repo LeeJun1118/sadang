@@ -28,7 +28,7 @@ public class AuthServiceImpl implements AuthService {
         //key 받아서 사용자 찾음
 //        String memberId = redisUtil.getData(key);
         SignUp signUp = signUpRepository.findByUuid(key);
-        Member member = memberService.findById(signUp.getUserId());
+        Member member = signUp.getMember();
 
         if (member == null)
             throw new NotFoundException("사용자가 조회되지 않습니다.");
@@ -64,7 +64,7 @@ public class AuthServiceImpl implements AuthService {
         //중복 없이 id 생성
         UUID uuid = UUID.randomUUID();
 
-        signUpRepository.save(new SignUp(member.getId(),uuid.toString()));
+        signUpRepository.save(new SignUp(member,uuid.toString()));
 
         //메일 보냄
         emailService.sendMail(member.getEmail(), "SADANG 인증 메일입니다.", VERIFICATION_LINK + uuid.toString());

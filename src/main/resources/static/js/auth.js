@@ -159,7 +159,11 @@ $(document).ready(function () {
                 if (JSON.parse(data) == 1) {
                     alert('회원 가입 완료');
                     location.replace("/user/login")
-                } else {
+                }else if(JSON.parse(data) == -1){
+                    alert('인증 시간이 만료되었습니다.')
+                    location.replace("/signup")
+                }
+                else {
                     alert("메일 인증을 완료해주세요")
                 }
             },

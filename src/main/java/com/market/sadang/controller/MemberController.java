@@ -13,6 +13,7 @@ import com.market.sadang.domain.requestUser.RequestVerifyUser;
 import com.market.sadang.repository.ChatMessageRepository;
 import com.market.sadang.repository.ChatRoomRepository;
 import com.market.sadang.repository.MemberRepository;
+import com.market.sadang.repository.SignUpRepository;
 import com.market.sadang.service.BoardService;
 import com.market.sadang.service.BuyInterestedService;
 import com.market.sadang.service.ChatRoomService;
@@ -27,6 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,6 +53,7 @@ public class MemberController {
     private final ChatMessageRepository chatMessageRepository;
     private final BuyInterestedService buyInterestedService;
     private final MyUserDetailService myUserDetailService;
+    private final SignUpRepository signUpRepository;
 
     @GetMapping("/signup")
     public ModelAndView signUpUser(ModelAndView model) {
@@ -141,9 +144,11 @@ public class MemberController {
 
         // ajax에서 userId=testUserId 이런식으로 받아와짐
         String name = user.getUsername().split("=")[1];
+        System.out.println(user.getUsername());
 
         int sendReq = 0;
         Member member = authService.findByUsername(name);
+
 
         System.out.println(member.getUsername());
         if (member.getUsername() != null && member.getRole() == UserRole.ROLE_USER) {
@@ -155,6 +160,15 @@ public class MemberController {
             System.out.println("member.getRole()=" + member.getRole());
             System.out.println("메일 인증 안함");
         }
+
+        if (LocalDateTime.now().isAfter(member.getCreatedDate().plusMinutes(3)) && member.getRole() == UserRole.ROLE_NOT_PERMITTED){
+            SignUp signUp = signUpRepository.findByMember(member);
+            signUpRepository.delete(signUp);
+            memberRepository.delete(member);
+            sendReq = -1;
+        }
+
+
         return sendReq;
     }
 
