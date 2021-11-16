@@ -1,10 +1,7 @@
 package com.market.sadang.controller;
 
 
-import com.market.sadang.domain.Board;
-import com.market.sadang.domain.BoardStatus;
-import com.market.sadang.domain.ChatRoom;
-import com.market.sadang.domain.Member;
+import com.market.sadang.domain.*;
 import com.market.sadang.dto.bord.BoardCreateRequestDto;
 import com.market.sadang.dto.bord.BoardListResponseDto;
 import com.market.sadang.dto.bord.BoardResponseDto;
@@ -376,6 +373,15 @@ public class BoardController {
         boardService.buy(chatRoom.getBoardId());
 
         modelAndView.setViewName("redirect:/chat/room/enter/" + roomId);
+        return modelAndView;
+    }
+    @GetMapping("/board/myPage/buy/{id}")
+    public ModelAndView myPagebuy(@PathVariable Long id,
+                               ModelAndView modelAndView) {
+
+        boardService.buy(id);
+        modelAndView.setViewName("redirect:/buy");
+
         return modelAndView;
     }
 
