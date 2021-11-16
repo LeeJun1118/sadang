@@ -59,6 +59,7 @@ public class MemberController {
             if (LocalDateTime.now().isAfter(member.getCreatedDate().plusMinutes(3))
                     && member.getRole() == UserRole.ROLE_NOT_PERMITTED) {
                 signUpRepository.delete(signUpRepository.findByMember(member));
+                memberRepository.delete(member);
             }
         }
 
@@ -167,6 +168,7 @@ public class MemberController {
         if (LocalDateTime.now().isAfter(member.getCreatedDate().plusMinutes(3))
                 && member.getRole() == UserRole.ROLE_NOT_PERMITTED) {
             signUpRepository.delete(signUpRepository.findByMember(member));
+            memberRepository.delete(member);
             sendReq = -1;
         }
 

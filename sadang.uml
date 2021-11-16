@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>DATABASE</ID>
+  <OriginalElement>b20cefc8-78bf-4d1a-a3ea-678f9cad6ea1.DATABASE:sadang</OriginalElement>
+  <nodes>
+    <node x="230.44999187625885" y="37.82959641255604">b20cefc8-78bf-4d1a-a3ea-678f9cad6ea1.TABLE:sadang.public.sign_up</node>
+    <node x="777.0301731998624" y="36.3839595752635">b20cefc8-78bf-4d1a-a3ea-678f9cad6ea1.TABLE:sadang.public.chat_message</node>
+    <node x="307.6901154420894" y="541.8525014376079">b20cefc8-78bf-4d1a-a3ea-678f9cad6ea1.TABLE:sadang.public.my_file</node>
+    <node x="491.5346588011794" y="0.0">b20cefc8-78bf-4d1a-a3ea-678f9cad6ea1.TABLE:sadang.public.member</node>
+    <node x="535.3765762631187" y="367.03680276020697">b20cefc8-78bf-4d1a-a3ea-678f9cad6ea1.TABLE:sadang.public.chat_room</node>
+    <node x="71.00365462106004" y="587.8525014376079">b20cefc8-78bf-4d1a-a3ea-678f9cad6ea1.TABLE:sadang.public.buy_interested</node>
+    <node x="278.94408643148233" y="263.44843049327346">b20cefc8-78bf-4d1a-a3ea-678f9cad6ea1.TABLE:sadang.public.board</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="b20cefc8-78bf-4d1a-a3ea-678f9cad6ea1.TABLE:sadang.public.my_file" target="b20cefc8-78bf-4d1a-a3ea-678f9cad6ea1.TABLE:sadang.public.board" relationship="REFERENCES">
+      <point x="-3.807606372246312" y="-95.71581079012583" />
+      <point x="34.93842263836075" y="120.30527242674356" />
+    </edge>
+    <edge source="b20cefc8-78bf-4d1a-a3ea-678f9cad6ea1.TABLE:sadang.public.chat_message" target="b20cefc8-78bf-4d1a-a3ea-678f9cad6ea1.TABLE:sadang.public.chat_room" relationship="REFERENCES">
+      <point x="-79.70079530516944" y="64.41815950097617" />
+      <point x="792.8293778946929" y="469.2949197647222" />
+      <point x="776.9534077478405" y="469.2949197647222" />
+      <point x="776.9534077478405" y="469.1312846992113" />
+      <point x="719.1562868907932" y="469.1312846992113" />
+      <point x="86.77971062767449" y="-45.88585393904526" />
+    </edge>
+    <edge source="b20cefc8-78bf-4d1a-a3ea-678f9cad6ea1.TABLE:sadang.public.chat_message" target="b20cefc8-78bf-4d1a-a3ea-678f9cad6ea1.TABLE:sadang.public.member" relationship="REFERENCES">
+      <point x="-76.86498383124876" y="30.322769584428585" />
+      <point x="82.13628956153025" y="78.20672915969209" />
+    </edge>
+    <edge source="b20cefc8-78bf-4d1a-a3ea-678f9cad6ea1.TABLE:sadang.public.board" target="b20cefc8-78bf-4d1a-a3ea-678f9cad6ea1.TABLE:sadang.public.member" relationship="REFERENCES">
+      <point x="-0.2373572717902448" y="-111.75777096866676" />
+      <point x="366.7067291596921" y="280.35051891529974" />
+      <point x="358.63153875125556" y="280.35051891529974" />
+      <point x="358.63153875125556" y="229.21794134560096" />
+      <point x="-80.18243295330444" y="96.71794134560096" />
+    </edge>
+    <edge source="b20cefc8-78bf-4d1a-a3ea-678f9cad6ea1.TABLE:sadang.public.chat_room" target="b20cefc8-78bf-4d1a-a3ea-678f9cad6ea1.TABLE:sadang.public.board" relationship="REFERENCES">
+      <point x="4.7826086972690973E-4" y="-132.5" />
+      <point x="632.3770545239885" y="457.0286637584361" />
+      <point x="445.2001142785668" y="457.0286637584361" />
+      <point x="78.25602784708445" y="54.04104951333056" />
+    </edge>
+    <edge source="b20cefc8-78bf-4d1a-a3ea-678f9cad6ea1.TABLE:sadang.public.chat_room" target="b20cefc8-78bf-4d1a-a3ea-678f9cad6ea1.TABLE:sadang.public.member" relationship="REFERENCES">
+      <point x="70.11171976413925" y="-129.77084214980948" />
+      <point x="667.5774233714176" y="369.7659606103975" />
+      <point x="81.5427645702382" y="134.09246720270846" />
+    </edge>
+    <edge source="b20cefc8-78bf-4d1a-a3ea-678f9cad6ea1.TABLE:sadang.public.sign_up" target="b20cefc8-78bf-4d1a-a3ea-678f9cad6ea1.TABLE:sadang.public.member" relationship="REFERENCES">
+      <point x="47.29509050724755" y="1.3976570787685603" />
+      <point x="-90.10344787157317" y="-41.2727465086754" />
+    </edge>
+    <edge source="b20cefc8-78bf-4d1a-a3ea-678f9cad6ea1.TABLE:sadang.public.buy_interested" target="b20cefc8-78bf-4d1a-a3ea-678f9cad6ea1.TABLE:sadang.public.member" relationship="REFERENCES">
+      <point x="-65.10883628772135" y="-76.55232892466915" />
+      <point x="108.39481833333869" y="202.90396779758487" />
+      <point x="-87.35897119367246" y="70.40396779758487" />
+    </edge>
+    <edge source="b20cefc8-78bf-4d1a-a3ea-678f9cad6ea1.TABLE:sadang.public.buy_interested" target="b20cefc8-78bf-4d1a-a3ea-678f9cad6ea1.TABLE:sadang.public.board" relationship="REFERENCES">
+      <point x="-14.999521739130273" y="-75.0" />
+      <point x="158.50413288192976" y="460.9232148491653" />
+      <point x="280.10244392366934" y="460.9232148491653" />
+      <point x="-86.84164250781299" y="56.73268768550122" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="0.8360576923076917" showDependencies="false" x="1018.9056929269698" y="571.0897067280048" />
+  <SelectedNodes>
+    <node>b20cefc8-78bf-4d1a-a3ea-678f9cad6ea1.TABLE:sadang.public.member</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Columns</Category>
+    <Category>Comments</Category>
+    <Category>Key columns</Category>
+    <Category>Virtual foreign keys</Category>
+  </Categories>
+</Diagram>
+
