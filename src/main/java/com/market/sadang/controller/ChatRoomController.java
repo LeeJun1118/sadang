@@ -1,27 +1,19 @@
 package com.market.sadang.controller;
 
-import com.google.gson.Gson;
 import com.market.sadang.domain.*;
+import com.market.sadang.domain.enumType.BoardStatus;
 import com.market.sadang.dto.bord.BoardMemberDto;
-import com.market.sadang.dto.bord.BoardUpdateRequestDto;
 import com.market.sadang.dto.chat.ChatMessageListTimeDto;
 import com.market.sadang.dto.chat.MessageListReadStatusDto;
-import com.market.sadang.dto.member.MyBoardListResponseDto;
-import com.market.sadang.dto.member.MyChatRoomListResponseDto;
-import com.market.sadang.repository.BoardRepository;
 import com.market.sadang.repository.ChatMessageRepository;
 import com.market.sadang.repository.ChatRoomRepository;
 import com.market.sadang.service.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 

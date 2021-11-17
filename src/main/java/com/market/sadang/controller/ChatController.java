@@ -3,7 +3,7 @@ package com.market.sadang.controller;
 import com.google.gson.Gson;
 import com.market.sadang.domain.ChatMessage;
 import com.market.sadang.domain.ChatRoom;
-import com.market.sadang.domain.EnterStatus;
+import com.market.sadang.domain.enumType.EnterStatus;
 import com.market.sadang.domain.Member;
 import com.market.sadang.dto.chat.ChatMessageDto;
 import com.market.sadang.repository.ChatMessageRepository;

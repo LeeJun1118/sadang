@@ -1,7 +1,7 @@
 package com.market.sadang.repository;
 
 import com.market.sadang.domain.Board;
-import com.market.sadang.domain.BoardStatus;
+import com.market.sadang.domain.enumType.BoardStatus;
 import com.market.sadang.domain.Member;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;

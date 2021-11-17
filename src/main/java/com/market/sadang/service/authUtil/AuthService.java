@@ -1,6 +1,6 @@
 package com.market.sadang.service.authUtil;
 
-import com.market.sadang.config.UserRole;
+import com.market.sadang.domain.enumType.UserRole;
 import com.market.sadang.domain.Member;
 import javassist.NotFoundException;
 

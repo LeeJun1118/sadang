@@ -1,6 +1,6 @@
 package com.market.sadang.service.authUtil.impl;
 
-import com.market.sadang.config.UserRole;
+import com.market.sadang.domain.enumType.UserRole;
 import com.market.sadang.domain.Member;
 import com.market.sadang.domain.SignUp;
 import com.market.sadang.repository.MemberRepository;
@@ -11,7 +11,6 @@ import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.UUID;
 
 @Service

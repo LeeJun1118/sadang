@@ -1,6 +1,7 @@
 package com.market.sadang.service;
 
 import com.market.sadang.domain.*;
+import com.market.sadang.domain.enumType.EnterStatus;
 import com.market.sadang.dto.chat.MessageListReadStatusDto;
 import com.market.sadang.repository.ChatMessageRepository;
 import com.market.sadang.repository.ChatRoomRepository;
@@ -8,10 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpServletRequest;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 

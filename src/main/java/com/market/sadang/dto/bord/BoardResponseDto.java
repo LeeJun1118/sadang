@@ -1,7 +1,7 @@
 package com.market.sadang.dto.bord;
 
 import com.market.sadang.domain.Board;
-import com.market.sadang.domain.BoardStatus;
+import com.market.sadang.domain.enumType.BoardStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
