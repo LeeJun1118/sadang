@@ -9,7 +9,10 @@ import com.market.sadang.dto.bord.BoardUpdateRequestDto;
 import com.market.sadang.dto.member.MyBoardListResponseDto;
 import com.market.sadang.repository.BoardRepository;
 import com.market.sadang.repository.BuyInterestedRepository;
+import com.market.sadang.repository.MemberRepository;
 import com.market.sadang.repository.MyFileRepository;
+import com.market.sadang.service.authUtil.CookieUtil;
+import com.market.sadang.service.authUtil.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -112,7 +115,7 @@ public class BoardService {
     public Board verifyWriter(Long id, HttpServletRequest request) {
         Board board = boardRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시물이 존재하지 않습니다"));
-        String memberId = memberService.findByMemberRequest().getUsername();
+        String memberId = memberService.searchMemberId(request).getUsername();
         if (Objects.equals(board.getMember().getUsername(), memberId)) {
             return board;
         } else return null;
@@ -130,12 +133,6 @@ public class BoardService {
         myBoard.setPrice(board.getPrice());
 
         return myBoard;
-    }
-
-    @Transactional
-    public Board findByIdBoard(Long id) {
-        return boardRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 게시물이 존재하지 않습니다."));
     }
 
     @Transactional
@@ -176,11 +173,11 @@ public class BoardService {
 
     // 구매 상품 등록, 해제
     @Transactional
-    public void buy(Long boardId) {
-        Member member = memberService.findByMemberRequest();
+    public void buy(Long boardId, HttpServletRequest request) {
+        Member member = memberService.searchMemberId(request);
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시물이 존재하지 않습니다."));
-        BuyInterested buyInterested = buyInterestedRepository.findByBoardAndMember(board,member);
+        BuyInterested buyInterested = buyInterestedRepository.findByMember(member);
 
         if (buyInterested != null) {
             if (buyInterested.getBuyStatus() == BoardStatus.buy)
@@ -194,11 +191,11 @@ public class BoardService {
 
     // 관심 상품 등록, 해제
     @Transactional
-    public void interested(Long id) {
+    public void interested(Long id, HttpServletRequest request) {
         Board board = boardRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
-        Member member = memberService.findByMemberRequest();
-        BuyInterested buyInterested = buyInterestedRepository.findByBoardAndMember(board,member);
+        Member member = memberService.searchMemberId(request);
+        BuyInterested buyInterested = buyInterestedService.findByMember(member);
 
         if (buyInterested == null) {
             buyInterestedRepository.save(new BuyInterested(member, board, BoardStatus.none, BoardStatus.interested));
@@ -212,7 +209,7 @@ public class BoardService {
 
     // 사용자의 구매리스트 또는 관심 리스트
     public List<MyBoardListResponseDto> findBoardListByMemberAndBuyStatusOrInterestedStatus(HttpServletRequest request, BoardStatus status) {
-        Member member = memberService.findByMemberRequest();
+        Member member = memberService.searchMemberId(request);
         List<BuyInterested> buyOrInterestedList = null;
         List<MyBoardListResponseDto> dtoList = new ArrayList<>();
         Board board;

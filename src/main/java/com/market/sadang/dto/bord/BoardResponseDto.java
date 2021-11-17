@@ -1,7 +1,6 @@
 package com.market.sadang.dto.bord;
 
 import com.market.sadang.domain.Board;
-import com.market.sadang.domain.BoardStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -16,7 +15,6 @@ public class BoardResponseDto {
     private String content;
     private String address;
     private String price;
-    private BoardStatus status;
     private List<Long> fileIdList;
 
     public BoardResponseDto(Board entity, List<Long> fileIdList){
@@ -26,7 +24,6 @@ public class BoardResponseDto {
         this.price = entity.getPrice();
         this.content = entity.getContent();
         this.address = entity.getMember().getAddress();
-        this.status = entity.getSellStatus();
         this.fileIdList = fileIdList;
     }
 }

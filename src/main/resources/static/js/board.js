@@ -3,8 +3,7 @@ $(document).ready(function ($) {
     $('.bxslider').bxSlider({
         mode: 'fade',
         captions: false,
-        adaptiveHeight: true,
-        shrinkItems: true,
+        slideWidth: 900,
         touchEnabled: false,
         keyboardEnabled: true
     });
