@@ -35,7 +35,7 @@
                 </br>
                 <div class="row">
                     <div th:each="board, stat : ${boardList}" class="col-sm-3 p-1">
-                        <div class="card mb-3 p-0 border-0">
+                        <div class="card mb-3 p-0 border-0 align-items-center">
                             <div class="card-body cursor-pointer border-0">
                                 <div th:onclick="'javascript:goBoard('+ ${board.id} + ');'"
                                      th:href="@{/board/{id}(id=${board.id})}">
