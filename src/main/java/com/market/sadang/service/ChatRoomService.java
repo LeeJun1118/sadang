@@ -24,7 +24,7 @@ public class ChatRoomService {
     private final ChatMessageRepository chatMessageRepository;
 
 
-    public List<ChatRoom> findRoomList(HttpServletRequest request) {
+    public List<ChatRoom> findRoomList() {
 
         try {
             Member member = memberService.findByMemberRequest();

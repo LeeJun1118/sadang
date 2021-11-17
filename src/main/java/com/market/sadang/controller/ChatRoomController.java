@@ -55,7 +55,7 @@ public class ChatRoomController {
             username = memberService.findByMemberRequest(request).getUsername();
         }
 
-        List<ChatRoom> roomList = chatRoomService.findRoomList(request);
+        List<ChatRoom> roomList = chatRoomService.findRoomList();
         model.addAttribute("roomList", roomList);
 
         model.addAttribute("room", room);
@@ -80,7 +80,7 @@ public class ChatRoomController {
             username = member.getUsername();
 
         //내가 들어간 방 목록 불러오기
-        List<ChatRoom> roomList = chatRoomService.findRoomList(request);
+        List<ChatRoom> roomList = chatRoomService.findRoomList();
 
         int lastId = 0;
         String lastMessageRoomId = null;
@@ -166,7 +166,7 @@ public class ChatRoomController {
     public String roomDetail(Model model, @PathVariable String roomId, HttpServletRequest request) throws Exception {
 
         // 내가 입장해 있는 전체 채팅 방 목록
-        List<ChatRoom> roomList = chatRoomService.findRoomList(request);
+        List<ChatRoom> roomList = chatRoomService.findRoomList();
 
         for (ChatRoom room : roomList) {
             System.out.println("roomDetail : " + room.getRoomId());

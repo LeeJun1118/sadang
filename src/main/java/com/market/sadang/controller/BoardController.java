@@ -53,7 +53,7 @@ public class BoardController {
         if (member == null) {
             modelAndView.setViewName("redirect:/login");
         } else {
-            List<ChatRoom> roomList = chatRoomService.findRoomList(request);
+            List<ChatRoom> roomList = chatRoomService.findRoomList();
             modelAndView.addObject("roomIdList", roomList);
 
             username = member.getUsername();
@@ -115,7 +115,7 @@ public class BoardController {
         if (boardResponseDto.getStatus() == BoardStatus.sold)
             sold = BoardStatus.sold.name();
 
-        List<ChatRoom> roomList = chatRoomService.findRoomList(request);
+        List<ChatRoom> roomList = chatRoomService.findRoomList();
         modelAndView.addObject("roomIdList", roomList);
         modelAndView.addObject("username", username);
         modelAndView.addObject("interested", interested);
@@ -148,7 +148,7 @@ public class BoardController {
         }
 
 
-        List<ChatRoom> roomList = chatRoomService.findRoomList(request);
+        List<ChatRoom> roomList = chatRoomService.findRoomList();
 
         Member member = memberService.findByMemberRequest();
 
@@ -170,7 +170,7 @@ public class BoardController {
         BoardUpdateRequestDto board = boardService.findById(id);
         Member member = memberService.findByMemberRequest();
 
-        List<ChatRoom> roomList = chatRoomService.findRoomList(request);
+        List<ChatRoom> roomList = chatRoomService.findRoomList();
         modelAndView.addObject("roomIdList", roomList);
 
         modelAndView.addObject("username", member.getUsername());
@@ -290,7 +290,7 @@ public class BoardController {
         Member member = memberService.findByMemberRequest();
         List<MyBoardListResponseDto> boardList = boardService.boardListMemberAndBoardStatus(member, BoardStatus.sell);
 
-        List<ChatRoom> roomList = chatRoomService.findRoomList(request);
+        List<ChatRoom> roomList = chatRoomService.findRoomList();
         modelAndView.addObject("roomIdList", roomList);
 
         modelAndView.addObject("boardList", boardList);
@@ -306,7 +306,7 @@ public class BoardController {
         Member member = memberService.findByMemberRequest();
         List<MyBoardListResponseDto> boardList = boardService.boardListMemberAndBoardStatus(member, BoardStatus.sold);
 
-        List<ChatRoom> roomList = chatRoomService.findRoomList(request);
+        List<ChatRoom> roomList = chatRoomService.findRoomList();
         modelAndView.addObject("roomIdList", roomList);
 
         modelAndView.addObject("boardList", boardList);
@@ -323,7 +323,7 @@ public class BoardController {
                 boardService.findBoardListByMemberAndBuyStatusOrInterestedStatus(request, BoardStatus.buy);
         Member member = memberService.findByMemberRequest();
 
-        List<ChatRoom> roomList = chatRoomService.findRoomList(request);
+        List<ChatRoom> roomList = chatRoomService.findRoomList();
         modelAndView.addObject("roomIdList", roomList);
 
         modelAndView.addObject("boardList", boardList);
@@ -342,7 +342,7 @@ public class BoardController {
         Member member = memberService.findByMemberRequest();
 
 
-        List<ChatRoom> roomList = chatRoomService.findRoomList(request);
+        List<ChatRoom> roomList = chatRoomService.findRoomList();
         modelAndView.addObject("roomIdList", roomList);
         modelAndView.addObject("username", member.getUsername());
         modelAndView.addObject("boardList", boardList);

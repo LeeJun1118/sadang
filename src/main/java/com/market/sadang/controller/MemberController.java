@@ -191,12 +191,12 @@ public class MemberController {
         int countSoldBoard = boardService.countAllByMemberBoardStatus(member, BoardStatus.sold);
         int countBuyBoard = buyInterestedService.findByMemberAndBuyStatusOrInterestedStatus(member, BoardStatus.buy).size();
         int countInterestedBoard = buyInterestedService.findByMemberAndBuyStatusOrInterestedStatus(member, BoardStatus.interested).size();
-        int countChatRoom = chatRoomRepository.countChatRoomBySellerOrBuyer(member, member);
+        int countChatRoom = chatRoomService.findRoomList().size();
 
 
         MemberPageResponseDto memberPageResponseDto = new MemberPageResponseDto(member, countSellBoard, countSoldBoard, countBuyBoard, countInterestedBoard);
 
-        List<ChatRoom> roomList = chatRoomService.findRoomList(request);
+        List<ChatRoom> roomList = chatRoomService.findRoomList();
         modelAndView.addObject("roomIdList", roomList);
 
         modelAndView.addObject("member", memberPageResponseDto);
@@ -210,7 +210,7 @@ public class MemberController {
     public ModelAndView updateInfoForm(ModelAndView modelAndView, HttpServletRequest request) {
         Member member = memberService.findByMemberRequest();
 
-        List<ChatRoom> roomList = chatRoomService.findRoomList(request);
+        List<ChatRoom> roomList = chatRoomService.findRoomList();
         modelAndView.addObject("roomIdList", roomList);
 
         modelAndView.addObject("member", new MemberResponseDto(member));
