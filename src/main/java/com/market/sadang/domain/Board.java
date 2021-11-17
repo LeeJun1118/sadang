@@ -55,7 +55,7 @@ public class Board extends BaseTimeEntity {
     private List<MyFile> fileList = new ArrayList<>();
 
     @Column
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     private BoardStatus sellStatus = BoardStatus.sell;
 
 

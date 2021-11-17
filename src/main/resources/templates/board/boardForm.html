@@ -7,7 +7,7 @@
                 <div class="col-auto mr-auto"></div>
                 <div class="col-auto">
                     <div id="loginCheck">
-                        <a class="btn font-weight-bold mr-2" href="/login"
+                       <a class="btn font-weight-bold mr-2" href="/user/login"
                            th:if="${#strings.isEmpty(username)}">로그인</a>
                         <a class="btn font-weight-bold mr-2" href="/user/out"
                            th:if="${not #strings.isEmpty(username)}">로그아웃</a>
@@ -60,7 +60,7 @@
                     </div>
 
                     <div class="nav justify-content-end">
-                        <a class="btn btn-primary marRight" data-toggle="modal"
+                        <a class="btn btn-primary mr-2" data-toggle="modal"
                            href="#"
                            data-target="#cancelWrite">취소</a>
                         <div class="modal fade" id="cancelWrite" tabindex="-1"

@@ -17,6 +17,7 @@ public class BuyInterestedService {
 
     private final BuyInterestedRepository buyInterestedRepository;
     private final BoardRepository boardRepository;
+    private final MemberService memberService;
 
     public BuyInterested findByMember(Member member) {
         return buyInterestedRepository.findByMember(member);
@@ -32,9 +33,12 @@ public class BuyInterestedService {
     public String findByBoardIdBuyStatus(Long boardId) {
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
+
+        Member member = memberService.findByMemberRequest();
+
         String status = null;
         try {
-            status = "" + buyInterestedRepository.findByBoard(board).getBuyStatus();
+            status = "" + buyInterestedRepository.findByBoardAndMember(board,member).getBuyStatus();
             return status;
         } catch (Exception e) {
             return "none";
@@ -47,7 +51,8 @@ public class BuyInterestedService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
         String status = null;
         try {
-            status = "" + buyInterestedRepository.findByBoard(board).getInterestedStatus();
+            Member member = memberService.findByMemberRequest();
+            status = "" + buyInterestedRepository.findByBoardAndMember(board,member).getInterestedStatus();
             return status;
         } catch (Exception e) {
             return "none";

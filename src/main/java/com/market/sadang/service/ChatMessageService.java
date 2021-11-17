@@ -1,31 +1,10 @@
 package com.market.sadang.service;
 
-import com.market.sadang.config.handler.FileHandler;
-import com.market.sadang.domain.Board;
 import com.market.sadang.domain.ChatMessage;
-import com.market.sadang.domain.Member;
-import com.market.sadang.domain.MyFile;
-import com.market.sadang.dto.bord.BoardCreateRequestDto;
-import com.market.sadang.dto.bord.BoardMemberDto;
-import com.market.sadang.dto.bord.BoardResponseDto;
-import com.market.sadang.dto.bord.BoardUpdateRequestDto;
-import com.market.sadang.dto.member.MyBoardListResponseDto;
-import com.market.sadang.repository.BoardRepository;
 import com.market.sadang.repository.ChatMessageRepository;
-import com.market.sadang.repository.MemberRepository;
-import com.market.sadang.repository.MyFileRepository;
-import com.market.sadang.service.authUtil.CookieUtil;
-import com.market.sadang.service.authUtil.JwtUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 
 @RequiredArgsConstructor

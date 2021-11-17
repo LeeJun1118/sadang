@@ -4,9 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -54,6 +57,20 @@ public class ChatRoom implements Serializable {
     @Column
     private String boardTitle;
 
+    @Column
+    private LocalDateTime sellerEnterDate = LocalDateTime.now();
+
+    @Column
+    private LocalDateTime buyerEnterDate = LocalDateTime.now();
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    private EnterStatus buyerStatus = EnterStatus.Y;
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    private EnterStatus sellerStatus = EnterStatus.Y;
+
     @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ChatMessage> chatMessage = new ArrayList<>();
 
@@ -71,5 +88,21 @@ public class ChatRoom implements Serializable {
 
     public void deleteBuyer(){
         this.buyer = null;
+    }
+
+    public void updateSellerEnterDate(){
+        this.sellerEnterDate = LocalDateTime.now();
+    }
+
+    public void updateBuyerEnterDate(){
+        this.buyerEnterDate = LocalDateTime.now();
+    }
+
+    public void updateSellerEnterStatus(EnterStatus status){
+        this.sellerStatus = status;
+    }
+
+    public void updateBuyerEnterStatus(EnterStatus status){
+        this.buyerStatus = status;
     }
 }

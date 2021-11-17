@@ -8,31 +8,25 @@ import com.market.sadang.dto.member.MemberPageResponseDto;
 import com.market.sadang.dto.member.MemberResponseDto;
 import com.market.sadang.dto.member.MemberUpdateRequestDto;
 import com.market.sadang.dto.form.MemberForm;
-import com.market.sadang.domain.requestUser.RequestLoginUser;
 import com.market.sadang.domain.requestUser.RequestVerifyUser;
 import com.market.sadang.repository.ChatMessageRepository;
 import com.market.sadang.repository.ChatRoomRepository;
 import com.market.sadang.repository.MemberRepository;
+import com.market.sadang.repository.SignUpRepository;
 import com.market.sadang.service.BoardService;
 import com.market.sadang.service.BuyInterestedService;
 import com.market.sadang.service.ChatRoomService;
 import com.market.sadang.service.MemberService;
 import com.market.sadang.service.authUtil.AuthService;
-import com.market.sadang.service.authUtil.CookieUtil;
-import com.market.sadang.service.authUtil.JwtUtil;
-import com.market.sadang.service.authUtil.RedisUtil;
+import com.market.sadang.service.authUtil.MyUserDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.time.LocalDateTime;
+import java.util.*;
 
 //final이 선언된 모든 필드를 인자값으로 하는 생성자를 대신 생성
 @RequiredArgsConstructor
@@ -46,22 +40,29 @@ public class MemberController {
 
     private final AuthService authService;
     private final MemberRepository memberRepository;
-    private final JwtUtil jwtUtil;
-    private final CookieUtil cookieUtil;
-    private final RedisUtil redisUtil;
     private final MemberService memberService;
     private final BoardService boardService;
     private final ChatRoomRepository chatRoomRepository;
     private final ChatRoomService chatRoomService;
     private final ChatMessageRepository chatMessageRepository;
     private final BuyInterestedService buyInterestedService;
-
-//    private final JwtRequestFilter jwtRequestFilter;
+    private final MyUserDetailService myUserDetailService;
+    private final SignUpRepository signUpRepository;
 
     @GetMapping("/signup")
     public ModelAndView signUpUser(ModelAndView model) {
         model.addObject("signUpForm", new SignUpForm());
         model.setViewName("auth/signUpPage");
+
+        List<Member> Members = memberRepository.findAllByRole(UserRole.ROLE_NOT_PERMITTED);
+        for (Member member : Members) {
+            if (LocalDateTime.now().isAfter(member.getCreatedDate().plusMinutes(3))
+                    && member.getRole() == UserRole.ROLE_NOT_PERMITTED) {
+                signUpRepository.delete(signUpRepository.findByMember(member));
+                memberRepository.delete(member);
+            }
+        }
+
         return model;
     }
 
@@ -83,7 +84,7 @@ public class MemberController {
 
     @PostMapping("/updateIdCheck")
     public int updateIdCheck(@RequestBody RequestVerifyUser user, HttpServletRequest request) {
-        Member member = memberService.searchMemberId(request);
+        Member member = memberService.findByMemberRequest();
         int count = 0;
         int distinctCount = memberRepository.countByUsername(user.getUsername());
 
@@ -100,71 +101,6 @@ public class MemberController {
         return count;
     }
 
-    @PostMapping("/login")
-    public ModelAndView login(RequestLoginUser user,
-                              ModelAndView modelAndView,
-                              HttpServletRequest req,
-                              HttpServletResponse res) {
-        System.out.println("userId.getUsername()=====" + user.getUsername());
-        Response response;
-
-        try {
-            final Member member = authService.loginUser(user.getUsername(), user.getPassword());
-            final String token = jwtUtil.generateToken(member);
-            final String refreshJwt = jwtUtil.generateRefreshToken(member);
-
-            Cookie accessToken = cookieUtil.createCookie(JwtUtil.ACCESS_TOKEN_NAME, token);
-            Cookie refreshToken = cookieUtil.createCookie(JwtUtil.REFRESH_TOKEN_NAME, refreshJwt);
-
-            redisUtil.setDataExpire(refreshJwt, member.getUsername(), JwtUtil.REFRESH_TOKEN_VALIDATION_SECOND);
-            res.addCookie(accessToken);
-            res.addCookie(refreshToken);
-
-            modelAndView.setViewName("redirect:");
-            response = new Response("success", "로그인 성공", token);
-
-        } catch (Exception e) {
-            modelAndView.setViewName("auth/loginPage");
-            System.out.println("로그인 실패 : " + e.getMessage());
-            response = new Response("error", "로그인 실패", e.getMessage());
-        }
-
-        return modelAndView;
-    }
-
-
-    @GetMapping("/user/out")
-    public ModelAndView logout(ModelAndView modelAndView,
-                               HttpServletRequest req,
-                               HttpServletResponse res) {
-
-        try {
-            Cookie accessToken = cookieUtil.getCookie(req, "accessToken");
-            redisUtil.deleteData(accessToken.getValue());
-
-
-            Cookie resAccessToken = new Cookie("accessToken", null);
-            Cookie resRefreshToken = new Cookie("refreshToken", null);
-
-            resAccessToken.setHttpOnly(true);
-            resAccessToken.setSecure(false);
-            resAccessToken.setMaxAge(0);
-            resAccessToken.setPath("/");
-
-            resRefreshToken.setHttpOnly(true);
-            resRefreshToken.setSecure(false);
-            resRefreshToken.setMaxAge(0);
-            resRefreshToken.setPath("/");
-
-            res.addCookie(resAccessToken);
-            res.addCookie(resRefreshToken);
-
-        } catch (Exception ignored) {
-        }
-        modelAndView.setViewName("redirect:/");
-        return modelAndView;
-    }
-
     @PostMapping("/sendMail")
     public ModelAndView verify(SignUpForm signUpForm, ModelAndView model) {
         Response response;
@@ -172,7 +108,8 @@ public class MemberController {
         try {
             Member member = new Member(signUpForm);
             // 회원 가입
-            authService.signUpUser(member);
+//            authService.signUpUser(member);
+            myUserDetailService.signUp(member);
 
             //메일 보냄
             authService.sendVerificationMail(member);
@@ -211,29 +148,35 @@ public class MemberController {
 
         // ajax에서 userId=testUserId 이런식으로 받아와짐
         String name = user.getUsername().split("=")[1];
-
-//        Map<String, Object> object = new HashMap<String, Object>();
+        System.out.println(user.getUsername());
 
         int sendReq = 0;
-
         Member member = authService.findByUsername(name);
+
 
         System.out.println(member.getUsername());
         if (member.getUsername() != null && member.getRole() == UserRole.ROLE_USER) {
             System.out.println("member.name()" + member.getUsername());
             System.out.println("member.getRole()=" + member.getRole());
             sendReq = 1;
-//            object.put("responseCode", "success");
         } else {
             System.out.println("member.name()" + member.getUsername());
             System.out.println("member.getRole()=" + member.getRole());
-//            object.put("responseCode", "error");
             System.out.println("메일 인증 안함");
         }
+
+        if (LocalDateTime.now().isAfter(member.getCreatedDate().plusMinutes(3))
+                && member.getRole() == UserRole.ROLE_NOT_PERMITTED) {
+            signUpRepository.delete(signUpRepository.findByMember(member));
+            memberRepository.delete(member);
+            sendReq = -1;
+        }
+
+
         return sendReq;
     }
 
-    @GetMapping("/login")
+    @GetMapping("/user/login")
     public ModelAndView loginPage(ModelAndView modelAndView) {
         modelAndView.setViewName("auth/loginPage");
         return modelAndView;
@@ -243,17 +186,17 @@ public class MemberController {
     // My Page
     @GetMapping("/myPage")
     public ModelAndView myPageForm(ModelAndView modelAndView, HttpServletRequest request) {
-        Member member = memberService.searchMemberId(request);
+        Member member = memberService.findByMemberRequest();
         int countSellBoard = boardService.countAllByMemberBoardStatus(member, BoardStatus.sell);
         int countSoldBoard = boardService.countAllByMemberBoardStatus(member, BoardStatus.sold);
         int countBuyBoard = buyInterestedService.findByMemberAndBuyStatusOrInterestedStatus(member, BoardStatus.buy).size();
         int countInterestedBoard = buyInterestedService.findByMemberAndBuyStatusOrInterestedStatus(member, BoardStatus.interested).size();
-        int countChatRoom = chatRoomRepository.countChatRoomBySellerOrBuyer(member, member);
+        int countChatRoom = chatRoomService.findRoomList().size();
 
 
         MemberPageResponseDto memberPageResponseDto = new MemberPageResponseDto(member, countSellBoard, countSoldBoard, countBuyBoard, countInterestedBoard);
 
-        List<ChatRoom> roomList = chatRoomService.findRoomList(request);
+        List<ChatRoom> roomList = chatRoomService.findRoomList();
         modelAndView.addObject("roomIdList", roomList);
 
         modelAndView.addObject("member", memberPageResponseDto);
@@ -265,9 +208,9 @@ public class MemberController {
 
     @GetMapping("/myPage/update")
     public ModelAndView updateInfoForm(ModelAndView modelAndView, HttpServletRequest request) {
-        Member member = memberService.searchMemberId(request);
+        Member member = memberService.findByMemberRequest();
 
-        List<ChatRoom> roomList = chatRoomService.findRoomList(request);
+        List<ChatRoom> roomList = chatRoomService.findRoomList();
         modelAndView.addObject("roomIdList", roomList);
 
         modelAndView.addObject("member", new MemberResponseDto(member));
@@ -289,7 +232,7 @@ public class MemberController {
                 .detailAddress(memberForm.getDetailAddress())
                 .build();
 
-        Member member = memberService.searchMemberId(request);
+        Member member = memberService.findByMemberRequest();
         memberService.update(requestDto, member.getId());
 
         modelAndView.setViewName("redirect:/");
@@ -304,7 +247,7 @@ public class MemberController {
 
         //로그인 하지 않은 사용자라면 -1 반환
         try {
-            Member member = memberService.searchMemberId(request);
+            Member member = memberService.findByMemberRequest();
             if (member != null) {
                 //receiver = member.gerusername , receiverStatus = N
                 unReadMessages = chatMessageRepository.countAllByReceiverAndReceiverStatus(member, ReadStatus.N);

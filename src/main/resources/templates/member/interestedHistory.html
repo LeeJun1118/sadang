@@ -7,7 +7,7 @@
                 <div class="col-auto mr-auto"></div>
                 <div class="col-auto">
                     <div id="loginCheck">
-                        <a class="btn font-weight-bold mr-2" href="/login"
+                       <a class="btn font-weight-bold mr-2" href="/user/login"
                            th:if="${#strings.isEmpty(username)}">로그인</a>
                         <a class="btn font-weight-bold mr-2" href="/user/out"
                            th:if="${not #strings.isEmpty(username)}">로그아웃</a>
@@ -35,7 +35,7 @@
                 </br>
                 <div class="row">
                     <div th:each="board, stat : ${boardList}" class="col-sm-3 p-1">
-                        <div class="card mb-3 p-0 border-0">
+                        <div class="card mb-3 p-0 border-0 align-items-center">
                             <div class="card-body cursor-pointer border-0">
                                 <div th:onclick="'javascript:goBoard('+ ${board.id} + ');'"
                                      th:href="@{/board/{id}(id=${board.id})}">

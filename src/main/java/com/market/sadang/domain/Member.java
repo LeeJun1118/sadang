@@ -67,10 +67,6 @@ public class Member extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private UserRole role = UserRole.ROLE_NOT_PERMITTED;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "salt_id")
-    private Salt salt;
-
     //CascadeType.MERGE – 트랜잭션이 종료되고 detach 상태에서 연관 엔티티를 추가하거나 변경된 이후에
     // 부모 엔티티가 merge()를 수행하게 되면 변경사항이 적용된다.(연관 엔티티의 추가 및 수정 모두 반영됨)
     @OneToMany(mappedBy = "member", cascade = CascadeType.MERGE, orphanRemoval = true)
@@ -110,8 +106,6 @@ public class Member extends BaseTimeEntity {
                 ", email='" + email + '\'' +
                 ", address='" + address + '\'' +
                 ", role=" + role +
-/*                ", createAt=" + createAt +
-                ", updateAt=" + updateAt +*/
                 '}';
     }
 
@@ -125,14 +119,13 @@ public class Member extends BaseTimeEntity {
 
     @Builder
 
-    public Member(String name, String username, String password, String email, String address, String detailAddress, Salt salt, UserRole role) {
+    public Member(String name, String username, String password, String email, String address, String detailAddress, UserRole role) {
         this.name = name;
         this.username = username;
         this.password = password;
         this.email = email;
         this.address = address;
         this.detailAddress = detailAddress;
-        this.salt = salt;
         this.role = role;
     }
 }
