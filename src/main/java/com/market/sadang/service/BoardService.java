@@ -198,7 +198,7 @@ public class BoardService {
         Board board = boardRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
         Member member = memberService.findByMemberRequest();
-        BuyInterested buyInterested = buyInterestedService.findByMember(member);
+        BuyInterested buyInterested = buyInterestedRepository.findByBoardAndMember(board,member);
 
         if (buyInterested == null) {
             buyInterestedRepository.save(new BuyInterested(member, board, BoardStatus.none, BoardStatus.interested));
