@@ -9,7 +9,7 @@ import com.market.sadang.dto.member.MemberPageResponseDto;
 import com.market.sadang.dto.member.MemberResponseDto;
 import com.market.sadang.dto.member.MemberUpdateRequestDto;
 import com.market.sadang.dto.form.MemberForm;
-import com.market.sadang.domain.requestUser.RequestVerifyUser;
+import com.market.sadang.dto.member.RequestVerifyUserDto;
 import com.market.sadang.repository.ChatMessageRepository;
 import com.market.sadang.repository.ChatRoomRepository;
 import com.market.sadang.repository.MemberRepository;
@@ -68,7 +68,7 @@ public class MemberController {
     }
 
     @PostMapping("/idCheck")
-    public int idCheck(@RequestBody RequestVerifyUser username) {
+    public int idCheck(@RequestBody RequestVerifyUserDto username) {
         // ajax에서 userId=testuserId 이런식으로 받아와짐
         Map<String, Object> object = new HashMap<String, Object>();
         int count = 0;
@@ -84,7 +84,7 @@ public class MemberController {
     }
 
     @PostMapping("/updateIdCheck")
-    public int updateIdCheck(@RequestBody RequestVerifyUser user, HttpServletRequest request) {
+    public int updateIdCheck(@RequestBody RequestVerifyUserDto user, HttpServletRequest request) {
         Member member = memberService.findByMemberRequest();
         int count = 0;
         int distinctCount = memberRepository.countByUsername(user.getUsername());
@@ -115,7 +115,7 @@ public class MemberController {
             //메일 보냄
             authService.sendVerificationMail(member);
 
-            RequestVerifyUser verifyUser = new RequestVerifyUser();
+            RequestVerifyUserDto verifyUser = new RequestVerifyUserDto();
             verifyUser.setUsername(member.getUsername());
             model.addObject("username", verifyUser.getUsername());
 
@@ -145,7 +145,7 @@ public class MemberController {
     }
 
     @PostMapping("/confirm")
-    public int mailConfirm(@RequestBody RequestVerifyUser user) throws Exception {
+    public int mailConfirm(@RequestBody RequestVerifyUserDto user) throws Exception {
 
         // ajax에서 userId=testUserId 이런식으로 받아와짐
         String name = user.getUsername().split("=")[1];

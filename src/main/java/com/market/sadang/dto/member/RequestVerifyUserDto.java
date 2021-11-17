@@ -1,4 +1,4 @@
-package com.market.sadang.domain.requestUser;
+package com.market.sadang.dto.member;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.AllArgsConstructor;
@@ -11,6 +11,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonDeserialize
-public class RequestVerifyUser {
+public class RequestVerifyUserDto {
     String username;
 }
