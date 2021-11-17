@@ -1,6 +1,6 @@
 package com.market.sadang.init;
 
-import com.market.sadang.config.UserRole;
+import com.market.sadang.domain.enumType.UserRole;
 import com.market.sadang.domain.Member;
 import com.market.sadang.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -33,13 +33,13 @@ public class InitMember {
     static class InitService {
 
         private final String[] randomNames = {
-                "곽형수", "전창희", "박진석", "이상지", "송성훈", "김혜석", "김장군", "최정웅", "서재균", "고상희", "이승호",
+                "이준", "전창희", "박진석", "이상지", "송성훈", "김혜석", "김장군", "최정웅", "서재균", "고상희", "이승호",
                 "이세연", "홍승현", "최주원", "변지경", "최은아", "이민서", "권주안", "진하은", "김소경", "임수영", "정유진"
         };
 
 
         private final String[] randomUsernames = {
-                "aa", "ss", "dd", "ff", "송성훈", "qq", "ww", "ee", "rr", "tt", "zz",
+                "jun", "ss", "dd", "ff", "송성훈", "qq", "ww", "ee", "rr", "tt", "zz",
                 "xx", "cc", "vv", "gg", "qwer", "asdf", "test", "test1", "test2", "test3", "test4"
         };
 

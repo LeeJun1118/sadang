@@ -1,6 +1,7 @@
 package com.market.sadang.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.market.sadang.domain.enumType.BoardStatus;
 import lombok.*;
 
 import javax.persistence.*;

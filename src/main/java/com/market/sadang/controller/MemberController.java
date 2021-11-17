@@ -1,7 +1,8 @@
 package com.market.sadang.controller;
 
 
-import com.market.sadang.config.UserRole;
+import com.market.sadang.domain.enumType.BoardStatus;
+import com.market.sadang.domain.enumType.UserRole;
 import com.market.sadang.domain.*;
 import com.market.sadang.dto.form.SignUpForm;
 import com.market.sadang.dto.member.MemberPageResponseDto;

@@ -2,6 +2,7 @@ package com.market.sadang.service;
 
 import com.market.sadang.config.handler.FileHandler;
 import com.market.sadang.domain.*;
+import com.market.sadang.domain.enumType.BoardStatus;
 import com.market.sadang.dto.bord.BoardCreateRequestDto;
 import com.market.sadang.dto.bord.BoardMemberDto;
 import com.market.sadang.dto.bord.BoardResponseDto;

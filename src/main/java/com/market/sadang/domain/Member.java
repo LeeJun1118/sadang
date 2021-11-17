@@ -1,16 +1,11 @@
 package com.market.sadang.domain;
 
-import com.market.sadang.config.UserRole;
+import com.market.sadang.domain.enumType.UserRole;
 import com.market.sadang.dto.form.SignUpForm;
-import com.market.sadang.init.Address;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 //lombok 어노테이션
