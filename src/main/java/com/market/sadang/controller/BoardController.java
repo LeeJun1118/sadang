@@ -189,7 +189,7 @@ public class BoardController {
             return -1;
     }
 
-    @PostMapping("/board/update/{id}")
+    @PutMapping("/board/update/{id}")
     public String update(@PathVariable Long id,
                          @Valid BoardForm boardForm,
                          BindingResult result,

@@ -31,7 +31,7 @@
                 <h4>팔자</h4>
                 <br/>
                 <form id="frm" role="form" th:action="@{/board/update/{id}(id=${id})}"
-                      method="post" enctype="multipart/form-data">
+                      th:method="PUT" enctype="multipart/form-data">
                     <div class="form-group">
                         <label th:for="title">제목</label>
                         <input id="title" type="text" th:field="*{title}" class="form-control" placeholder="제목을 입력하세요">
