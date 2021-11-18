@@ -44,7 +44,6 @@ public class ChatRoomController {
         List<ChatRoom> roomList = chatRoomService.findRoomList();
 
         int lastId = 0;
-        String lastMessageRoomId = null;
         // 각각의 roomId로 가장 마지막 메세지Id 불러와야함
         for (ChatRoom myRoom : roomList) {
             ChatMessage message = chatMessageRepository
@@ -109,9 +108,10 @@ public class ChatRoomController {
         String referer = request.getHeader("Referer");
         return "redirect:"+ referer;
     }
+
     // 채팅방 입장 화면
     @GetMapping("/room/enter/{roomId}")
-    public String roomDetail(Model model, @PathVariable String roomId, HttpServletRequest request) throws Exception {
+    public String roomDetail(Model model, @PathVariable String roomId) throws Exception {
 
         // 내가 입장해 있는 전체 채팅 방 목록
         List<ChatRoom> roomList = chatRoomService.findRoomList();
@@ -183,7 +183,7 @@ public class ChatRoomController {
     // 채팅방 입장 화면
     @ResponseBody
     @PostMapping("/room/enter/{roomId}")
-    public int unReadMessage(@PathVariable String roomId, HttpServletRequest request) throws Exception {
+    public int unReadMessage(@PathVariable String roomId) throws Exception {
 
         //사용자 이름
         Member user = memberService.findByMember();
@@ -200,7 +200,6 @@ public class ChatRoomController {
     public String deleteChatRoom(@PathVariable String roomId) {
         //사용자 이름
         chatRoomService.delete(roomId);
-
 
         return "redirect:/chat/myChatRoom";
     }
