@@ -84,7 +84,7 @@ public class MemberController {
     }
 
     @PostMapping("/updateIdCheck")
-    public int updateIdCheck(@RequestBody RequestVerifyUserDto user, HttpServletRequest request) {
+    public int updateIdCheck(@RequestBody RequestVerifyUserDto user) {
         Member member = memberService.findByMember();
         int count = 0;
         int distinctCount = memberRepository.countByUsername(user.getUsername());
@@ -186,7 +186,7 @@ public class MemberController {
 
     // My Page
     @GetMapping("/myPage")
-    public ModelAndView myPageForm(ModelAndView modelAndView, HttpServletRequest request) {
+    public ModelAndView myPageForm(ModelAndView modelAndView) {
         Member member = memberService.findByMember();
         int countSellBoard = boardService.countAllByMemberBoardStatus(member, BoardStatus.sell);
         int countSoldBoard = boardService.countAllByMemberBoardStatus(member, BoardStatus.sold);
@@ -208,7 +208,7 @@ public class MemberController {
     }
 
     @GetMapping("/myPage/update")
-    public ModelAndView updateInfoForm(ModelAndView modelAndView, HttpServletRequest request) {
+    public ModelAndView updateInfoForm(ModelAndView modelAndView) {
         Member member = memberService.findByMember();
 
         List<ChatRoom> roomList = chatRoomService.findRoomList();
@@ -222,7 +222,6 @@ public class MemberController {
 
     @PostMapping("/myInfo/update")
     public ModelAndView infoUpdate(@Valid MemberForm memberForm,
-                                   HttpServletRequest request,
                                    ModelAndView modelAndView) {
 
         MemberUpdateRequestDto requestDto = MemberUpdateRequestDto.builder()
@@ -243,7 +242,7 @@ public class MemberController {
 
 
     @GetMapping("/loginCheck")
-    public int loginCheck(HttpServletRequest request) {
+    public int loginCheck() {
         int unReadMessages = -1;
 
         //로그인 하지 않은 사용자라면 -1 반환
