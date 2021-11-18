@@ -106,15 +106,17 @@ public class BoardService {
 
     @Transactional
     public void delete(long id) {
-        boardRepository.deleteById(id);
+        Board board = verifyWriter(id);
+        if (board != null)
+            boardRepository.delete(board);
     }
 
     @Transactional
-    public Board verifyWriter(Long id, HttpServletRequest request) {
+    public Board verifyWriter(Long id) {
         Board board = boardRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시물이 존재하지 않습니다"));
-        String memberId = memberService.findByMemberRequest().getUsername();
-        if (Objects.equals(board.getMember().getUsername(), memberId)) {
+        Member member = memberService.findByMemberRequest();
+        if (Objects.equals(board.getMember(), member)) {
             return board;
         } else return null;
     }
@@ -181,7 +183,7 @@ public class BoardService {
         Member member = memberService.findByMemberRequest();
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시물이 존재하지 않습니다."));
-        BuyInterested buyInterested = buyInterestedRepository.findByBoardAndMember(board,member);
+        BuyInterested buyInterested = buyInterestedRepository.findByBoardAndMember(board, member);
 
         if (buyInterested != null) {
             if (buyInterested.getBuyStatus() == BoardStatus.buy)
@@ -199,7 +201,7 @@ public class BoardService {
         Board board = boardRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
         Member member = memberService.findByMemberRequest();
-        BuyInterested buyInterested = buyInterestedRepository.findByBoardAndMember(board,member);
+        BuyInterested buyInterested = buyInterestedRepository.findByBoardAndMember(board, member);
 
         if (buyInterested == null) {
             buyInterestedRepository.save(new BuyInterested(member, board, BoardStatus.none, BoardStatus.interested));

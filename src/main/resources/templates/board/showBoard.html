@@ -64,11 +64,11 @@
                                   th:classappend="${board.member == username ? 'd-none' : ''}">
                                 <a id="interested" class="btn" th:href="@{/board/interested/{id}(id=${board.id})}"
                                    th:if="${interested != 'interested'}"
-                                   >찜하기</a>
+                                >찜하기</a>
                                 <a id="interested-cancle" class="btn"
                                    th:href="@{/board/interested/{id}(id=${board.id})}"
                                    th:if="${interested == 'interested'}"
-                                   >찜 취소하기</a>
+                                >찜 취소하기</a>
                             </span>
 
                             <span th:classappend="${board.member == username ? '' : 'd-none'}">
@@ -105,11 +105,10 @@
                                             class="btn btn-secondary">
                                         취소
                                     </button>
-                                    <button type="button"
-                                            th:onclick="'window.location.href=\'/board/delete/' + ${board.id} + '\''"
-                                            class="btn btn-primary">
-                                        확인
-                                    </button>
+                                    <form action="#" th:action="@{'/board/delete/{id}'(id=${board.id})}"
+                                          th:method="DELETE">
+                                        <button type="submit" class="btn btn-primary">확인</button>
+                                    </form>
                                     <!--<form method="post" th:action="@{/board/delete/{id}(id=${board.id})}">
                                         <button class="btn btn-primary" data-dismiss="modal" type="submit">
                                             확인

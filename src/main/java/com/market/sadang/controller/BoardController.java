@@ -182,7 +182,7 @@ public class BoardController {
                             HttpServletRequest request) {
         //작성자가 맞으면 게시글 번호 반환하고 아니면 -1을 반환하게 해야함
         System.out.println("verify board id ==" + id);
-        Board board = boardService.verifyWriter(id, request);
+        Board board = boardService.verifyWriter(id);
         if (board != null)
             return board.getId().intValue();
         else
@@ -265,7 +265,7 @@ public class BoardController {
 //        return modelAndView;
     }
 
-    @GetMapping("/board/delete/{id}")
+    @DeleteMapping("/board/delete/{id}")
     public ModelAndView delete(@PathVariable Long id,
                                ModelAndView modelAndView) {
         boardService.delete(id);
@@ -273,12 +273,12 @@ public class BoardController {
         return modelAndView;
     }
 
-    @GetMapping("/myBoard/delete/{id}")
-    public ModelAndView deleteMyBoard(@PathVariable Long id,
-                                      ModelAndView modelAndView) {
+    @DeleteMapping("/myBoard/delete/{id}")
+    public String deleteMyBoard(@PathVariable Long id,
+                                HttpServletRequest request) {
         boardService.delete(id);
-        modelAndView.setViewName("redirect:/salesHistory");
-        return modelAndView;
+        String referer = request.getHeader("Referer");
+        return "redirect:"+ referer;
     }
 
     @GetMapping("/sell")

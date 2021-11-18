@@ -80,16 +80,10 @@
                                                 class="btn btn-secondary">
                                             취소
                                         </button>
-                                        <button type="button"
-                                                th:onclick="'window.location.href=\'/myBoard/delete/' + ${board.id} + '\''"
-                                                class="btn btn-primary">
-                                            확인
-                                        </button>
-                                        <!--<form method="post" th:action="@{/board/delete/{id}(id=${board.id})}">
-                                            <button class="btn btn-primary" data-dismiss="modal" type="submit">
-                                                확인
-                                            </button>
-                                        </form>-->
+                                        <form action="#" th:action="@{'/myBoard/delete/{id}'(id=${board.id})}"
+                                              th:method="DELETE">
+                                            <button type="submit" class="btn btn-primary">확인</button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
