@@ -25,11 +25,6 @@ public class MyFileController {
 
     private final MyFileService myFileService;
 
-    private static final int Thumbnail_Width = 240;
-    private static final int Thumbnail_Height = 240;
-    private static final int Image_Width = 800;
-    private static final int Image_Height = 600;
-
     // 처음 전송되는 리소스의 도메인과 다른 도메인으로부터 리소스가 요청될 경우 해당 리소스는
     // cross-origin HTTP 요청이 된다.
     @CrossOrigin
