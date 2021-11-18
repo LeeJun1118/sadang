@@ -85,7 +85,7 @@ public class MemberController {
 
     @PostMapping("/updateIdCheck")
     public int updateIdCheck(@RequestBody RequestVerifyUserDto user, HttpServletRequest request) {
-        Member member = memberService.findByMemberRequest();
+        Member member = memberService.findByMember();
         int count = 0;
         int distinctCount = memberRepository.countByUsername(user.getUsername());
 
@@ -187,7 +187,7 @@ public class MemberController {
     // My Page
     @GetMapping("/myPage")
     public ModelAndView myPageForm(ModelAndView modelAndView, HttpServletRequest request) {
-        Member member = memberService.findByMemberRequest();
+        Member member = memberService.findByMember();
         int countSellBoard = boardService.countAllByMemberBoardStatus(member, BoardStatus.sell);
         int countSoldBoard = boardService.countAllByMemberBoardStatus(member, BoardStatus.sold);
         int countBuyBoard = buyInterestedService.findByMemberAndBuyStatusOrInterestedStatus(member, BoardStatus.buy).size();
@@ -209,7 +209,7 @@ public class MemberController {
 
     @GetMapping("/myPage/update")
     public ModelAndView updateInfoForm(ModelAndView modelAndView, HttpServletRequest request) {
-        Member member = memberService.findByMemberRequest();
+        Member member = memberService.findByMember();
 
         List<ChatRoom> roomList = chatRoomService.findRoomList();
         modelAndView.addObject("roomIdList", roomList);
@@ -233,7 +233,7 @@ public class MemberController {
                 .detailAddress(memberForm.getDetailAddress())
                 .build();
 
-        Member member = memberService.findByMemberRequest();
+        Member member = memberService.findByMember();
         memberService.update(requestDto, member.getId());
 
         modelAndView.setViewName("redirect:/");
@@ -248,7 +248,7 @@ public class MemberController {
 
         //로그인 하지 않은 사용자라면 -1 반환
         try {
-            Member member = memberService.findByMemberRequest();
+            Member member = memberService.findByMember();
             if (member != null) {
                 //receiver = member.gerusername , receiverStatus = N
                 unReadMessages = chatMessageRepository.countAllByReceiverAndReceiverStatus(member, ReadStatus.N);

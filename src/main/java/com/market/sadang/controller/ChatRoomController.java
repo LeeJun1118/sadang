@@ -29,45 +29,14 @@ public class ChatRoomController {
     private final ChatRoomService chatRoomService;
     private final ChatMessageService chatMessageService;
     private final BuyInterestedService buyInterestedService;
-
-    //*
-    // 채팅 리스트 화면
-   /* @GetMapping("/room/newChatRoom")
-    public String rooms(Model model, HttpServletRequest request) {
-
-        //
-
-        ChatRoom room = chatRoomRepository.findByRoomId("607fe131-bb73-4b08-9842-7f51e7130461");
-
-        List<ChatMessage> messages = chatMessageRepository
-                .findAllByRoomId("607fe131-bb73-4b08-9842-7f51e7130461", Sort.by(Sort.Direction.DESC,"id"));
-
-        String username = null;
-        if ( cookieUtil.getCookie(request, "accessToken") != null) {
-            username = memberService.findByMemberRequest(request).getUsername();
-        }
-
-        List<ChatRoom> roomList = chatRoomService.findRoomList();
-        model.addAttribute("roomList", roomList);
-
-        model.addAttribute("room", room);
-        model.addAttribute("username", username);
-        model.addAttribute("messages", messages);
-        // roomList도 보냄
-        //message List 보낼때  sender, receiver, 현재 로그인한 username 같이 보냄
-
-        // 프론트에서 messageList.sender 가 현재 username이랑 같다면
-
-
-        return "/chat/chat";
-    }*/
+    
 
     @GetMapping("/myChatRoom")
-    public String roomDetail(Model model, HttpServletRequest request) throws Exception {
+    public String roomDetail(Model model) {
 
         String username = null;
 
-        Member member = memberService.findByMemberRequest();
+        Member member = memberService.findByMember();
         if (member != null)
             username = member.getUsername();
 
@@ -95,29 +64,16 @@ public class ChatRoomController {
 
         return "/chat/chat";
     }
-
-
-    // 모든 채팅방 목록 반환
-    /*@GetMapping("/rooms")
-    @ResponseBody
-    public ModelAndView room(ModelAndView modelAndView) {
-        List<ChatRoom> rooms = chatRoomRepository.findAll();
-
-        modelAndView.addObject("rooms", rooms);
-        modelAndView.setViewName("chat/rooms");
-
-        return modelAndView;
-    }*/
+    
 
     // 채팅방 생성
     // 게시글에서 채팅 클릭 -> BoardId, UserId 받아옴
     // chatRoomRepo 에 BoardId, Board writer username, username, chatRoomId 로 생성
-    // PathVariable 로 방 받고, HttpRequest 로 사용자 받아옴
+    // PathVariable 로 방 검색
     // 동일한 내용의 chatRoom이 있으면 채팅방으로 이동
     // 없으면 생성 후 이동
     @GetMapping("/room/{id}")
     public String createRoom(@PathVariable Long id,
-                             HttpServletRequest request,
                              Model model) {
 
         // 글 작성자
@@ -125,7 +81,7 @@ public class ChatRoomController {
         Member seller = dto.getMember();
 
         // 구매자
-        Member buyer = memberService.findByMemberRequest();
+        Member buyer = memberService.findByMember();
 
         if (seller.getUsername() == buyer.getUsername()) {
             return "redirect:/chat/myChatRoom";
@@ -165,7 +121,7 @@ public class ChatRoomController {
         }
 
         //사용자 이름
-        Member member = memberService.findByMemberRequest();
+        Member member = memberService.findByMember();
 
         // 현재 입장한 채팅방
         ChatRoom thisRoom = chatRoomService.findByRoomId(roomId);
@@ -230,7 +186,7 @@ public class ChatRoomController {
     public int unReadMessage(@PathVariable String roomId, HttpServletRequest request) throws Exception {
 
         //사용자 이름
-        Member user = memberService.findByMemberRequest();
+        Member user = memberService.findByMember();
 
         List<ChatMessage> messageList = chatMessageRepository.findAllByRoomIdAndReceiverAndReceiverStatus(roomId, user, ReadStatus.N);
         for (ChatMessage message : messageList) {

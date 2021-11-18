@@ -34,7 +34,7 @@ public class BuyInterestedService {
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
 
-        Member member = memberService.findByMemberRequest();
+        Member member = memberService.findByMember();
 
         String status = null;
         try {
@@ -51,7 +51,7 @@ public class BuyInterestedService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
         String status = null;
         try {
-            Member member = memberService.findByMemberRequest();
+            Member member = memberService.findByMember();
             status = "" + buyInterestedRepository.findByBoardAndMember(board,member).getInterestedStatus();
             return status;
         } catch (Exception e) {

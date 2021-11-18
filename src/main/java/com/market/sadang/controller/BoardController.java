@@ -46,7 +46,7 @@ public class BoardController {
     public ModelAndView boardForm(ModelAndView modelAndView) {
 
         String username = null;
-        Member member = memberService.findByMemberRequest();
+        Member member = memberService.findByMember();
         if (member == null) {
             modelAndView.setViewName("redirect:/login");
         } else {
@@ -70,7 +70,7 @@ public class BoardController {
         if (result.hasErrors()) {
             return "board/boardForm";
         } else {
-            Member member = memberService.findByMemberRequest();
+            Member member = memberService.findByMember();
             BoardCreateRequestDto requestDto =
                     BoardCreateRequestDto.builder()
                             .member(member)
@@ -94,7 +94,7 @@ public class BoardController {
 
         String username = null;
         try {
-            username = memberService.findByMemberRequest().getUsername();
+            username = memberService.findByMember().getUsername();
         } catch (Exception e) {
 
         }
@@ -145,7 +145,7 @@ public class BoardController {
 
         List<ChatRoom> roomList = chatRoomService.findRoomList();
 
-        Member member = memberService.findByMemberRequest();
+        Member member = memberService.findByMember();
 
         String username = null;
         if (member != null)
@@ -163,7 +163,7 @@ public class BoardController {
     @GetMapping("/board/update/{id}")
     public ModelAndView updateForm(@PathVariable Long id, ModelAndView modelAndView) {
         BoardUpdateRequestDto board = boardService.findById(id);
-        Member member = memberService.findByMemberRequest();
+        Member member = memberService.findByMember();
 
         List<ChatRoom> roomList = chatRoomService.findRoomList();
         modelAndView.addObject("roomIdList", roomList);
@@ -280,7 +280,7 @@ public class BoardController {
 
     @GetMapping("/sell")
     public ModelAndView sell(ModelAndView modelAndView) {
-        Member member = memberService.findByMemberRequest();
+        Member member = memberService.findByMember();
         List<MyBoardListResponseDto> boardList = boardService.boardListMemberAndBoardStatus(member, BoardStatus.sell);
 
         List<ChatRoom> roomList = chatRoomService.findRoomList();
@@ -295,7 +295,7 @@ public class BoardController {
 
     @GetMapping("/sold")
     public ModelAndView sold(ModelAndView modelAndView) {
-        Member member = memberService.findByMemberRequest();
+        Member member = memberService.findByMember();
         List<MyBoardListResponseDto> boardList = boardService.boardListMemberAndBoardStatus(member, BoardStatus.sold);
 
         List<ChatRoom> roomList = chatRoomService.findRoomList();
@@ -312,7 +312,7 @@ public class BoardController {
     public ModelAndView buy(ModelAndView modelAndView) {
         List<MyBoardListResponseDto> boardList =
                 boardService.findBoardListByMemberAndBuyStatusOrInterestedStatus(BoardStatus.buy);
-        Member member = memberService.findByMemberRequest();
+        Member member = memberService.findByMember();
 
         List<ChatRoom> roomList = chatRoomService.findRoomList();
         modelAndView.addObject("roomIdList", roomList);
@@ -329,7 +329,7 @@ public class BoardController {
         List<MyBoardListResponseDto> boardList =
                 boardService.findBoardListByMemberAndBuyStatusOrInterestedStatus(BoardStatus.interested);
 
-        Member member = memberService.findByMemberRequest();
+        Member member = memberService.findByMember();
 
 
         List<ChatRoom> roomList = chatRoomService.findRoomList();

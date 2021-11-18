@@ -26,7 +26,6 @@ import java.util.Objects;
 public class ChatController {
 
     private final ChatRoomRepository chatRoomRepository;
-    private final MemberRepository memberRepository;
     private final ChatMessageRepository chatMessageRepository;
 
     private final SimpMessageSendingOperations messagingTemplate;

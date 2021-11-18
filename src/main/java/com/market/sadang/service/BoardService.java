@@ -115,7 +115,7 @@ public class BoardService {
     public Board verifyWriter(Long id) {
         Board board = boardRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시물이 존재하지 않습니다"));
-        Member member = memberService.findByMemberRequest();
+        Member member = memberService.findByMember();
         if (Objects.equals(board.getMember(), member)) {
             return board;
         } else return null;
@@ -180,7 +180,7 @@ public class BoardService {
     // 구매 상품 등록, 해제
     @Transactional
     public void buy(Long boardId) {
-        Member member = memberService.findByMemberRequest();
+        Member member = memberService.findByMember();
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시물이 존재하지 않습니다."));
         BuyInterested buyInterested = buyInterestedRepository.findByBoardAndMember(board, member);
@@ -200,7 +200,7 @@ public class BoardService {
     public void interested(Long id) {
         Board board = boardRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
-        Member member = memberService.findByMemberRequest();
+        Member member = memberService.findByMember();
         BuyInterested buyInterested = buyInterestedRepository.findByBoardAndMember(board, member);
 
         if (buyInterested == null) {
@@ -215,7 +215,7 @@ public class BoardService {
 
     // 사용자의 구매리스트 또는 관심 리스트
     public List<MyBoardListResponseDto> findBoardListByMemberAndBuyStatusOrInterestedStatus(BoardStatus status) {
-        Member member = memberService.findByMemberRequest();
+        Member member = memberService.findByMember();
         List<BuyInterested> buyOrInterestedList = null;
         List<MyBoardListResponseDto> dtoList = new ArrayList<>();
         Board board;
