@@ -43,7 +43,7 @@ public class BoardController {
 
     // 글 쓰기 폼
     @GetMapping("/board/new")
-    public ModelAndView boardForm(ModelAndView modelAndView, HttpServletRequest request) {
+    public ModelAndView boardForm(ModelAndView modelAndView) {
 
         String username = null;
         Member member = memberService.findByMemberRequest();
@@ -65,8 +65,7 @@ public class BoardController {
     @PostMapping("/board/new")
     public String create(@Valid BoardForm boardForm,
                          BindingResult result,
-                         @RequestParam(value = "uploadFile", required = false) List<MultipartFile> files,
-                         HttpServletRequest request) throws Exception {
+                         @RequestParam(value = "uploadFile", required = false) List<MultipartFile> files) throws Exception {
 
         if (result.hasErrors()) {
             return "board/boardForm";
@@ -85,7 +84,7 @@ public class BoardController {
 
     // 게시글 보기
     @GetMapping("/board/{id}")
-    public ModelAndView searchById(@PathVariable Long id, ModelAndView modelAndView, HttpServletRequest request) {
+    public ModelAndView searchById(@PathVariable Long id, ModelAndView modelAndView) {
 
         //게시글 id로 해당 글의 첨부파일 전체 조회
         List<MyFileResponseDto> myFileResponseDtoList = myFileService.findAllByBoard(id);
@@ -125,8 +124,7 @@ public class BoardController {
 
     @GetMapping("/")
     public ModelAndView searchAllDesc(ModelAndView modelAndView
-            , @RequestParam(value = "search", defaultValue = "") String search,
-                                      HttpServletRequest request) {
+            , @RequestParam(value = "search", defaultValue = "") String search) {
 
         List<Board> boardList = null;
         if (Objects.equals(search, "")) {
@@ -163,7 +161,7 @@ public class BoardController {
     }
 
     @GetMapping("/board/update/{id}")
-    public ModelAndView updateForm(@PathVariable Long id, ModelAndView modelAndView, HttpServletRequest request) {
+    public ModelAndView updateForm(@PathVariable Long id, ModelAndView modelAndView) {
         BoardUpdateRequestDto board = boardService.findById(id);
         Member member = memberService.findByMemberRequest();
 
@@ -178,8 +176,7 @@ public class BoardController {
     }
 
     @GetMapping("/board/verify/{id}")
-    public int writerVerify(@PathVariable Long id,
-                            HttpServletRequest request) {
+    public int writerVerify(@PathVariable Long id) {
         //작성자가 맞으면 게시글 번호 반환하고 아니면 -1을 반환하게 해야함
         System.out.println("verify board id ==" + id);
         Board board = boardService.verifyWriter(id);
@@ -282,8 +279,7 @@ public class BoardController {
     }
 
     @GetMapping("/sell")
-    public ModelAndView sell(HttpServletRequest request,
-                             ModelAndView modelAndView) {
+    public ModelAndView sell(ModelAndView modelAndView) {
         Member member = memberService.findByMemberRequest();
         List<MyBoardListResponseDto> boardList = boardService.boardListMemberAndBoardStatus(member, BoardStatus.sell);
 
@@ -298,8 +294,7 @@ public class BoardController {
     }
 
     @GetMapping("/sold")
-    public ModelAndView sold(HttpServletRequest request,
-                             ModelAndView modelAndView) {
+    public ModelAndView sold(ModelAndView modelAndView) {
         Member member = memberService.findByMemberRequest();
         List<MyBoardListResponseDto> boardList = boardService.boardListMemberAndBoardStatus(member, BoardStatus.sold);
 
@@ -314,10 +309,9 @@ public class BoardController {
     }
 
     @GetMapping("/buy")
-    public ModelAndView buy(HttpServletRequest request,
-                            ModelAndView modelAndView) {
+    public ModelAndView buy(ModelAndView modelAndView) {
         List<MyBoardListResponseDto> boardList =
-                boardService.findBoardListByMemberAndBuyStatusOrInterestedStatus(request, BoardStatus.buy);
+                boardService.findBoardListByMemberAndBuyStatusOrInterestedStatus(BoardStatus.buy);
         Member member = memberService.findByMemberRequest();
 
         List<ChatRoom> roomList = chatRoomService.findRoomList();
@@ -331,10 +325,9 @@ public class BoardController {
     }
 
     @GetMapping("/interested")
-    public ModelAndView interested(HttpServletRequest request,
-                                   ModelAndView modelAndView) {
+    public ModelAndView interested(ModelAndView modelAndView) {
         List<MyBoardListResponseDto> boardList =
-                boardService.findBoardListByMemberAndBuyStatusOrInterestedStatus(request, BoardStatus.interested);
+                boardService.findBoardListByMemberAndBuyStatusOrInterestedStatus(BoardStatus.interested);
 
         Member member = memberService.findByMemberRequest();
 
@@ -362,7 +355,6 @@ public class BoardController {
 
     @GetMapping("/board/buy/{roomId}")
     public ModelAndView bought(@PathVariable String roomId,
-                               HttpServletRequest request,
                                ModelAndView modelAndView) {
 
         ChatRoom chatRoom = chatRoomService.findByRoomId(roomId);
@@ -384,7 +376,6 @@ public class BoardController {
 
     @GetMapping("/board/interested/{id}")
     public ModelAndView interested(@PathVariable Long id,
-                                   HttpServletRequest request,
                                    ModelAndView modelAndView) {
 
         boardService.interested(id);
@@ -395,7 +386,6 @@ public class BoardController {
 
     @GetMapping("/myBoard/interested/{id}")
     public ModelAndView myInterested(@PathVariable Long id,
-                                     HttpServletRequest request,
                                      ModelAndView modelAndView) {
 
         boardService.interested(id);

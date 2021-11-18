@@ -214,7 +214,7 @@ public class BoardService {
     }
 
     // 사용자의 구매리스트 또는 관심 리스트
-    public List<MyBoardListResponseDto> findBoardListByMemberAndBuyStatusOrInterestedStatus(HttpServletRequest request, BoardStatus status) {
+    public List<MyBoardListResponseDto> findBoardListByMemberAndBuyStatusOrInterestedStatus(BoardStatus status) {
         Member member = memberService.findByMemberRequest();
         List<BuyInterested> buyOrInterestedList = null;
         List<MyBoardListResponseDto> dtoList = new ArrayList<>();
